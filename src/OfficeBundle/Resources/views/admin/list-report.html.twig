@@ -1,0 +1,61 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card__header">
+            <h2>
+                <center><strong>Daftar Seluruh Laporan Individu</strong></center>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table test">
+                    <thead>
+                        <tr>
+                            <td>No.</td>
+                            <td>Nama</td>
+                            <td>Jabatan</td>
+                            <td>Penempatan</td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td>Aksi</td>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if data|length > 0 %}
+                    {% set i = 1 %}
+                    {% for dat in data %}
+                        <tr>
+                            <td>{{ i }}</td>
+                            <td>{{ dat.nama }}</td>
+                            <td>{% if dat.job is not null %}{{ dat.job.jabatan }}{% else %}-{% endif %}</td>
+                            <td>{% if dat.penempatan is not null %}{{ dat.penempatan.namaPerusahaan }}{% else %}-{% endif %}</td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td>
+                                    <a href="{{ path('office_admin_individu',{id: dat.id}) }}" class="btn btn-primary btn-xs" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-assignment"></i></a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% set i = i + 1 %}
+                    {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Tidak ada data</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                <p>
+                    <button class="btn btn-primary btn-xs"><i class="zmdi zmdi-assignment"></i></button>&nbsp;:&nbsp;untuk melihat laporan individu
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $('.test').dataTable({
+
+        });
+    </script>
+{% endblock %}

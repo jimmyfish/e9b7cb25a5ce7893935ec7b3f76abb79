@@ -1,0 +1,20 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card__body">
+            <p>Tipe Form :{% if data.typeForm is defined %}{% if data.typeForm == 0 %}cuti{% elseif data.typeForm == 1 %}Ijin{% elseif data.typeForm == 2 %}Sakit{% else %}dinas{% endif %}{% else %}-{% endif %} </p>
+            <p>Nama : {% if data.userId.nama is defined %}{{ data.userId.nama }}{% else %}-{% endif %}</p>
+            <p>NIK : {% if data.userId.nik is defined %}{{ data.userId.nik }}{% else %}-{% endif %}</p>
+            <p>Absen : {% if data.absen is defined %}{% if data.absen == 0 %}Cuti{% elseif data.absen ==1 %}Ijin{% elseif data.absen == 2 %}Sakit{% else %}Dinas{% endif %}{% else %}-{% endif %}</p>
+            <p>Keterangan : {% if data.description is defined %}{{ data.description }}{% else %}-{% endif %}</p>
+            <p>Tanggal Mulai : {% if data.tglMulai is defined %}{{ data.tglMulai|date('d M Y') }}{% else %}-{% endif %}</p>
+            <p>Tanggal Akhir : {% if data.tglAkhir is defined %}{{ data.tglAkhir|date('d M Y') }}{% else %}-{% endif %}</p>
+
+            <a href="{{ path('office_admin_reject_form',{'id':data.id}) }}" class="btn btn-danger">TOLAK</a>
+
+            <a href="{{ path('office_admin_validate_form',{'id':data.id}) }}" class="btn btn-success">TERIMA</a>
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    {% if data|length > 0 %}
+    {% for dat in data %}
+        <section id="content">
+            <div class="card">
+                <div class="content-header"></div>
+                <div class="card__body">
+                    <div class="card__header">
+                        {#<img src="{{ asset('images') }}//ezimba.gif" height="125" style="margin-left: 0px;" alt="">#}
+                        <p><h1 class="text-center" style="color: black;">Form Absen</h1></p>
+                    </div>
+                    <div class="card__body">
+                        <button type="button" class="btn btn-success hidden-print" style="position: absolute;right: 30px;" onclick="print('printed-area')"><i class="zmdi zmdi-print"></i></button>
+                        <div id="printed-area">
+                            <p>kepada</p>
+                            <p><strong>HRD Dept/Atasan Langsung</strong></p><br>
+                            <p>Yang bertanda tangan di bawah ini:</p>
+                            <p>Nama : {{ dat.userId.nama }}</p>
+                            <p>Datang terlambat / keluar lebih awal karena keperluan : {% if dat.absen == 1 %}ijin{% elseif dat.absen == 2 %}sakit{% else %}dinas{% endif %}</p>
+                            <p>Dari Tanggal : {% if dat.tglMulai is defined %}{{ dat.tglMulai|date('d m Y') }}{% endif %} sampai tanggal : {% if dat.tglAkhir is defined %}{{ dat.tglAkhir|date('d m Y') }}{% endif %}</p>
+                            <p>Alasan / Keperluan : {% if dat.description is defined %}{{ dat.description }}{% endif %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endfor %}
+    {% endif %}
+{% endblock %}

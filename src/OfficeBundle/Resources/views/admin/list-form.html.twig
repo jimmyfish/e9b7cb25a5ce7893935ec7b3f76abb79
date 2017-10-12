@@ -1,0 +1,157 @@
+{% extends 'subLayout.html.twig' %}
+{% block title %}Daftar Seluruh Pengajuan Form{% endblock %}
+{% block content %}
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i
+                            class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message }}</span>
+            </div>
+        {% endfor %}
+        {% for message in app.session.getFlashBag.get('error') %}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i
+                            class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message }}</span>
+            </div>
+        {% endfor %}
+        <div class="card__header">
+            <h2>
+                <center><strong>Daftar Seluruh Pengajuan Izin</strong></center>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="test">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Tanggal Pengajuan</th>
+                        <th>Nama</th>
+                        <th>Penempatan</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <th>Aksi</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% if data|length > 0 %}
+                        {% for dat in data %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>
+                                    {% if dat.createdAt is not null %}
+                                        {{ dat.createdAt|date('d-m-Y') }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ dat.userId.nama }}</td>
+                                <td>
+                                    {% if dat.userId.penempatan is not null %}
+                                        {{ dat.userId.penempatan.namaPerusahaan }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ dat.description }}</td>
+                                {% if dat.isValidated == 0 %}
+                                    <td><span class="label label-warning">Menunggu</span></td>
+                                {% elseif dat.isvalidated == 1 %}
+                                    <td><span class="label label-success">Diterima</span></td>
+                                {% else %}
+                                    <td><span class="label label-danger">Ditolak</span></td>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <td>
+                                        <a href="{{ path('office_admin_update_form',{'id':dat.userId.id}) }}"
+                                           class="btn btn-warning btn-xs"
+                                           onclick="return confirm('Apakah kamu yakin?')">
+                                            <i class="zmdi zmdi-book"></i>
+                                        </a>
+
+                                        <a href="{{ path('office_admin_view_validate_form',{'id': dat.id}) }}"
+                                           class="btn btn-primary btn-xs"
+                                           onclick="return confirm('Apakah kamu yakin?')">
+                                            <i class="zmdi zmdi-layers"></i>
+                                        </a>
+
+                                        <a href="{{ path('office_admin_delete_form',{'id':dat.id}) }}"
+                                           class="btn btn-danger btn-xs" onclick="return confirm('Apakah kamu yakin?')">
+                                            <i class="zmdi zmdi-delete"></i>
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {#{% if (dayOff|length > 0) %}#}
+                        {#{% for item in dayOff %}#}
+                            {#<tr class="cuti">#}
+                                {#<td>{{ i }}</td>#}
+                                {#<td>{{ item.nama }}</td>#}
+                                {#<td>Pengajuan cuti tertanggal <strong>{{ item.cuti[0].absDate|date('d M Y') }}</strong>#}
+                                {#</td>#}
+                                {#<td>#}
+                                    {#{% set terima = 0 %}#}
+                                    {#{% set tolak = 0 %}#}
+                                    {#{% set tunggu = 0 %}#}
+
+                                    {#{% for cuti in item.cuti %}#}
+                                        {#{% if cuti.isValidated == 0 %}#}
+                                            {#{% set tunggu = tunggu + 1 %}#}
+
+                                        {#{% elseif cuti.isValidated == 1 %}#}
+                                            {#{% set terima = terima + 1 %}#}
+
+                                        {#{% else %}#}
+                                            {#{% set tolak = tolak + 1 %}#}
+
+                                        {#{% endif %}#}
+                                    {#{% endfor %}#}
+                                    {#<span class="label label-warning">#}
+                                        {#{{ tunggu }} Menunggu#}
+                                    {#</span><br>#}
+                                    {#<span class="label label-success">#}
+                                        {#{{ terima }} Diterima#}
+                                    {#</span><br>#}
+                                    {#<span class="label label-danger">#}
+                                        {#{{ tolak }} Ditolak#}
+                                    {#</span>#}
+                                {#</td>#}
+                                {#{% if is_granted('ROLE_ADMIN') %}#}
+                                    {#<td>#}
+                                        {#<a href="{{ path('office_admin_dayoff_detail', {'user_id': item.id}) }}"#}
+                                           {#class="btn btn-primary btn-xs" title="Detail">#}
+                                            {#Detail#}
+                                        {#</a>#}
+                                    {#</td>#}
+                                {#{% endif %}#}
+                            {#</tr>#}
+                            {#{% set i = i + 1 %}#}
+                        {#{% endfor %}#}
+
+                    {#{% endif %}#}
+                    </tbody>
+                </table>
+                <p>Keterangan&nbsp;:</p>
+                <p>
+                    <button class="btn btn-warning btn-xs"><i class="zmdi zmdi-book"></i></button>&nbsp;:&nbsp;memperbarui data form izin,sakit,dinas&nbsp;
+                    <button class="btn btn-primary btn-xs"><i class="zmdi zmdi-layers"></i></button>&nbsp;:&nbsp;memvalidasi form pengajuan pengguna &nbsp;
+                    <button class="btn btn-danger btn-xs"><i class="zmdi zmdi-delete"></i></button>&nbsp;:&nbsp;menghapus form pengajuan
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script type="text/javascript">
+        $(function () {
+            $('#test').dataTable({
+
+            });
+        });
+    </script>
+{% endblock %}

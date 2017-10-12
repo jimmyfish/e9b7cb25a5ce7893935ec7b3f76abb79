@@ -1,0 +1,13 @@
+OfficeBundle\Entity\CompanyProfile:
+    company{1..100}:
+        namaPerusahaan: <company()>
+        isDeleted: 0
+
+OfficeBundle\Entity\Attachment:
+    attachment{1..10}:
+#        userId: <numberBetween(1,20)>
+        attachCode: mrv-file<numberBetween(1000,1500)>
+        filename: <firstName()>
+        description: <sentence()>
+        isValidated: 1
+        isDeleted: 0

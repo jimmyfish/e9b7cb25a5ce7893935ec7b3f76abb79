@@ -1,0 +1,49 @@
+{% extends 'subLayout.html.twig' %}
+{% block content %}
+    <div class="content__header">
+        <h2></h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>Manipulasi Data Cuti
+                <small>Masukkan data sesuai yang dibutuhkan</small>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-5">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="desire-quotas">Masukkan Kuota Cuti per Sesi <strong>(Khusus Regular)</strong> :</label>
+                            <input type="number" class="form-control" name="desire-quotas" id="desire-quotas" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="desire-user">Pilih Pengguna yang terkait</label>
+                            <select name="desire-user[]" id="desire-user" class="form-control" multiple>
+                                {% for item in data['user'] %}
+                                    <option value="{{ item.id }}">{{ item.nama }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <p><strong>NB</strong> : Data pengguna yang telah diinputkan sebelumnya akan diubah secara paksa.</p>
+                        <div class="form-group">
+                            <p class="pull-right">
+                                <a href="{{ path('office_admin_dayoff_list_quotas') }}" class="btn btn-default">List Kuota karyawan</a>
+                                <input type="submit" value="Proses" class="btn btn-primary">
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $(function() {
+            $('#desire-user').select2();
+        });
+    </script>
+
+{% endblock %}

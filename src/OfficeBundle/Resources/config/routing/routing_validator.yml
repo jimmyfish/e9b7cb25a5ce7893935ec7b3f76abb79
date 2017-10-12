@@ -1,0 +1,114 @@
+office_validator_index:
+      path: /
+      defaults:
+        _controller: OfficeBundle:Validator:index
+
+office_validator_list:
+      path: /list
+      defaults:
+        _controller: OfficeBundle:Validator:list
+
+office_validator_create_form:
+     path: /create-form
+     defaults:
+        _controller: OfficeBundle:Validator:formCreate
+
+office_validator_update_user:
+     path: /update-user/{id}
+     defaults:
+        _controller: OfficeBundle:Validator:updateDataUser
+
+office_validator_update_job:
+      path: /update-job/{id}
+      defaults:
+        _controller: OfficeBundle:Validator:updateDataJob
+
+office_validator_update_family:
+      path: /update-family/{id}
+      defaults:
+        _controller: OfficeBundle:Validator:updateDataFamily
+
+office_validator_cuti_form:
+     path: /create-cuti
+     defaults:
+        _controller: OfficeBundle:Validator:dayOffInput
+
+office_validator_list_form:
+      path: /list-form
+      defaults:
+        _controller: OfficeBundle:Validator:formList
+
+office_validator_edit_status:
+      path: /edit-status/{id}
+      defaults:
+        _controller: OfficeBundle:Validator:editStatus
+
+office_validator_edit_validate:
+      path: /edit-validate/{id}
+      defaults:
+        _controller: OfficeBundle:Validator:editValidate
+
+office_validator_list_pengajuan:
+      path: /list-pengajuan
+      defaults:
+        _controller: OfficeBundle:Validator:listPengajuan
+
+office_validator_update_form:
+     path: /update-form/{id}
+     defaults:
+      _controller: OfficeBundle:Validator:updateForm
+
+office_validator_delete_form:
+     path: /delete-form/{id}
+     defaults:
+      _controller: OfficeBundle:Validator:deleteForm
+
+office_validator_detail_dayoff:
+      path: /detail/{user_id}
+      defaults:
+        _controller: OfficeBundle:Validator:detailDay
+
+office_validator_create_shift:
+      path: /create-shift
+      defaults:
+        _controller: OfficeBundle:Validator:createShift
+
+office_validator_list_shift:
+      path: /list-shift
+      defaults:
+        _controller: OfficeBUndle:Validator:listShift
+
+office_validator_validate_form:
+      path: /validate-form/{id}
+      defaults:
+        _controller: OfficeBundle:Validator:validateForm
+
+office_validator_approve_form:
+      path: /approve-form/{id}
+      defaults:
+        _controller: OfficeBundle:Validator:approveForm
+
+office_validator_reject_form:
+      path: /reject-form/{id}
+      defaults:
+        _controller: OfficeBundle:Validator:rejectForm
+
+office_validator_approve_cuti:
+      path: /approve-cuti/{cuti_id}
+      defaults:
+        _controller: OfficeBundle:DayOff:approveDay
+
+office_validator_reject_cuti:
+      path: /reject-cuti/{cuti_id}
+      defaults:
+        _controller: OfficeBundle:DayOff:rejectDay
+
+office_validator_absensi:
+      path: /presence-validator
+      defaults:
+        _controller: OfficeBundle:Validator:absenValidator
+
+office_validator_absensi_detail:
+      path: /presence-validator-detail/{id}/{month}/{year}
+      defaults:
+        _controller: OfficeBundle:Validator:absenValidatorDetail

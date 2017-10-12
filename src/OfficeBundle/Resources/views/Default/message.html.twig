@@ -1,0 +1,28 @@
+{% extends 'subLayout.html.twig' %}
+{% block content %}
+    <div class="content__header">
+        <h2></h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>{{ app.request.get('proc_title') }}
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-12">
+                    {% for message in app.session.getFlashBag.get('message_success') %}
+                        <div class="alert alert-success">
+                            <strong>Sukses!</strong> {{ message }}.
+                        </div>
+                    {% endfor %}
+                    {% for message in app.session.getFlashBag.get('message_failure') %}
+                        <div class="alert alert-danger">
+                            <strong>Oops!</strong> {{ message }}.
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

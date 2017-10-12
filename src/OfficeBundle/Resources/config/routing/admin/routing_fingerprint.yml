@@ -1,0 +1,49 @@
+office_admin_fingerprint_device_list:
+    path: /device
+    defaults:
+        _controller: OfficeBundle:Fingerprint:deviceList
+
+office_admin_fingerprint_device_add:
+    path: /device/add
+    defaults:
+        _controller: OfficeBundle:Fingerprint:deviceAdd
+
+office_admin_fingerprint_user_list:
+    path: /user
+    defaults:
+        _controller: OfficeBundle:Fingerprint:userList
+
+office_admin_fingerprint_dummy:
+    path: /dummy
+    defaults:
+        _controller: OfficeBundle:Fingerprint:dummy
+
+office_fingerprint_register:
+    path: /register/{id}
+    defaults:
+        _controller: OfficeBundle:Fingerprint:register
+
+office_fingerprint_register_process:
+    path: /register-process
+    defaults:
+        _controller: OfficeBundle:Fingerprint:registrationProcess
+
+office_fingerprint_get_activation:
+    path: /get-activation
+    defaults:
+        _controller: OfficeBundle:Fingerprint:getActivationCode
+
+office_fingerprint_presence:
+    path: /presence
+    defaults:
+        _controller: OfficeBundle:Fingerprint:presence
+
+office_fingerprint_presence_process:
+    path: /presence-process
+    defaults:
+        _controller: OfficeBundle:Fingerprint:presenceProcess
+
+office_fingerprint_delete_user:
+    path: /delete/{user_id}
+    defaults:
+        _controller: OfficeBundle:Fingerprint:deleteUser

@@ -1,0 +1,96 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i
+                            class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message }}</span>
+            </div>
+        {% endfor %}
+        {% for message in app.session.getFlashBag.get('error') %}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i
+                            class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message }}</span>
+            </div>
+        {% endfor %}
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal Pengajuan</th>
+                        <th>Nama</th>
+                        <th>Status</th>
+                        {% if is_granted('ROLE_USER') %}
+                            <th>Aksi</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% if data|length > 0 %}
+                        {% for dat in data %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>
+                                    {% if dat.createdAt is not null %}
+                                        {{ dat.createdAt|date('d-m-Y') }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.nama }}</td>
+                                {% if dat.isValidated == 0 %}
+                                    <td><span class="label label-warning">Menunggu</span></td>
+                                {% elseif dat.isValidated == 1 %}
+                                    <td><span class="label label-sucess">Diterima</span></td>
+                                {% else %}
+                                    <td><span class="label label-reject">Ditolak</span></td>
+                                {% endif %}
+                                {% if is_granted('ROLE_USER') %}
+                                    <td>
+                                        <a title="update form" href="{{ path('office_user_update_form') }}"
+                                           class="btn btn-success btn-xs" onclick="return confirm('Apakah kamu yakin?')"><i
+                                                    class="zmdi zmdi-plus-circle "></i></a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    {% if is_granted('ROLE_USER') %}
+                        {% if dayOff|length > 0 %}
+                            {% for data in dayOff %}
+                                <tr>
+                                    <td>{{ i }}</td>
+                                    <td>Pengajuan Cuti - {{ data.description }} tertanggal <strong>{{ data.absDate|date('d M Y') }}</strong></td>
+                                    <td>
+                                        {% if data.isValidated == 0 %}
+                                            <span class="label label-warning">Menunggu</span>
+                                        {% elseif data.isValidated == 1 %}
+                                            <span class="label label-success">Diterima</span>
+                                        {% else %}
+                                            <span class="label label-danger">Ditolak</span>
+                                        {% endif %}
+                                    </td>
+                                    {% if (user.id == data.userId.id) and (is_granted('ROLE_USER')) %}
+                                        <td>
+                                            {% if (data.isValidated != 1) %}
+                                                <a href="{{ path('office_user_dayoff_delete', {cuti_id: data.id}) }}" class="btn btn-danger btn-xs">
+                                                    Hapus
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                                {% set i = i + 1 %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

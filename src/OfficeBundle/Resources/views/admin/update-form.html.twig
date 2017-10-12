@@ -1,0 +1,59 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+
+    <div class="content__header">
+        <h2>Perbarui Data Form</h2>
+    </div>
+
+    <div class="card">
+        <div class="card__header">
+        </div>
+        <div class="card__body">
+            <form method="post">
+                <select name="type-form" class="form-control">
+                    <option value="">-- Pilih Form yang akan diisi --</option>
+                    <option value="1" {% if data.typeForm == 1 %}selected{% endif %}>Ijin</option>
+                    <option value="2" {% if data.typeForm == 2 %}selected{% endif %}>Sakit</option>
+                    <option value="3" {% if data.typeForm == 3 %}selected{% endif %}>Dinas</option>
+                </select>
+                <div class="form-group">
+                    <p>Nama</p>
+                    <input type="text" name="nama" class="form-control" value="{% if username is defined %}{{ username }}{% endif %}" readonly>
+                </div>
+                <div class="form-group">
+                    <p>NIK</p>
+                    <input type="text" name="nik" class="form-control" value="{% if nik is defined %}{{ nik }}{% endif %}">
+                </div>
+                <select name="absen" class="form-control">
+                    <option value="">-- Pilih Keterangan Absen --</option>
+                    <option value="1"{% if data.absen == 1 %}selected{% endif %}>Ijin</option>
+                    <option value="2"{% if data.absen == 2 %}selected{% endif %}>Sakit</option>
+                    <option value="3"{% if data.absen == 3 %}selected{% endif %}>Dinas</option>
+                </select>
+                <div class="form-group">
+                    <p>Keterangan</p>
+                    <textarea class="form-control" name="description">{% if data.description is defined  %}{{ data.description }}{% endif %}</textarea>
+                </div>
+                <div class="form-group">
+                    <p>Tanggal Mulai</p>
+                    <input type="text" class="form-control picker" name="tgl_mulai" value="{% if data.tglMulai is defined %}{{ data.tglMulai|date('d m Y') }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <p>Tanggal Selesai</p>
+                    <input type="text" id="tanggal-selesai" class="form-control picker" name="tgl_akhir" value="{% if data.tglAkhir is defined %}{{ data.tglAkhir|date('d m Y') }}{% endif %}">
+                </div>
+                <button class="btn btn-primary">SUBMIT</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+
+        $('.picker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+    </script>
+{% endblock %}

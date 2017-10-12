@@ -1,0 +1,9 @@
+office_holiday_index:
+    path: /
+    defaults:
+        _controller: OfficeBundle:Holiday:index
+
+office_holiday_input:
+    path: /input
+    defaults:
+        _controller: OfficeBundle:Holiday:create

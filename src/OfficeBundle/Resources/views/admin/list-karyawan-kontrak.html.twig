@@ -1,0 +1,76 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Karyawan Kontrak{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card__header">
+            <h2>
+                <center><strong>Daftar Seluruh PKWT 1</strong></center>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="table-responsive">
+                <table id="test" class="table">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tanggal Masuk</th>
+                            <th>Nama</th>
+                            <th>Validate</th>
+                            <th>Status</th>
+                            <th>Jabatan</th>
+                            <th>Penempatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% set i = 1 %}
+                     {% if test|length > 0 %}
+                     {% for tes in test %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ tes.job.tanggalMasuk|date('d m Y') }}</td>
+                                <td>{{ tes.nama }}</td>
+                                <td>
+                                    {% if tes.isValidated == 0 %}
+                                        <span class="label label-danger">No Validated</span>
+                                    {% else %}
+                                        <span class="label label-success">Validated</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tes.status == 0 %}
+                                        <span class="label label-success">TUL</span>
+                                    {% elseif tes.status == 1 %}
+                                        <span class="label label-success">PKWT 1</span>
+                                    {% elseif tes.status == 2 %}
+                                        <span class="label label-success">PKWT 2</span>
+                                    {% elseif tes.status == 3 %}
+                                        <span class="label label-success">PKWTT</span>
+                                    {% else %}
+                                        <span class="label label-success">Karyawan Tetap</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ tes.job.jabatan }}</td>
+                                <td>{% if tes.penempatan is not null %}{{ tes.penempatan.namaPerusahaan }}{% endif %}</td>
+                            </tr>
+                         {% set i = i + 1 %}
+                     {% endfor %}
+                     {% else %}
+                         <tr>
+                             <td>Tidak Ada Data</td>
+                         </tr>
+                     {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $('#test').dataTable({
+
+        });
+    </script>
+{% endblock %}

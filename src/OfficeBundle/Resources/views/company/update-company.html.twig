@@ -1,0 +1,20 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2><center>Perbarui Data Nama Perusahaan</center></h2>
+    </div>
+    <div class="card">
+        <div class="card__body">
+            <form method="post">
+                <div class="form-group form-group--float form-group--centered form-group--centered">
+                    <input type="text" name="nama-perusahaan" id="" class="form-control" value="{% if data.namaPerusahaan != null %}{{ data.namaPerusahaan }}{% endif %}">
+                    <label for="">Nama Perusahaan</label>
+                </div>
+                <button class="btn btn-primary">SIMPAN</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

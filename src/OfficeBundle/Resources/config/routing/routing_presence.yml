@@ -1,0 +1,39 @@
+office_presence_dummy:
+    path: /dummy
+    defaults:
+        _controller: OfficeBundle:Presence:dummyData
+
+office_presence_interface:
+    path: /checklog
+    defaults:
+        _controller: OfficeBundle:Presence:presence
+
+office_presence_process:
+    path: /checklog-process/{username}
+    defaults:
+        _controller: OfficeBundle:Presence:presenceProcess
+
+office_presence_user_get_ac:
+    path: /checklog/get-ac
+    defaults:
+        _controller: OfficeBundle:Presence:getActivationCode
+
+office_presence_do:
+    path: /checklog/do
+    defaults:
+        _controller: OfficeBundle:Presence:doPresence
+
+office_presence_dopress:
+    path: /dopress/{id}
+    defaults:
+        _controller: OfficeBundle:Presence:dopresbackup
+
+office_presence_legacy:
+    path: /checklog/legacy
+    defaults:
+        _controller: OfficeBundle:Presence:legacyChecklog
+
+#office_presence_list:
+#    path: /list
+#    defaults:
+#        _controller: OfficeBundle:Presence:index

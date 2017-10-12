@@ -1,0 +1,67 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Daftar Pkwtt{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card__header">
+            <h2>
+                <center><strong>Daftar Seluruh Karyawan PKWTT</strong></center>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Tanggal Masuk Kerja</th>
+                            <th>Nama</th>
+                            <th>Validate</th>
+                            <th>Status</th>
+                            <th>Jabatan</th>
+                            <th>Penempatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if data|length > 0 %}
+                    {% set i = 1 %}
+                        {% for item in data %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{% if item.job is not null %}{{ item.job.tanggalMasuk|date('d m Y') }}{% endif %}</td>
+                                <td>{{ item.nama }}</td>
+                                {% if item.isValidated == 0 %}
+                                    <td><span class="label label-danger">Belum Tervalidasi</span></td>
+                                {% else %}
+                                    <td><span class="label label-success">Tervalidasi</span></td>
+                                {% endif %}
+                                <td>
+                                    {% if item.status == 0 %}
+                                        <span class="label label-success">TUL</span>
+                                    {% elseif item.status == 1 %}
+                                        <span class="label label-success">PKWT 1</span>
+                                    {% elseif item.status == 2 %}
+                                        <span class="label label-success">PKWT 2</span>
+                                    {% elseif item.status == 3 %}
+                                        <span class="label label-success">PKWTT</span>
+                                    {% else %}
+                                        <span class="label label-success">Karyawan Tetap</span>
+                                    {% endif %}
+                                </td>
+                                <td>{% if item.job is not null %}{{ item.job.jabatan }}{% endif %}</td>
+                                <td>{% if item.penempatan is not null %}{{ item.penempatan.namaPerusahaan }}{% endif %}</td>
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7"><center>Tidak ada data</center></td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

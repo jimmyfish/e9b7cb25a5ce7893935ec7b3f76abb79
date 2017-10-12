@@ -1,0 +1,32 @@
+OfficeBundle\Entity\Shift:
+    type: entity
+    table: shift
+    repositoryClass: OfficeBundle\Repository\ShiftRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        label:
+            type: string
+            length: 100
+            nullable: false
+        startTime:
+            name: start_time
+            type: time
+            nullable: false
+        endTime:
+            name: end_time
+            type: time
+            nullable: false
+        createdAt:
+            name: created_at
+            type: datetime
+            nullable: false
+        updatedAt:
+            name: updated_at
+            type: datetime
+            nullable: true
+    lifecycleCallbacks: {  }

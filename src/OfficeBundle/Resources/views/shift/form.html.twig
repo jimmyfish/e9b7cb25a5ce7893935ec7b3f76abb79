@@ -1,0 +1,45 @@
+{% extends 'subLayout.html.twig' %}
+{% block content %}
+    <div class="content__header">
+        <h2>DATA JAM KERJA</h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>Olah Data Jam Kerja
+                <small>Lengkapi data sesuai dengan yang dibutuhkan</small>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-5">
+                    <p></p>
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <p>Keterangan Jam Kerja</p>
+                            <input type="text" class="form-control" name="keterangan" id="keterangan" value="{% if data is defined %}{{ data.label }}{% endif %}" required>
+                        </div>
+                        <div class="form-group">
+                            <p>Jam Masuk</p>
+                            <input type="text" class="time form-control" name="jam-masuk" id="jam-masuk" value="{% if data is defined %}{{ data.startTime|date('h:i a') }}{% endif %}" required>
+                        </div>
+                        <div class="form-group">
+                            <p>Jam Pulang</p>
+                            <input type="text" class="time form-control" name="jam-pulang" id="jam-pulang" value="{% if data is defined %}{{ data.endTime|date('h:i a') }}{% endif %}" required>
+                        </div>
+                        <div class="form-group"><input type="submit" class="btn btn-primary pull-right" value="{{ input_label }}"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $(function() {
+            $('.time').datetimepicker({
+                format: 'LT'
+            });
+        });
+    </script>
+{% endblock %}

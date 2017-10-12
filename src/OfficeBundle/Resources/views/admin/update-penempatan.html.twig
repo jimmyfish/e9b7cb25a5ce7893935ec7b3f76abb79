@@ -1,0 +1,21 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Perbarui Data Penempatan{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card__header">
+            <h2>Perbarui Data</h2>
+            <small>Harap dicek kembali data yang telah diinputkan</small>
+        </div>
+        <div class="card__body">
+            <form method="post">
+                <div class="form-group">
+                    <p>Nama Perusahaan</p>
+                    <input type="text" name="nama-perusahaan" class="form-control" value="{% if data.namaPerusahaan is defined %}{{ data.namaPerusahaan }}{% endif %}">
+                </div>
+                <button type="submit" class="btn btn-primary">SIMPAN</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

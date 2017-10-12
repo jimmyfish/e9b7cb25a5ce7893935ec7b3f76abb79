@@ -1,0 +1,52 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/security.html
+security:
+    encoders:
+        OfficeBundle\Entity\UserPersonal:
+            algorithm: md5
+            encode_as_base64: false
+            iterations: 0
+
+    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        # in_memory:
+        #     memory: ~
+        hrd_db:
+            entity:
+                class: OfficeBundle:UserPersonal
+                property: username
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            anonymous: ~
+            # activate different ways to authenticate
+
+            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            provider: hrd_db
+            form_login:
+                login_path: office_login
+                check_path: office_login
+                failure_path: office_login
+                target_path_parameter: login_check
+            logout:
+                path:   /logout
+                target: /
+    access_control:
+       - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/admin/finger/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/presence/checklog/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+       - { path: ^/admin, roles: ROLE_ADMIN }
+       - { path: ^/user, roles: [ ROLE_ADMIN, ROLE_USER, ROLE_VALIDATOR ] }
+       - { path: ^/validator, roles: [ ROLE_VALIDATOR, ROLE_ADMIN ] }
+       - { path: ^/user/cuti/*, roles: [ ROLE_ADMIN, ROLE_USER, ROLE_VALIDATOR ] }
+       - { path: ^/admin/finger, roles: [ ROLE_ADMIN, ROLE_VALIDATOR ]}
+       - { path: ^/user/form/*, roles: [ ROLE_ADMIN, ROLE_VALIDATOR, ROLE_USER ]}

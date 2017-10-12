@@ -1,0 +1,31 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Karyawan Baru{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2>Karyawan Baru</h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>Masukkan Data</h2>
+        </div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-5">
+                    {{ form_start(form) }}
+
+                    {% set i = 1 %}
+                    {{ dump(form.vars) }}
+                    {{ form_row(form.tanggalLahir) }}
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+                    <p>&nbsp;</p>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

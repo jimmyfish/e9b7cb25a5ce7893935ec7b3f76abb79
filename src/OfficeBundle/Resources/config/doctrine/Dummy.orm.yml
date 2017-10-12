@@ -1,0 +1,14 @@
+OfficeBundle\Entity\Dummy:
+    type: entity
+    table: null
+    repositoryClass: OfficeBundle\Repository\DummyRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        description:
+            type: text
+    lifecycleCallbacks: {  }

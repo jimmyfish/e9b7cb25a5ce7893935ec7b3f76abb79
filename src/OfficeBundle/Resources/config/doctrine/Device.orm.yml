@@ -1,0 +1,32 @@
+OfficeBundle\Entity\Device:
+    type: entity
+    table: null
+    repositoryClass: OfficeBundle\Repository\DeviceRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        deviceName:
+            type: string
+            length: 255
+            column: device_name
+        sn:
+            type: string
+            length: 255
+            unique: true
+        ac:
+            type: string
+            length: 255
+            unique: true
+        vc:
+            type: string
+            length: 255
+            unique: true
+        vkey:
+            type: string
+            length: 255
+            unique: true
+    lifecycleCallbacks: {  }

@@ -1,0 +1,23 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-3">&nbsp;</div>
+                <div class="col-md-6">
+                    <form method="post">
+                        <select name="penempatan" id="" class="form-control">
+                            {% for penem in penempatan %}
+                                <option value="{{ penem.id }}">{{ penem.namaPerusahaan }}</option>
+                            {% endfor %}
+                        </select>
+                        {#{{ dump(penem) }}#}
+                        <button type="submit">SEARCH</button>
+                    </form>
+                </div>
+                <div class="col-md-3">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

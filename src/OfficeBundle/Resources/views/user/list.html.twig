@@ -1,0 +1,78 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Daftar Karyawan{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2><center><i class="zmdi zmdi-local-wc"></i> &nbsp;Daftar Karyawan</center></h2>
+    </div>
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message}}</span>
+            </div>
+        {% endfor %}
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Penempatan</th>
+                        <th>validasi</th>
+                        <th>Aksi</th>
+
+                    </tr>
+                    </thead>
+                    {% set i = 1 %}
+                    {% if data|length > 0 %}
+                        <tr>
+                            <td>{{ i }}</td>
+                            <td>{{ data.nama }}</td>
+                            <td>{{ data.email }}</td>
+                            <td>
+                                {% if data.penempatan is not null %}
+                                    {{ data.penempatan.namaPerusahaan }}
+                                {% endif %}
+                            </td>
+                            {% if data.isValidated == 0 %}
+                                <td><span class="label label-danger">Tidak Tervalidasi</span></td>
+                            {% else %}
+                                <td><span class="label label-success">Tervalidasi</span></td>
+                            {% endif %}
+                            {% if data.status == 0 %}
+                                <td>
+                                    <a title="Perbarui data pengguna" href="{{ path('office_user_update') }}" onclick="return confirm('Apakah kamu yakin?')" class="btn btn-primary btn-xs"><i class="zmdi zmdi-assignment"></i></a>
+                                    <a title="Print Data Individu" href="{{ path('office_user_report_individu') }}" onclick="return confirm('Apakah kamu yakin?')" class="btn btn-success btn-xs"><i class="zmdi zmdi-plus-circle"></i></a>
+                                    <a title="Print Data Absen" href="{{ path('office_user_report_absen') }}" onclick="return confirm('Apakah Kamu yakin?')" class="btn btn--light btn-xs"><i class="zmdi zmdi-layers"></i></a>
+                                    <a href="{{ path('office_user_report_cuti') }}" onclick="return confirm('Apakah kamu yakin?')" class="btn btn--icon-text btn-xs"><i class="zmdi zmdi-layers"></i></a>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <a title="Perbarui data pengguna" href="{{ path('office_user_update') }}" onclick="return confirm('Apakah kamu yakin?')" class="btn btn-warning btn-xs"><i class="zmdi zmdi-assignment"></i></a>
+                                    <a title="Perbarui Data Pekerjaan & Keluarga" href="{{ path('office_update_user_job') }}" onclick="return confirm('Apakah kamu yakin?')" class="btn btn-primary btn-xs"><i class="zmdi zmdi-account"></i></a>
+                                    <a title="Print Data Individu" href="{{ path('office_user_report_individu') }}" onclick="return confirm('Apakah kamu yakin?')" class="btn btn-success btn-xs"><i class="zmdi zmdi-plus-circle"></i></a>
+                                    <a title="Print Data Absen" href="{{ path('office_user_report_absen') }}" onclick="return confirm('Apakah Kamu yakin?')" class="btn btn--light btn-xs"><i class="zmdi zmdi-layers"></i></a>
+                                    <a href="{{ path('office_user_report_cuti') }}" onclick="return confirm('Apakah kamu yakin?')" class="btn btn--icon-text btn-xs"><i class="zmdi zmdi-layers"></i></a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% else %}
+                        {% set i = i + 1 %}
+                    {% endif %}
+                </table>
+                <p>Keterangan&nbsp;:</p>
+                <p>
+                    <button class="btn btn-warning btn-xs"><i class="zmdi zmdi-assignment"></i></button>&nbsp;:&nbsp; memperbarui data pengguna &nbsp;
+                    <button class="btn btn-primary btn-xs"><i class="zmdi zmdi-account"></i></button>&nbsp;:&nbsp; memperbarui data pekerjaan &nbsp;
+                    <button class="btn btn-success btn-xs"><i class="zmdi zmdi-plus-circle"></i></button>&nbsp;:&nbsp; Print data individu &nbsp;
+                    <button class="btn btn--light btn-xs"><i class="zmdi zmdi-layers"></i></button>&nbsp;:&nbsp; print data Absen &nbsp;
+                    <button class="btn btn--icon-text btn-xs"><i class="zmdi zmdi-layers"></i></button>&nbsp;&nbsp; print data cuti
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

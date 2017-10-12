@@ -1,0 +1,44 @@
+OfficeBundle\Entity\UserFamily:
+    type: entity
+    table: null
+    repositoryClass: OfficeBundle\Repository\UserFamilyRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    oneToOne:
+        userId:
+            targetEntity: UserPersonal
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    fields:
+        statusPerkawinan:
+            type: integer
+            column: status_perkawinan
+            nullable: true
+        pasangan:
+            type: text
+            nullable: true
+        orangTua:
+            type: text
+            column: orang_tua
+            nullable: true
+        alamatOrangTua:
+            type: text
+            column: alamat_orang_tua
+            nullable: true
+        mertua:
+            type: text
+            nullable: true
+        alamatMertua:
+            type: text
+            column: alamat_mertua
+            nullable: true
+        isDeleted:
+            type: integer
+            column: is_deleted      
+    lifecycleCallbacks: {  }

@@ -1,0 +1,486 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Laporan Individu{% endblock %}
+
+{% block content %}
+    <section id="content">
+        <div class="card">
+            <div class="card__body" style="padding: 1px 0 0 0">
+                <div class="card__header" style="padding: 2px 0 0 0">
+                    {#<img src="{{ asset('images') }}//ezimba.gif" height="150" alt="">#}
+                    <button type="button" onclick="print('printed-area')" class="btn btn-success hidden-print" style="position:absolute;right:30px;border-radius: 0;"><i class="zmdi zmdi-print"></i></button>
+                    <p><h3 class="text-center" style="color: black;">Laporan Data Individu Karyawan</h3></p>
+                </div>
+                <div class="card__body" style="padding: 1px 0 0 0;">
+                    <div id="printed-area" style="padding: 1px 0 0 0;">
+                        <table class="table no-border" style="font-size:10px; padding: 1px 0 0 0">
+                            <thead>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td class="fw-bold">NIK</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.nik is defined %}{{ user.nik }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td class="fw-bold">NAMA LENGKAP</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.nama is defined %}{{ user.nama }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td class="fw-bold">TEMPAT LAHIR</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.tempatLahir is defined %}{{ user.tempatLahir }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td class="fw-bold">TGL. LAHIR</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.tanggalLahir is defined %}{{ user.tanggalLahir|date('d m Y') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td class="fw-bold">JENIS KELAMIN</td>
+                                <td>:</td>
+                                <td colspan="3">{% if user.jenisKelamin is defined %}{% if user.jenisKelamin == 1 %}Laki-laki{% else %}Perempuan{% endif %}{% endif %}</td>
+                                <td class="fw-bold">GOLONGAN DARAH</td>
+                                <td>:</td>
+                                <td>{% if user.golonganDarah is defined %}{{ user.golonganDarah }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td class="fw-bold">ALAMAT</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.alamatSurat is defined %}{{ user.alamatSurat }}{% endif %}</td>
+                            </tr>
+                            {#<tr>#}
+                                {#<td colspan="6"></td>#}
+                                {#<td></td>#}
+                                {#<td>:</td>#}
+                                {#<td></td>#}
+                            {#</tr>#}
+                            <tr>
+                                <td>6</td>
+                                <td class="fw-bold">NO. KTP</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.noKtp is defined %}{{ user.noKtp }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td class="fw-bold">STATUS PERKAWINAN</td>
+                                <td>:</td>
+                                <td colspan="6">{% if family.statusPerkawinan is defined %}{% if family.statusPerkawinan == 1 %}Lajang{% else %}Menikah{% endif %}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td class="fw-bold">AGAMA</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.agama is defined %}{{ user.agama }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td class="fw-bold">KEBANGSAAN</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.kebangsaan is defined %}{{ user.kebangsaan }}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td class="fw-bold">PENDIDIKAN TERAKHIR</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.asalSekolah is defined %}{{ user.asalSekolah }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td class="fw-bold">GOLONGAN</td>
+                                <td>:</td>
+                                <td colspan="3">{% if job.golongan is defined %}{{ job.golongan }}{% else %}-{% endif %}</td>
+                                <td class="fw-bold">JENJANG KEPANGKATAN</td>
+                                <td>:</td>
+                                <td>{% if job.jenjangPangkat is defined and not null %}{{ job.jenjangPangkat }}{% else %}-{% endif %}</td>
+                            </tr>
+                            {#<tr>#}
+                                {#<td colspan="6"></td>#}
+                                {#<td class="fw-bold">JENJANG JABATAN</td>#}
+                                {#<td>:</td>#}
+                                {#<td></td>#}
+                            {#</tr>#}
+                            <tr>
+                                <td>12</td>
+                                <td class="fw-bold">TGL. MASUK</td>
+                                <td>:</td>
+                                <td colspan="6">{% if job.tanggalMasuk is defined %}{{ job.tanggalMasuk|date('d m Y') }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td class="fw-bold">STATUS SAAT INI</td>
+                                <td>:</td>
+                                <td colspan="6">{% if user.status is defined %}{% if user.status == 0 %}Uji Coba{% elseif user.status == 1 %}Kontrak{% else %}Tetap{% endif %}{% endif %}</td>
+                            </tr>
+                            {#<tr>#}
+                                {#<td>11</td>#}
+                                    {#<td class="fw-bold">GOLONGAN</td>#}
+                                {#<td>:</td>#}
+                                {#<td colspan="3"></td>#}
+                                {#<td class="fw-bold">RT/RW</td>#}
+                                {#<td>:</td>#}
+                                {#<td></td>#}
+                            {#</tr>#}
+                            {#<tr>#}
+                                {#<td colspan="3"></td>#}
+                                {#<td class="fw-bold">KEL</td>#}
+                                {#<td>:</td>#}
+                                {#<td></td>#}
+                                {#<td class="fw-bold">KEC.</td>#}
+                                {#<td>:</td>#}
+                                {#<td></td>#}
+                            {#</tr>#}
+                            {#<tr>#}
+                                {#<td colspan="3"></td>#}
+                                {#<td class="fw-bold">KOTA</td>#}
+                                {#<td>:</td>#}
+                                {#<td></td>#}
+                                {#<td class="fw-bold">KODE POS</td>#}
+                                {#<td>:</td>#}
+                                {#<td></td>#}
+                            {#</tr>#}
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">TELP. RUMAH</td>
+                                <td>:</td>
+                                <td>
+                                    {% if telefon[0] is defined %}
+                                        {{ telefon[0] }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">EMAIL</td>
+                                <td>:</td>
+                                <td>
+                                    {% if user.email is defined %}
+                                        {{ user.email }}
+                                    {% else %}
+                                        -
+                                    {% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">HP</td>
+                                <td>:</td>
+                                <td>
+                                    {% if telefon[1] is defined %}
+                                        {{ telefon[1] }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td class="fw-bold">KARTU BPJS KETENAGAKERJAAN</td>
+                                <td>:</td>
+                                <td colspan="6">
+                                    {% if bpjs[0] is defined %}
+                                        {{ bpjs[0] }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td class="fw-bold">KARTU BPJS KESEHATAN</td>
+                                <td>:</td>
+                                <td colspan="6">
+                                    {% if bpjs[1] is defined %}
+                                        {{ bpjs[1] }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td class="fw-bold">KARTU NPWP</td>
+                                <td>:</td>
+                                <td colspan="6">
+                                    {% if user.npwp is defined %}
+                                        {{ user.npwp }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td class="fw-bold">PENGALAMAN KERJA SEBELUM DI MRV</td>
+                                <td>:</td>
+                                <td colspan="6">
+                                    {% if job.pengalamanKerjaTerakhir is defined %}
+                                        {{ job.pengalamanKerjaTerakhir }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td class="fw-bold">TANGGAL MASUK</td>
+                                <td>:</td>
+                                <td colspan="6">
+                                    {% if job.tanggalMasuk is defined %}
+                                        {{ job.tanggalMasuk|date('d M Y') }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>22</td>
+                                <td class="fw-bold">JABATAN</td>
+                                <td>:</td>
+                                <td colspan="6">{% if job.jabatan is not null %}{{ job.jabatan }}{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td>23</td>
+                                <td class="fw-bold">KONTRAK KERJA 1</td>
+                                <td>:</td>
+                                <td colspan="6">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">DARI</td>
+                                <td>:</td>
+                                <td>
+                                    {% if user.status != 0 %}
+                                        {% if start[0] is defined %}
+                                            {{ start[0]|date('d m Y') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">SAMPAI</td>
+                                <td>:</td>
+                                <td>
+                                    {% if user.status != 0 %}
+                                        {% if end[0] is defined %}
+                                            {{ end[0]|date('d m Y') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>24</td>
+                                <td class="fw-bold">KONTRAK KERJA 2</td>
+                                <td>:</td>
+                                <td colspan="6">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">DARI</td>
+                                <td>:</td>
+                                <td>
+                                    {% if user.status == 2 and user.status == 3 and user.status == 4 %}
+                                        {% if start[1] is defined %}
+                                            {{ start[1]|date('d m Y') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">SAMPAI</td>
+                                <td>:</td>
+                                <td>
+                                    {% if user.status == 2 and user.status == 3 and user.status == 4 %}
+                                        {% if end[1] is defined %}
+                                            {{ end[1]|date('d m Y') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>25</td>
+                                <td class="fw-bold">KONTRAK TRAINING</td>
+                                <td>:</td>
+                                <td colspan="6">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">DARI</td>
+                                <td>:</td>
+                                <td>
+                                    {% if training[0] is defined %}
+                                        {{ training[0]|date('d m Y') }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">SAMPAI</td>
+                                <td>:</td>
+                                <td>
+                                    {% if training[1] is defined %}
+                                        {{ training[1]|date('d m Y') }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>26</td>
+                                <td class="fw-bold">PASANGAN</td>
+                                <td>:</td>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">NAMA</td>
+                                <td>:</td>
+                                <td>
+                                    {% if pasangan[0] is defined %}
+                                        {{ pasangan[0] }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">TANGGAL LAHIR</td>
+                                <td>:</td>
+                                <td>
+                                    {% if pasangan[1] is defined %}
+                                        {{ pasangan[1]|date('d m Y') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>26</td>
+                                <td class="fw-bold">ORANG TUA</td>
+                                <td>:</td>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="fw-bold">AYAH</td>
+                                <td>:</td>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">NAMA</td>
+                                <td>:</td>
+                                <td>
+                                    {% if ayah[0] is defined %}
+                                        {{ ayah[0] }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">TANGGAL LAHIR</td>
+                                <td>:</td>
+                                <td>
+                                    {% if ayah[1] is defined %}
+                                        {{ ayah[1]|date('d m Y') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="fw-bold">IBU</td>
+                                <td>:</td>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">NAMA</td>
+                                <td>:</td>
+                                <td>
+                                    {% if ibu[0] is defined %}
+                                        {{ ibu[0] }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">TANGGAL LAHIR</td>
+                                <td>:</td>
+                                <td>
+                                    {% if ibu[1] is defined %}
+                                        {{ ibu[1]|date('d m Y') }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>27</td>
+                                <td class="fw-bold">MERTUA</td>
+                                <td>:</td>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class=fw-bold"">AYAH</td>
+                                <td>:</td>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"></td>
+                                <td class="fw-bold">NAMA</td>
+                                <td>:</td>
+                                <td>
+                                    {% if merAyah[0] is defined %}
+                                        {{ merAyah[0] }}
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">TANGGAL LAHIR</td>
+                                <td>:</td>
+                                <td>
+                                    {% if merAyah[1] is defined %}
+                                        {{ merAyah[1]|date('d m Y') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="fw-bold">IBU</td>
+                                <td>:</td>
+                                <td colspan="6"></td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid;">
+                                <td colspan="3"></td>
+                                <td class="fw-bold">NAMA</td>
+                                <td>:</td>
+                                <td>
+                                    {% if merIbu[0] is defined %}
+                                        {{ merIbu[0] }}
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold">TANGGAL LAHIR</td>
+                                <td>:</td>
+                                <td>
+                                    {% if merIbu[1] is defined %}
+                                        {{ merIbu[1]|date('d m Y') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'layouts.html.twig' %}
+
+{% block title %}Absensi Legacy{% endblock %}
+
+{% block innerLayout %}
+    <div class="login">
+        <div class="login__block toggled" id="l-login">
+            <div class="login__block__header">
+                <i class="zmdi zmdi-account-circle"></i>
+                <h3 style="color:#333">Kehadiran Pegawai</h3>
+                <p>Silahkan masukkan nama pengguna</p>
+
+            </div>
+
+            <div class="login__block__body">
+                <form action="" method="post">
+                    <div class="form-group">
+                        <select name="user_id" id="user_id" class="form-control">
+                            {% for user in data %}
+                                <option value="{{ user.userId.id }}">{{ user.userId.nama }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <input type="submit" value="Absen" class="btn btn-primary btn-block">
+                </form>
+            </div>
+            {% for message in app.session.getFlashBag.get('presence_message') %}
+                <div class="alert alert-success">
+                    <span style="color:#444">{{ message|raw }}.</span>
+                </div>
+            {% endfor %}
+            {% for message in app.session.getFlashBag.get('presence_failure') %}
+                <div class="alert alert-warning">
+                    <span style="color:#444">{{ message|raw }}.</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $(function() {
+            $('#user_id').select2();
+        });
+    </script>
+{% endblock %}

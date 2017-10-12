@@ -1,0 +1,99 @@
+{% extends 'subLayout.html.twig' %}
+{% block title %}Input Cuti Bersama{% endblock %}
+{% block content %}
+    <div class="content__header">
+        <h2></h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>Cuti Bersama
+                <small>Masukkan data sesuai yang dibutuhkan</small>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-5">
+                    <form action="" method="post">
+                        {#<div class="form-group">#}
+                            {#<label for="day-long">Lama cuti :</label>#}
+                            {#<div class="radio">#}
+                                {#<label>#}
+                                    {#<input type="radio" name="day-long" value="1">#}
+                                    {#<i class="input-helper"></i>#}
+                                    {#1 Hari#}
+                                {#</label>#}
+                            {#</div>#}
+                            {#<div class="clearfix"></div>#}
+                            {#<div class="radio">#}
+                                {#<label>#}
+                                    {#<input type="radio" name="day-long" value="2">#}
+                                    {#<i class="input-helper"></i>#}
+                                    {#Lebih dari 1 Hari#}
+                                {#</label>#}
+                            {#</div>#}
+                            {#<div class="clearfix"></div>#}
+                        {#</div>#}
+
+                        <div id="input-time">
+                            <div class="form-group">
+                                <label for="date-start">Tanggal Mulai :</label>
+                                <input type="text" name="date-start" id="date-start" class="picker form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="desire-user">Pilih Pengguna yang terkait</label>
+                            <select name="desire-user[]" id="desire-user" class="form-control" multiple>
+                                {% for item in data['user'] %}
+                                    <option value="{{ item.id }}">{{ item.nama }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <p><strong>NB</strong> : Cuti bersama akan memasukkan data secara otomatis ke form cuti dan dengan status validasi yang valid.</p>
+                        
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan : </label>
+                            <textarea name="description" id="keterangan"
+                                      class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Proses" class="btn btn-primary pull-right">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $(function() {
+            $('#desire-user').select2();
+
+            $('.picker').datetimepicker({
+                format: 'DD-MM-YYYY'
+            });
+
+            var regDayLong = $('input[type=radio][name=day-long]');
+
+            regDayLong.change(function() {
+                var endDate = $('#end-date'),
+                    dateEnd = $('#date-end'),
+                    inputTime = $('#input-time');
+
+                inputTime.removeClass('hide');
+
+                if (this.value == '2') {
+                    endDate.removeClass('hide');
+                    dateEnd.attr('required', '');
+                } else {
+                    endDate.addClass('hide');
+                    dateEnd.removeAttr('required');
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

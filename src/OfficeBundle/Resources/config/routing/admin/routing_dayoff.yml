@@ -1,0 +1,64 @@
+office_admin_dayoff_detail:
+    path: /detail/{user_id}
+    defaults:
+        _controller: OfficeBundle:DayOff:detailDay
+
+office_admin_dayoff_reject:
+    path: /reject/{cuti_id}
+    defaults:
+        _controller: OfficeBundle:DayOff:rejectDay
+
+office_admin_dayoff_approve:
+    path: /approve/{cuti_id}
+    defaults:
+        _controller: OfficeBundle:DayOff:approveDay
+
+office_admin_dayoff_delete:
+    path: /delete/{cuti_id}
+    defaults:
+        _controller: OfficeBundle:DayOff:deleteDay
+
+office_admin_dayoff_type_input:
+    path: /type/input
+    defaults:
+        _controller: OfficeBundle:DayOff:inputDayType
+
+office_admin_dayoff_type_list:
+    path: /type/list
+    defaults:
+        _controller: OfficeBundle:DayOff:listDayType
+
+office_admin_dayoff_type_edit:
+    path: /type/edit/{type_id}
+    defaults:
+        _controller: OfficeBundle:DayOff:editDayType
+
+office_admin_dayoff_type_delete:
+    path: /type/delete/{type_id}
+    defaults:
+        _controller: OfficeBundle:DayOff:deleteDayType
+
+office_admin_dayoff_application_list:
+    path: /list
+    defaults:
+        _controller: OfficeBundle:DayOff:formApplicationList
+
+office_admin_dayoff_input_quotas:
+    path: /input-quota
+    defaults:
+        _controller: OfficeBundle:DayOff:inputQuotas
+
+office_admin_dayoff_input_special:
+    path: /input-special
+    defaults:
+        _controller: OfficeBundle:DayOff:inputSpecial
+
+office_admin_dayoff_list_quotas:
+    path: /list-special
+    defaults:
+        _controller: OfficeBundle:DayOff:listSpecial
+
+office_admin_dayoff_list_jenis:
+   path: /list-jenis-cuti
+   defaults:
+        _controller: OfficeBundle:DayOff:listDayType

@@ -1,0 +1,21 @@
+OfficeBundle\Entity\CompanyProfile:
+    type: entity
+    table: company_profile
+    repositoryClass: OfficeBundle\Repository\CompanyProfileRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        namaPerusahaan:
+            type: string
+            length: 255
+            column: nama_perusahaan
+        isDeleted:
+            type: integer
+            column: is_deleted
+            options:
+                default: 0     
+    lifecycleCallbacks: {  }

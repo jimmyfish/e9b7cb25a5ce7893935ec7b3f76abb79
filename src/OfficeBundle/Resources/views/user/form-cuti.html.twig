@@ -1,0 +1,56 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <section id="content">
+        <div class="card">
+            <div class="card__body">
+                <div class="card__header">
+                    <img src="{{ asset('images') }}//ezimba.gif" height="125" style="margin-left: 0px;" alt="">
+                    <p><h1 class="text-center" style="color: black;">Form Cuti</h1></p>
+                </div>
+                <div class="card__body">
+                    <button type="button" class="btn btn-success hidden-print" style="position: absolute;right: 30px;" onclick="print('printed-area')"><i class="zmdi zmdi-print"></i></button>
+                    <div id="printed-area">
+                        <table class="table table-striped table-bordered table-responsive">
+                            <thead>
+                            <tr>
+                                <th><center><strong>I. DIISI OLEH PEMOHON CUTI</strong></center></th>
+                                <th><center><strong>II. DIISI OLEH HRD</strong></center></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>Nama : {{ data.nama }}</p>
+                                        <p>NIK: {% if data.nik is not null %}{{ data.nik }}{% else %}-{% endif %}</p>
+                                        <p>Dept/Divisi: {% if data.penempatan is defined and not null %}{{ data.penempatan.namaPerusahaan }}{% else %}-{% endif %}</p>
+                                        <br>
+                                        <p>Mohon cuti selama : {% if total is not null %}{{ total }}{% else %}-{% endif %} hari</p>
+                                    </td>
+                                    <td>
+                                        <p>Perhitungan yang bersangkutan sbb:</p>
+                                        <br>
+                                        <p>Hak cuti tahun {% if cuti.tahun is defined and not null %}{{ cuti.tahun }}{% else %}-{% endif %} = {% if total_cuti is defined and not null %}{{ total_cuti }}{% else %}-{% endif %} hari</p>
+                                        <p>Cuti yang sudah di gunakan = {% if total is defined and not null %}{{ total }}{% else %}-{% endif %} hari</p>
+                                        <p>Sisa cuti = {% if hasil is defined and not null %}{{ hasil }}{% else %}-{% endif %} hari</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    {#<p>Nama : {{ data.nama }}</p>#}
+                    {#<p>NIK : {% if data.nik is not null %}{{ data.nik }}{% else %}-{% endif %}</p>#}
+                    {#<p>Dept/Divisi: {% if data.penempatan is not null %}{{ data.penempatan.namaPerusahaan }}{% else %}-{% endif %}</p>#}
+
+                    {#<p>Mohon cuti selama : {{ total }} hari</p>#}
+                    {#<p>dari tanggal : {{ awal|date('d m Y') }}</p>#}
+                    {#<p>Untuk Keperluan : {{ cuti.description }}</p>#}
+                    {#<p>Hak Cuti tahun {{ cuti.tahun }} = {{ total_cuti }} hari</p>#}
+                    {#<p>Cuti Yang Sudah Digunakan: {{ total }} hari</p>#}
+                    {#<p>Sisa Cuti : {{ hasil }} hari</p>#}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,29 @@
+office_api_holiday:
+    path: /holiday
+    defaults:
+        _controller: OfficeBundle:Api:listHoliday
+
+office_api_view_doc:
+    path: /document/{id}
+    defaults:
+        _controller: OfficeBundle:Api:getData
+
+office_api_user_list:
+    path: /user-list/{username}
+    defaults:
+        _controller: OfficeBundle:Api:listUserFromUsername
+
+office_api_testing:
+    path: /testing
+    defaults:
+        _controller: OfficeBundle:Api:testing
+
+office_api_notif_user:
+    path: /notif-user
+    defaults:
+      _controller: OfficeBundle:Api:notifUser
+
+office_api_notif_validator:
+    path: /notif-validator
+    defaults:
+      _controller: OfficeBundle:Api:notifValidator

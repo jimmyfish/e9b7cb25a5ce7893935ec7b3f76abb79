@@ -1,0 +1,44 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <section id="content">
+
+        <div class="content__header">
+        </div>
+        <div class="card">
+            <div class="card__header">
+                <h2>Daftar Perangkat <small>konfirmasi terhadap admin apabila ada perubahan pada perangkat.</small></h2>
+            </div>
+
+            <div class="card__body">
+                <p><a href="{{ path('office_admin_fingerprint_device_add') }}" title="Tambahkan perangkat" class="btn btn-primary">Tambahkan Perangkat</a></p>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Device Name</th>
+                                <th>Serial Number</th>
+                                <th>Operation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set i = 1 %}
+                            {% for item in data %}
+                                <tr>
+                                    <td>{{ i }}</td>
+                                    <td>{{ item.deviceName }}</td>
+                                    <td>{{ item.sn}}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-danger btn--icon-text btn-xs">DELETE</a>
+                                        <a href="#" class="btn btn-primary btn--icon-text btn-xs">EDIT</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

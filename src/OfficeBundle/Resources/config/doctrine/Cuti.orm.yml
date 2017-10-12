@@ -1,0 +1,65 @@
+OfficeBundle\Entity\Cuti:
+    type: entity
+    table: cuti
+    repositoryClass: OfficeBundle\Repository\CutiRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+
+    manyToOne:
+        userId:
+            targetEntity: UserPersonal
+            inversedBy: cuti
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+        validatedBy:
+            targetEntity: UserPersonal
+            inversedBy: cutiValidate
+            joinColumn:
+                name: validated_by
+                referencedColumnName: id
+                onDelete: CASCADE
+        type:
+            targetEntity: DayType
+            joinColumn:
+                name: type_id
+                referencedColumnName: id
+            nullable: true
+    fields:
+        tanggal:
+            type: integer
+            nullable: true
+        bulan:
+            type: integer
+            nullable: true
+        tahun:
+            type: integer
+            nullable: true
+        absDate:
+            type: date
+            nullable: false
+            unique: false
+        isValidated:
+            type: integer
+            column: is_validated
+            nullable: true
+        description:
+            type: text
+            nullable: true
+        hashDate:
+            type: string
+            name: hash_date
+            length: 1000
+            nullable: false
+            unique: true
+        dayGroup:
+            type: string
+            length: 100
+            nullable: true
+            name: day_group
+    lifecycleCallbacks: {  }

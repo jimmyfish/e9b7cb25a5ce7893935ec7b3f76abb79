@@ -1,0 +1,31 @@
+{% extends 'subLayout.html.twig' %}
+{% block title %}Penempatan Baru{% endblock %}
+{% block content %}
+	<div class="content__header">
+		<h2>Penempatan BARU</h2>
+	</div>
+	<div class="card">
+		<div class="card__header">
+			<h2>Masukkan detail penempatan
+			<small>Harap masukkan detail dari penempatan, dan cek kembali informasi yang telah dimasukkan.</small>
+			</h2>
+		</div>
+		<div class="card__body">
+			<div class="row">
+				<div class="col-md-5">
+					<form method="post">
+						<div class="form-group form-group--float">
+							<input type="text" name="nama-perusahaan" class="form-control">
+							<label for="">Nama penempatan</label>
+							<i class="form-group__bar"></i>
+						</div>
+						<div class="form-group">
+							<input type="submit" value="Konfirmasi" class="btn btn-primary pull-right">
+						</div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

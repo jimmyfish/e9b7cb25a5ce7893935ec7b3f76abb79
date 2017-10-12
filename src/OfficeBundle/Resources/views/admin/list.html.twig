@@ -1,0 +1,124 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Daftar Karyawan{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card__header">
+            <h2>
+                <center><strong>Daftar Karyawan</strong></center>
+            </h2>
+        </div>
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message}}</span>
+            </div>
+        {% endfor %}
+        <div class="card__body">
+            <div class="table-responsive">
+                <table id="test" class="table">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Penempatan</th>
+                        <th>Validate</th>
+                        <th>Active</th>
+                        <th>Status</th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <th>Aksi</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% if data|length>0 %}
+                        {% for user in data %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{% if user.nik is not null %}{{ user.nik }}{% endif %}</td>
+                                <td style="text-transform: capitalize;">{{ user.nama }}</td>
+                                <td>
+                                    {% if user.penempatan is not null %}
+                                        {{ user.penempatan.namaPerusahaan }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.isValidated == 0 %}
+                                        <span class="label label-danger">Tidak Tervalidasi</span>
+                                    {% else %}
+                                        <span class="label label-success">Tervalidasi</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.isActive == 0 %}
+                                        <span class="label label-danger">Tidak Aktif</span>
+                                    {% else %}
+                                        <span class="label label-success">Aktif</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.status == 0 %}
+                                        <span class="label label-success">TUL</span>
+                                    {% elseif user.status == 1 %}
+                                        <span class="label label-success">PKWT 1</span>
+                                    {% elseif user.status == 2 %}
+                                        <span class="label label-success">PKWT 2</span>
+                                    {% elseif user.status == 3 %}
+                                        <span class="label label-success">PKWTT</span>
+                                    {% else %}
+                                        <span class="label label-success">Karyawan Tetap</span>
+                                    {% endif %}
+                                </td>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <td>
+                                        {% if user.status == 0 %}
+                                            <a title="update data user" class="btn btn-primary btn-xs" href="{{ path('office_admin_update',{'id': user.id}) }}" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-account"></i></a>
+                                        {% else %}
+                                            <a title="update data user" class="btn btn-primary btn-xs" href="{{ path('office_admin_update',{'id': user.id}) }}" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-account"></i></a>
+                                            <a title="update data job" class="btn btn-primary btn-xs" href="{{ path('office_admin_update_job',{'id':user.id}) }}" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-account-box-o"></i></a>
+                                        {% endif %}
+                                            <a title="delete user" class="btn btn-danger btn-xs" href="{{ path('office_admin_delete',{'id':user.id}) }}" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-delete"></i></a>
+                                            <a title="edit status user" class="btn btn-warning btn-xs" href="{{ path('office_admin_edit_status',{'id':user.id}) }}" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-assignment-check"></i></a>
+                                            <a title="laporan individu" class="btn btn-info btn-xs" href="{{ path('office_admin_individu',{id:user.id}) }}"><i class="zmdi zmdi-print"></i></a>
+                                                {#<button type="button" class="btn btn-success btn-xs test" id="sa-basic" data-id="{{ user.id }}"><i class="zmdi zmdi-check-circle"></i></button>#}
+                                            <a title="edit validasi" class="btn btn-success btn-xs" href="{{ path('office_admin_view_validate',{'id':user.id}) }}" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-check-circle"></i></a>
+                                            <a title="edit active" class="btn btn-info btn-xs" href="{{ path('office_admin_edit_active',{'id':user.id}) }}" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-check-all"></i></a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Tidak Ada Data</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                <p>keterangan :</p>
+                <p><button class="btn btn-primary btn-xs"><i class="zmdi zmdi-account"></i></button>&nbsp;:&nbsp; update data pengguna &nbsp;
+                <button class="btn btn-primary btn-xs"><i class="zmdi zmdi-account-box-o"></i></button>&nbsp;:&nbsp;update data pekerjaan dan keluarga&nbsp;
+                <button class="btn btn-danger btn-xs"><i class="zmdi zmdi-delete"></i></button>&nbsp;:&nbsp;hapus data &nbsp;
+                <button class="btn btn-warning btn-xs"><i class="zmdi zmdi-assignment-check"></i></button>&nbsp;:&nbsp;edit status user &nbsp;
+                <button class="btn btn-info btn-xs"><i class="zmdi zmdi-print"></i></button>&nbsp;:&nbsp;mencetak laporan individu &nbsp;
+                </p>
+                <p>
+                    <button class="btn btn-success btn-xs"><i class="zmdi zmdi-check-circle"></i></button>&nbsp;:&nbsp;memvalidasi pengguna &nbsp;
+                    <button class="btn btn-info btn-xs"><i class="zmdi zmdi-check-all"></i></button>&nbsp;:&nbsp; mengubah status apakah pengguna masih aktif atau tidak
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+<script type="text/javascript">
+    $(function () {
+       $('#test').dataTable({
+       });
+
+    });
+</script>
+{% endblock %}

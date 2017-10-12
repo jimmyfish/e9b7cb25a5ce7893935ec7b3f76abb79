@@ -1,0 +1,45 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Update Data Pekerjaan{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2>DATA PENGGUNA</h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>Olah Data Pekerjaan
+                <small>Lengkapi data sesuai dengan yang dibutuhkan.</small>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-5">
+                    <form method="post">
+                        <div class="form-group">
+                            <p>Golongan</p>
+                            <input type="text" name="golongan" id="" class="form-control" value="{% if data.golongan is defined %}{{ data.golongan }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <p>Jenjang Pangkat</p>
+                            <input type="text" name="jenjang_pangkat" id="" class="form-control" value="{% if data.jenjangPangkat is defined %}{{ data.jenjangPangkat }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <p>Pengalaman Kerja Terakhir</p>
+                            <input type="text" name="pengalaman_kerja" id="" class="form-control" value="{% if data.pengalamanKerjaTerakhir is defined %}{{ data.pengalamanKerjaTerakhir }}{% endif %}">
+                        </div>
+                        <button class="btn btn-primary">NEXT</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $('.picker').datetimepicker({
+           format: 'DD-MM-YYYY'
+        });
+
+    </script>
+{% endblock %}

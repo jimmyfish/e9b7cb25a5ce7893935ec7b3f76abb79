@@ -1,0 +1,14 @@
+office_admin_presence_index:
+    path: /
+    defaults:
+        _controller: OfficeBundle:Presence:index
+
+office_admin_presence_user_detail:
+    path: /detail/{id}/{month}/{year}
+    defaults:
+        _controller: OfficeBundle:Presence:presenceDetail
+
+office_admin_check_integrity:
+    path: /check/integrity
+    defaults:
+        _controller: OfficeBundle:Admin:integrityCheck

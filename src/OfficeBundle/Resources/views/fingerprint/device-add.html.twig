@@ -1,0 +1,34 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="content__header">
+        <h2>PERANGKAT BARU</h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>Masukkan perangkat baru
+                <small>Masukkan detail perangkat sesuai dengan data yang telah didapat.</small>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p></p>
+                    {{ form_start(form) }}
+
+                    {% for element in form %}
+                        <div class="form-group">
+                            {{ form_row(element, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    {% endfor %}
+
+                    <div class="form-group text-right">
+                        <input type="submit" value="Daftarkan Perangkat" class="btn btn-default">
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

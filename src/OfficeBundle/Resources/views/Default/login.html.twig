@@ -1,0 +1,98 @@
+{% extends 'layouts.html.twig' %}
+
+{% block title %}Masuk{% endblock %}
+
+{% block innerLayout %}
+	<div class="login">
+		{% if error %}
+			<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
+
+            <!-- Login -->
+            <div class="login__block toggled" id="l-login">
+                <div class="login__block__header">
+                    <img src="{{ asset('images') }}/fix.jpg" height="50" alt="">
+                    Selamat Datang! Silahkan login
+                    <div class="actions login__block__actions">
+                        <div class="dropdown">
+                            <a href="" data-toggle="dropdown"><i class="zmdi zmdi-more-vert"></i></a>
+
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="{{ path('office_register') }}">Daftar Baru</a></li>
+                                <li><a href="{{ path('office_presence_interface') }}">Absensi</a></li>
+                                <li><a href="{{ path('office_forgot_password') }}">Lupa Password?</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login__block__body">
+                    <form method="post" action="{{ path('office_login') }}">
+                    <div class="form-group form-group--float form-group--centered form-group--centered">
+                        <input type="text" class="form-control" name="_username" value="{{ last_username }}">
+                        <label>Nama Pengguna</label>
+                        <i class="form-group__bar"></i>
+                    </div>
+
+                    <div class="form-group form-group--float form-group--centered form-group--centered">
+                        <input type="password" class="form-control" name="_password">
+                        <label>Kata Sandi</label>
+                        <i class="form-group__bar"></i>
+                    </div>
+
+                    <button class="btn btn--light btn--icon m-t-15" type="submit"><i class="zmdi zmdi-long-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Register -->
+            <div class="login__block" id="l-register">
+                <div class="login__block__header palette-Blue bg">
+                    <img src="{{ asset('images') }}/mrv.png" height="50" alt="">
+                    Create an account
+
+                    <div class="actions login__block__actions">
+                        <div class="dropdown">
+                            <a href="" data-toggle="dropdown"><i class="zmdi zmdi-more-vert"></i></a>
+
+                            <ul class="dropdown-menu pull-right">
+                                <li><a data-block="#l-login" href="">Already have an account?</a></li>
+                                <li><a data-block="#l-forget-password" href="">Forgot password?</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forgot Password -->
+            <div class="login__block" id="l-forget-password">
+                <div class="login__block__header palette-Purple bg">
+                    <img src="{{ asset('images') }}/mrv.png" height="50" alt="">
+                    Forgot Password?
+
+                    <div class="actions login__block__actions">
+                        <div class="dropdown">
+                            <a href="" data-toggle="dropdown"><i class="zmdi zmdi-more-vert"></i></a>
+
+                            <ul class="dropdown-menu pull-right">
+                                <li><a data-block="#l-login" href="">Already have an account?</a></li>
+                                <li><a data-block="#l-register" href="">Create an account</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login__block__body">
+                    <p class="m-t-30">Lorem ipsum dolor fringilla enim feugiat commodo sed ac lacus.</p>
+
+                    <div class="form-group form-group--float form-group--centered">
+                        <input type="text" class="form-control">
+                        <label>Email Address</label>
+                        <i class="form-group__bar"></i>
+                    </div>
+
+                    <button class="btn btn--light btn--icon m-t-15"><i class="zmdi zmdi-check"></i></button>
+                </div>
+            </div>
+        </div>
+{% endblock %}

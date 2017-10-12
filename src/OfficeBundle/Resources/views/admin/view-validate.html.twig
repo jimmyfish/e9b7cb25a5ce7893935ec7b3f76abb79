@@ -1,0 +1,39 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card__body">
+            {% if user.status == 0 %}
+                <p>NIK : {% if user.nik is defined %}{{ user.nik }}{% else %}-{% endif %}</p>
+                <p>No.Registrasi : {% if user.noRegistrasi is defined %}{{ user.noRegistrasi }}{% else %}-{% endif %}</p>
+                <p>Nama : {% if user.nama is defined %}{{ user.nama }}{% else %}-{% endif %}</p>
+                <p>Tempat Lahir : {% if user.tempatLahir is defined %}{{ user.tempatLahir }}{% else %}-{% endif %}</p>
+                <p>Tanggal Lahir : {% if user.tanggalLahir is not null %}{{ user.tanggalLahir|date('d M Y') }}{% else %}-{% endif %}</p>
+                <p>Tanggal Pensiun : {% if user.tanggalPensiun is  not null %}{{ user.tanggalPensiun|date('d M Y') }}{% else %}-{% endif %}</p>
+                <p>Jenis Kelamin : {% if user.jenisKelamin is not null %}{% if user.jenisKelamin == 0 %}Laki-laki{% else %}Perempuan{% endif %}{% else %}-{% endif %}</p>
+                <p>Tempat Tinggal : {% if user.tempatTinggal is defined %}{{ user.tempatTinggal }}{% else %}-{% endif %}</p>
+                <p>Alamat Surat : {% if user.alamatSurat is defined %}{{ user.alamatSurat }}{% else %}-{% endif %}</p>
+                <p>Golongan Darah : {% if user.golonganDarah is defined %}{{ user.golonganDarah }}{% else %}-{% endif %}</p>
+                <p>No.KTP : {% if user.noKtp is defined %}{{ user.noKtp }}{% else %}-{% endif %}</p>
+                <p>Agama : {% if user.agama is defined %}{{ user.agama }}{% else %}-{% endif %}</p>
+                <p>Kebangsaan : {% if user.kebangsaan is defined %}{{ user.kebangsaan }}{% else %}-{% endif %}</p>
+                <p>Pendidikan : {% if user.pendidikan is defined %}{{ user.pendidikan }}{% else %}-{% endif %}</p>
+                <p>Asal Sekolah : {% if user.asalSekolah is defined %}{{ user.asalSekolah }}{% else %}-{% endif %}</p>
+                <p>Jurusan : {% if user.jurusan is defined %}{{ user.jurusan }}{% else %}-{% endif %}</p>
+                <p>BPJS keternagakerjaan : {% if bpjs[0] is defined %}{{ bpjs[0] }}{% else %}-{% endif %}</p>
+                <p>BPJS Kesehatan : {% if bpjs[1] is defined %}{{ bpjs[1] }}{% else %}-{% endif %}</p>
+                <p>NPWP : {% if user.npwp is defined %}{{ user.npwp }}{% else %}-{% endif %}</p>
+                <p>No.Telp Rumah : {% if no_telp[0] is defined %}{{ no_telp[0] }}{% else %}-{% endif %}</p>
+                <p>No.HP : {% if no_telp[1] is defined %}{{ no_telp[1] }}{% else %}-{% endif %}</p>
+                <p>Ukuran Baju : {% if pakaian[0] is defined %}{{ pakaian[0] }}{% else %}-{% endif %} </p>
+                <p>Ukuran Celana : {% if pakaian[1] is defined %}{{ pakaian[1] }}{% else %}-{% endif %}</p>
+                <p>Ukuran Sepatu : {% if pakaian[2] is defined %}{{ pakaian[2] }}{% else %}-{% endif %}</p>
+            {% else %}
+                <p>golongan : {% if job.golongan is defined %}{{ job.golongan }}{% else %}-{% endif %}</p>
+            {% endif %}
+            <form method="post" action="{{ path('office_admin_confirm_validate',{'id':user.id}) }}">
+                <button type="submit" class="btn btn-primary">VALIDATE</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

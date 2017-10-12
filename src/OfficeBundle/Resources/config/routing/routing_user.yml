@@ -1,0 +1,99 @@
+office_user_dayoff_dummy:
+    path: /cuti/dummy
+    defaults:
+        _controller: OfficeBundle:DayOff:dummy
+
+office_user_dayoff_input:
+    path: /cuti/input
+    defaults:
+        _controller: OfficeBundle:DayOff:dayOffInput
+
+office_user_dayoff_delete:
+    path: /cuti/delete/{cuti_id}
+    defaults:
+        _controller: OfficeBundle:DayOff:deleteDay
+
+office_user_dayoff_list:
+    path: /cuti
+    defaults:
+        _controller: OfficeBundle:DayOff:dayOffList
+
+office_user_homepage:
+    path: /
+    defaults:
+        _controller: OfficeBundle:User:home
+
+office_user_delete:
+    path: /delete-user/{id}
+    defaults: { _controller: OfficeBundle:User:delete }
+
+# ROUTING FOR USER
+office_user_list:
+    path: /list
+    defaults: { _controller: OfficeBundle:User:view }
+
+office_user_create_form:
+    path: /form/create
+    defaults:
+        _controller: OfficeBundle:User:formCreate
+
+office_user_list_form:
+    path: /form/list
+    defaults:
+      _controller: OfficeBundle:User:formList
+
+office_user_update_form:
+    path: /form/update
+    defaults:
+      _controller: OfficeBundle:User:formUpdate
+
+office_create_user:
+    path: /user/create
+    defaults: { _controller: OfficeBundle:User:create }
+
+office_user_update:
+    path: /update-user
+    defaults: { _controller: OfficeBundle:User:updateUser }
+
+office_update_user_job:
+    path: /update-job
+    defaults: { _controller: OfficeBundle:User:updateUserJob }
+
+office_update_user_family:
+    path: /update-family
+    defaults: { _controller: OfficeBundle:User:updateUserFamily }
+
+office_user_success:
+    path: /success
+    defaults:
+        _controller: OfficeBundle:User:success
+
+office_user_success_izin:
+    path: /success-izin
+    defaults:
+        _controller: OfficeBundle:User:successIzin
+
+office_user_report_individu:
+    path: /laporan-individu
+    defaults:
+        _controller: OfficeBundle:User:individualReport
+
+office_user_report_absen:
+    path: /laporan-absen
+    defaults:
+        _controller: OfficeBundle:User:formAbsen
+
+office_user_report_cuti:
+    path: /laporan-cuti
+    defaults:
+        _controller: OfficeBundle:User:formCuti
+
+office_user_presence:
+    path: /presence
+    defaults:
+      _controller: OfficeBundle:User:absen
+
+office_user_presence_detail:
+    path: /absen-detail/{id}/{month}/{year}
+    defaults:
+      _controller: OfficeBundle:User:absenDetail

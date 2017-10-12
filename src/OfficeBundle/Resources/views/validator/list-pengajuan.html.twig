@@ -1,0 +1,100 @@
+{% extends 'subLayout.html.twig' %}
+{% block title %}Daftar Seluruh Pengajuan Form{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card__header">
+            <h2>
+                <center><strong>Daftar Pengajuan Cuti</strong></center>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="application-form">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama</th>
+                        <th>Penempatan</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                        {% if is_granted('ROLE_VALIDATOR') %}
+                            <th>Aksi</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i = 1 %}
+
+                    {% if (dayOff|length > 0) %}
+                        {% for item in dayOff %}
+                            {% if item.penempatan is not null %}
+                                {% if item.penempatan.namaPerusahaan == user.penempatan.namaPerusahaan %}
+                                    <tr class="cuti">
+                                        <td>{{ i }}</td>
+                                        <td>{{ item.nama }}</td>
+                                        <td>
+                                            {% if item.penempatan is not null %}
+                                                {{ item.penempatan.namaPerusahaan }}
+                                            {% endif %}
+                                        </td>
+                                        <td>Pengajuan cuti tertanggal <strong>{{ item.cuti[0].absDate|date('d M Y') }}</strong>
+                                        </td>
+                                        <td>
+                                            {% set terima = 0 %}
+                                            {% set tolak = 0 %}
+                                            {% set tunggu = 0 %}
+
+                                            {% for cuti in item.cuti %}
+                                                {% if cuti.isValidated == 0 %}
+                                                    {% set tunggu = tunggu + 1 %}
+
+                                                {% elseif cuti.isValidated == 1 %}
+                                                    {% set terima = terima + 1 %}
+
+                                                {% else %}
+                                                    {% set tolak = tolak + 1 %}
+
+                                                {% endif %}
+                                            {% endfor %}
+                                            <span class="label label-warning">
+                                        {{ tunggu }} Menunggu
+                                    </span><br>
+                                    <span class="label label-success">
+                                        {{ terima }} Diterima
+                                    </span><br>
+                                    <span class="label label-danger">
+                                        {{ tolak }} Ditolak
+                                    </span>
+                                        </td>
+                                        {% if is_granted('ROLE_VALIDATOR') %}
+                                            <td>
+                                                <a href="{{ path('office_validator_detail_dayoff', {'user_id': item.id}) }}"
+                                                   class="btn btn-primary btn-xs" title="Detail">
+                                                    Detail
+                                                </a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endif %}
+                            {% endif %}
+
+                            {% set i = i + 1 %}
+                        {% endfor %}
+
+                    {% endif %}
+
+                    {% if (dayOff|length == 0) %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script type="text/javascript">
+        $(function () {
+
+        });
+    </script>
+{% endblock %}

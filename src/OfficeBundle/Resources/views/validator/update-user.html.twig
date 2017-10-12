@@ -1,0 +1,195 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Update Data User{% endblock %}
+
+{% block customCSS %}
+    <style>
+        .msg {
+            display: none;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2>Perbarui Data</h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>Perbarui Data
+                <small>Harap dicek kembali data yang sudah diinputkan</small>
+            </h2>
+        </div>
+        <div class="card__body">
+            <form id="jvalidate" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="tempat_lahir">Tempat lahir</label>
+                    <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" value="{% if data.tempatLahir is defined %}{{ data.tempatLahir }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="tempat_tinggal">Tempat Tinggal</label>
+                    <input type="text" name="tempat_tinggal" id="tempat_tinggal" class="form-control" value="{% if data.tempatTinggal is defined %}{{ data.tempatTinggal }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="penempatan">Penempatan</label>
+                    <select name="penempatan" id="penempatan" class="form-control">
+                        <option value="">-- Pilih Penempatan --</option>
+                        {% for pen in penempatan %}
+                            <option value="{{ pen.id }}" {% if data.penempatan.namaPerusahaan is defined %}selected{% endif %}>{{ pen.namaPerusahaan }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="telp_rumah">No.Telp Rumah</label>
+                    <input type="text" name="no_telp[rumah]" id="telp_rumah" class="form-control" value="{% if telp[0] is defined %}{{ telp[0] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="no_hp">No.HP</label>
+                    <input type="text" name="no_telp[hp]" id="no_hp" class="form-control" value="{% if telp[1] is defined %}{{ telp[1] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                    <input type="text" name="tanggal_lahir" id="tanggal_lahir" class="picker form-control" value="{% if data.tanggalLahir is not null %}{{ data.tanggalLahir|date('d m Y') }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="jabatan">Jabatan</label>
+                    <input type="text" name="jabatan" id="jabatan" class="form-control" value="{% if job.jabatan is defined %}{{ job.jabatan }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="shift">Jadwal Shift</label>
+                    <select name="shift" id="shift" class="form-control" required>
+                        <option value="null" selected>Pilih jam kerja</option>
+                        {% for item in shift %}
+                            <option value="{{ item.id }}">{{ item.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_masuk">Tanggal Masuk</label>
+                    <input type="text" name="tanggal_masuk" id="tanggal_masuk" class="picker form-control" value="{% if job.tanggalMasuk is not null %}{{ job.tanggalMasuk|date('d m Y') }}{% endif %}">
+                </div>
+                {% if data.status > 0 %}
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input id="email" type="email" name="email" class="form-control" value="{% if data.email is defined %}{{ data.email }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="jenis_kelamin">Jenis Kelamin</label>
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                            <option value="">-- Pilih Jenis Kelamin --</option>
+                            <option value="1" {% if data.jenisKelamin == 1 %}selected{% endif %}>Laki-laki</option>
+                            <option value="2" {% if data.jenisKelamin == 2 %}selected{% endif %}>Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat_surat">Alamat Tinggal</label>
+                        <input type="text" name="alamat_surat" id="alamat_surat" class="form-control" value="{% if data.alamatSurat is defined %}{{ data.alamatSurat }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="golongan_darah">Golongan Darah</label>
+                        <input type="text" name="golongan_darah" id="golongan_darah" class="form-control" value="{% if data.golonganDarah is defined %}{{ data.golonganDarah }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="no_ktp">No.KTP</label>
+                        <input type="text" name="no_ktp" id="no_ktp" class="form-control" value="{% if data.noKtp is defined %}{{ data.noKtp }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="agama">Agama</label>
+                        <input type="text" name="agama" id="agama" class="form-control" value="{% if data.agama is defined %}{{ data.agama }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="kebangsaan">Kebangsaan</label>
+                        <input type="text" name="kebangsaan" id="kebangsaan" class="form-control" value="{% if data.kebangsaan is defined %}{{ data.kebangsaan }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="pendidikan">Pendidikan</label>
+                        <input type="text" name="pendidikan" id="pendidikan" class="form-control" value="{% if data.pendidikan is defined %}{{ data.pendidikan }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="asal_sekolah">Asal Sekolah</label>
+                        <input type="text" name="asal_sekolah" id="asal_sekolah" class="form-control" value="{% if data.asalSekolah is defined %}{{ data.asalSekolah }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="jurusan">Jurusan</label>
+                        <input type="text" name="jurusan" id="jurusan" class="form-control" value="{% if data.jurusan is defined %}{{ data.jurusan }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="bpjs_kerja">BPJS Keternagakerjaan</label>
+                        <input type="text" name="bpjs[naker]" id="bpjs_kerja" class="form-control" value="{% if bpjs[0] is defined %}{{ bpjs[0] }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="bpjs_kesehatan">BPJS Kesehatan</label>
+                        <input type="text" name="bpjs[kes]" id="bpjs_kesehatan" class="form-control" value="{% if bpjs[1] is defined %}{{ bpjs[1] }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="npwp">NPWP</label>
+                        <input type="text" name="npwp" id="npwp" class="form-control" value="{% if data.npwp is defined %}{{ data.npwp }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="ukuran_baju">Ukuran Baju</label>
+                        <input type="text" name="ukuran_pakaian[baju]" id="ukuran_baju" class="form-control" value="{% if pakaian[0] is defined %}{{ pakaian[0] }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="ukuran_celana">Ukuran Celana</label>
+                        <input type="text" name="ukuran_pakaian[celana]" id="ukuran_celana" class="form-control" value="{% if pakaian[1] is defined %}{{ pakaian[1] }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <label for="ukuran_sepatu">Ukuran Sepatu</label>
+                        <input type="text" name="ukuran_pakaian[sepatu]" id="ukuran_sepatu" class="form-control" value="{% if pakaian[2] is defined %}{{ pakaian[2] }}{% endif %}">
+                    </div>
+                    <div class="form-group">
+                        <div class="img-avatar">
+
+                            <label for="img-image" class="label-img">
+                                {% if data.profilePicture is null %}
+                                    <img src="{{ asset('images') }}/cloud.png" height="250" class="img-responsive" align="center">
+                                {% else %}
+                                    <img src="{{ asset('uploads') }}/images/profile/{{ data.profilePicture }}" height="250" class="img-responsive" align="center">
+                                {% endif %}
+                                <input type="file" id="img-image" accept="image/*" class="hide" name="profile_picture" onchange="readURL(this);" value="{% if data.profilePicture is defined %}{{ data.profilePicture }}{% endif %}">
+                                <br> <small>(rekomendasi file maximum 1MB & extension: .png,.jpg,.svg,.jpeg)</small>
+                            </label>
+                        </div>
+                    </div>
+                {% endif %}
+                <button class="btn btn-primary ">SUBMIT</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var _thumb = $(input).parent().find('img');
+                if (!_thumb.length) {
+                    _thumb = $(input).parent().prev().find('img.img-responsive');
+                }
+                if (_thumb.length) {
+                    var reader = new FileReader();
+                    var height = _thumb.attr('height') || _thumb.height();
+                    reader.onload = function (e) {
+                        _thumb
+                                .attr('src', e.target.result)
+                                .width(height)
+                                .css('object-fit', 'cover')
+                                .height(height);
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+        }
+
+        $('.picker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+    </script>
+{% endblock %}

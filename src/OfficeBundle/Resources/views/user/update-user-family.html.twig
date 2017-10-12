@@ -1,0 +1,106 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Update Data Keluarga{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2>DATA PENGGUNA</h2>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h2>Olah Data Keluarga
+                <small>Lengkapi data sesuai dengan yang dibutuhkan.</small>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-5">
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="status-perkawinan">Status Perkawinan</label>
+                            <select name="status_perkawinan" class="form-control" id="status-perkawinan">
+                                <option>-- Pilih Status Perkawinan --</option>
+                                <option value="1" {% if data.statusPerkawinan == 1 %}selected{% endif %}>Lajang</option>
+                                <option value="2" {% if data.statusPerkawinan == 2 %}selected{% endif %}>Menikah</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_ayah">Nama Ayah</label>
+                            <input type="text" name="orang_tua[ayah][nama]" id="nama_ayah" class="form-control" value="{% if ayah[0] is defined %}{{ ayah[0] }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="lahir_ayah">Tanggal Lahir Ayah</label>
+                            <input type="text" id="lahir_ayah" name="orang_tua[ayah][tanggal-lahir]" class="form-control picker" value="{% if ayah[1] is defined %}{{ ayah[1]|date('d m Y') }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_ibu">Nama Ibu</label>
+                            <input type="text" name="orang_tua[ibu][nama]" id="nama_ibu" class="form-control" value="{% if ibu[0] is defined %}{{ ibu[0] }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="lahir_ibu">Tanggal Lahir Ibu</label>
+                            <input type="text" id="lahir_ibu" name="orang_tua[ibu][tanggal-lahir]" class="form-control picker" value="{% if ibu[1] is defined %}{{ ibu[1]|date('d m Y') }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_pasangan">Nama Pasangan</label>
+                            <input type="text" id="nama_pasangan" name="pasangan[nama]" class="form-control" value="{% if pasangan[0] is defined %}{{ pasangan[0] }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="lahir_pasangan">Tanggal Lahir Pasangan</label>
+                            <input type="text" id="lahir_pasangan" name="pasangan[tanggal-lahir]" class="form-control picker" value="{% if pasangan[1] is defined %}{{ pasangan[1]|date('d m Y') }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat_mertua">Alamat Mertua</label>
+                            <textarea name="alamat_mertua" id="alamat_mertua" class="form-control">{% if data.alamatOrangTua is defined %}{{ data.alamatOrangTua }}{% endif %}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="ayah_mertua">Nama Ayah Mertua</label>
+                            <input type="text" name="mertua[ayah][nama]" id="ayah_mertua" class="form-control" value="{% if merAyah[0] is defined %}{{ merAyah[0] }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="lahir_ayah_mertua">Tanggal Lahir Ayah Mertua</label>
+                            <input type="text" id="lahir_ayah_mertua" name="mertua[ayah][tanggal-lahir]" class="form-control picker" value="{% if merAyah[1] is defined %}{{ merAyah[1]|date('d m Y') }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="ibu_mertua">Nama Ibu Mertua</label>
+                            <input type="text" name="mertua[ibu][nama]" id="ibu_mertua" class="form-control" value="{% if merIbu[0] is defined %}{{ merIbu[0] }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="lahir_ibu_mertua">Tanggal Lahir Ibu Mertua</label>
+                            <input type="text" id="lahir_ibu_mertua" name="mertua[ibu][tanggal-lahir]" class="form-control picker" value="{% if merIbu[1] is defined %}{{ merIbu[1]|date('d m Y') }}{% endif %}">
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat_mertua">Alamat Mertua</label>
+                            <textarea name="alamat_mertua" id="alamat_mertua" class="form-control picker">{% if data.alamatMertua is defined %}{{ data.alamatMertua }}{% endif %}</textarea>
+                        </div>
+                        {#<div id="family-detail" class="hide">#}
+                        {#</div>#}
+                        <button class="btn btn-primary">SIMPAN</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $('.picker').datetimepicker({
+           format: 'DD-MM-YYYY'
+        });
+
+//        $('#status-perkawinan').change(function() {
+//           if(this.value == 1) {
+//               $('#family-detail').removeClass('hide');
+//           }else {
+//               $('#family-detail').addClass('hide');
+//           }
+//        });
+
+        $('#jvalidate').validate({
+            rules: {
+                status_perkawinan: {
+                    required: true
+                }
+            }
+        });
+    </script>
+{% endblock %}

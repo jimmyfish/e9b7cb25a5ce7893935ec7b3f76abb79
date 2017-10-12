@@ -1,0 +1,348 @@
+{% extends 'layouts.html.twig' %}
+
+{% macro notificationMac() %}
+    {% spaceless %}
+       {% if is_granted('ROLE_ADMIN') %}
+           <a href='#' id='notif_content__name__' class='list-group-item media'>
+               <div class='media-body'>
+                   <div class='list-group__heading' id='username'></div>
+                   <small class='list-group__text' id='description'></small>
+               </div>
+           </a>
+           {% elseif is_granted('ROLE_VALIDATOR') %}
+               <a href='#' id='notif_validator__name__' class='list-group-item media'>
+                   <div class='media-body'>
+                       <div class='list-group__heading' id='username'></div>
+                       <small class='list-group__text' id='description'></small>
+                   </div>
+               </a>
+           {% else %}
+               <a href='#' id='notif_user__name__' class='list-group-item media'>
+                   <div class='media-body'>
+                       <div class='list-group__heading' id='username'></div>
+                       <small class='list-group__text' id='description'></small>
+                   </div>
+               </a>
+       {% endif %}
+    {% endspaceless %}
+{% endmacro %}
+
+{% block innerLayout %}
+    <header id="header">
+        <div class="logo">
+            <a href="" class="hidden-xs">
+                MRV Sistem {% if is_granted('ROLE_ADMIN') %}<span>ADMIN</span>{% endif %}
+                <small>v1.0</small>
+            </a>
+            <i class="logo__trigger zmdi zmdi-menu" data-mae-action="block-open" data-mae-target="#navigation"></i>
+        </div>
+        <ul class="top-menu">
+            <li class="top-menu__trigger hidden-lg hidden-md">
+                <a href=""><i class="zmdi zmdi-search"></i></a>
+            </li>
+            <li class="dropdown hidden-xs">
+                <a data-toggle="dropdown" href=""><i class="zmdi zmdi-more-vert"></i></a>
+                <ul class="dropdown-menu dropdown-menu--icon pull-right">
+                    <li class="hidden-xs">
+                        <a data-mae-action="fullscreen" href=""><i class="zmdi zmdi-fullscreen"></i> Toggle
+                            Fullscreen</a>
+                    </li>
+                    <li>
+                        <a data-mae-action="clear-localstorage" href=""><i class="zmdi zmdi-delete"></i> Clear Local
+                            Storage</a>
+                    </li>
+                    <li>
+                        <a href=""><i class="zmdi zmdi-face"></i> Privacy Settings</a>
+                    </li>
+                    <li>
+                        <a href=""><i class="zmdi zmdi-settings"></i> Other Settings</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="top-menu__alerts" data-mae-action="block-open" data-mae-target="#notifications" data-toggle="tab"
+                data-target="#notifications__messages">
+                <a href=""><i class="zmdi zmdi-notifications"></i></a>
+            </li>
+            <li class="top-menu__profile dropdown">
+                <a data-toggle="dropdown" href="">
+                    {% if app.user.profilePicture is null %}
+                        <img src="{{ asset('images') }}/profile-pics/1.jpg" alt="">
+                    {% else %}
+                        <img src="{{ asset('uploads') }}/images/profile/{{ app.user.profilePicture }}">
+                    {% endif %}
+                </a>
+                <ul class="dropdown-menu pull-right dropdown-menu--icon">
+                    <li>
+                        <a href="{{ path('office_logout') }}"><i class="zmdi zmdi-time-restore"></i> Logout</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </header>
+    <section id="main">
+        <aside id="notifications">
+            <ul class="tab-nav tab-nav--justified tab-nav--icon">
+                <li><a class="user-alert__messages" href="#notifications__messages" data-toggle="tab"><i
+                                class="zmdi zmdi-email"></i></a></li>
+                <li><a class="user-alert__notifications" href="#notifications__updates" data-toggle="tab"><i
+                                class="zmdi zmdi-notifications"></i></a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" id="notifications__updates">
+                    <div class="list-group">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content">
+
+                <div class="navigation__menu c-overflow">
+                    <ul>
+
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <aside id="navigation">
+            <div class="navigation__header">
+                <i class="zmdi zmdi-long-arrow-left" data-mae-action="block-close"></i>
+            </div>
+            <div class="navigation__toggles">
+                <a href="" class="active" data-mae-action="block-open" data-mae-target="#notifications"
+                   data-toggle="tab" data-target="#notifications__messages">
+                    <i class="zmdi zmdi-email"></i>
+                </a>
+                <a href="" data-mae-action="block-open" data-mae-target="#notifications" data-toggle="tab"
+                   data-target="#notifications__updates">
+                    <i class="zmdi zmdi-notifications"></i>
+                </a>
+            </div>
+            <div class="navigation__menu c-overflow">
+                <ul>
+                    <li class="navigation__active">
+                        <a href="
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {{ path('office_admin_index') }}
+                            {% elseif is_granted('ROLE_VALIDATOR') %}
+                                {{ path('office_validator_index') }}
+                            {% else %}
+                                {{ path('office_user_homepage') }}
+                            {% endif %}
+                        "><i class="zmdi zmdi-home"></i> Home</a>
+                    </li>
+                    {% if is_granted('ROLE_USER') %}
+                        <li class="navigation__sub">
+                            <a href="" data-action="submenu-toggle"><i class="zmdi zmdi-account"></i>Pengguna</a>
+                            <ul>
+                                <li><a href="{{ path('office_user_list') }}">Daftar Pegawai Individu</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="{{ path('office_user_presence') }}"><i class="zmdi zmdi-reader"></i>Absensi</a>
+                        </li>
+                    {% endif %}
+                    <li class="navigation__sub">
+                        <a href="" data-action="submenu-toggle"><i class="zmdi zmdi-archive"></i>Pengajuan</a>
+                        <ul>
+                            <li><a href="{{ path('office_user_dayoff_input') }}">Pengajuan Cuti</a></li>
+                            <li><a href="{{ path('office_user_create_form') }}">Pengajuan Ijin</a></li>
+                            {% if is_granted('ROLE_USER') %}
+                                <li><a href="{{ path('office_user_list_form') }}">Daftar Pengajuan</a></li>
+                            {% endif %}
+                            {#{% if is_granted('ROLE_VALIDATOR') %}#}
+                                {#<li><a href="{{ path('office_validator_create_form') }}">Pengajuan Ijin</a></li>#}
+                            {#{% endif %}#}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                {#<li><a href="{{ path('office_admin_create_form') }}">Pengajuan Izin</a></li>#}
+                                <li><a href="{{ path('office_admin_list_form') }}">Daftar Aplikasi Pengajuan</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-account"></i>Pengelolaan
+                                Pengguna</a>
+                            <ul>
+                                <li><a href="{{ path('office_admin_list') }}">Daftar Pengguna</a></li>
+                            </ul>
+                        </li>
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-account-circle"></i>Daftar
+                                Karyawan</a>
+                            <ul>
+                                <li><a href="{{ path('office_admin_uji_coba') }}">Test Uji Lapangan</a></li>
+                                <li><a href="{{ path('office_admin_kontrak') }}">PKWT 1</a></li>
+                                <li><a href="{{ path('office_admin_pkwt') }}">PKWT 2</a></li>
+                                <li><a href="{{ path('office_admin_pkwtt') }}">PKWTT</a></li>
+                                <li><a href="{{ path('office_admin_tetap') }}">karyawan Tetap</a></li>
+                            </ul>
+                        </li>
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-book"></i>Penempatan</a>
+                            <ul>
+                                <li><a href="{{ path('office_company_create') }}">Tambah Penempatan</a></li>
+                                <li><a href="{{ path('office_admin_list_penempatan') }}">Daftar Penempatan</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i>Report</a>
+                            <ul>
+                                <li><a href="{{ path('office_admin_report') }}">Data Pegawai Individu</a></li>
+                                <li><a href="{{ path('office_admin_before_report') }}">Data Pegawai Lengkap</a></li>
+                                <li><a href="{{ path('office_admin_form_report') }}">Data Form sakit, izin, dinas</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="{{ path('office_admin_hak_akses') }}"><i class="zmdi zmdi-account"></i>Hak
+                                Akses</a></li>
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-card-membership"></i>Cuti</a>
+                            <ul>
+                                <li><a href="{{ path('office_admin_dayoff_input_quotas') }}">Input Kuota Cuti</a></li>
+                                <li><a href="{{ path('office_admin_dayoff_input_special') }}">Input Cuti Bersama</a></li>
+                                <li><a href="{{ path('office_admin_dayoff_type_input') }}">Jenis Cuti</a></li>
+                                <li><a href="{{ path('office_admin_dayoff_application_list') }}">Daftar Pengajuan Cuti</a></li>
+                            </ul>
+                        </li>
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-filter-tilt-shift"></i>Shift</a>
+                            <ul>
+                                <li><a href="{{ path('office_admin_shift_create') }}">Tambah Shift</a></li>
+                                <li><a href="{{ path('office_admin_shift_index') }}">Daftar Shift</a></li>
+                            </ul>
+                        </li>
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-calendar-note"></i> Hari
+                                Libur</a>
+                            <ul>
+                                <li><a href="{{ path('office_holiday_index') }}">Kalender</a></li>
+                                <li><a href="{{ path('office_holiday_input') }}">Input Hari Libur</a></li>
+                            </ul>
+                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li>
+                                <a href="{{ path('office_admin_presence_index') }}"><i class="zmdi zmdi-reader"></i> Absensi</a>
+                            </li>
+                        {% else %}
+                        {% endif %}
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-devices"></i>
+                                Fingerprint</a>
+                            <ul>
+                                <li><a href="{{ path('office_admin_fingerprint_device_list') }}">Perangkat</a></li>
+                                <li><a href="{{ path('office_admin_fingerprint_user_list') }}">Pengguna</a></li>
+                            </ul>
+                        </li>
+                    {% elseif is_granted('ROLE_VALIDATOR') %}
+                        <li class="navigation__sub">
+                            <a href="" data-action="submenu-toggle"><i class="zmdi zmdi-account"></i>Pengguna</a>
+                            <ul>
+                                <li><a href="{{ path('office_validator_list') }}">Daftar Pegawai</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="{{ path('office_validator_absensi') }}"><i class="zmdi zmdi-reader"></i>Absensi</a>
+                        </li>
+                        <li class="navigation__sub">
+                            <a href="" data-action="submenu-toggle"><i class="zmdi zmdi-assignment"></i>Form</a>
+                            <ul>
+                                <li><a href="{{ path('office_validator_list_form') }}">Daftar form ketidakhadiran</a></li>
+                                {% if is_granted('ROLE_VALIDATOR') %}
+                                    <li><a href="{{ path('office_validator_list_pengajuan') }}">Daftar Pengajuan Cuti</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="navigation__sub">
+                            <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-devices"></i>
+                                Fingerprint</a>
+                            <ul>
+                                <li><a href="{{ path('office_admin_fingerprint_user_list') }}">Pengguna</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li class="navigation__sub">
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <section id="content">
+            <!-- ALL FAKKIN CONTENT START HERE -->
+            {% block content %}{% endblock %}
+        </section>
+    </section>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $(function () {
+            var notificationMac = "{{ _self.notificationMac() }}";
+
+            {#var notificationUser = "{{ _self.notificationUser() }}";#}
+
+            var asem = 0;
+
+            $.getJSON('/api/testing',function (result) {
+                $.each(result, function (i,element) {
+
+                    var uname = element.username;
+
+                    var content = element.description;
+
+                    var html = notificationMac;
+
+                    html = html.replace(/__name__/g, asem);
+
+                    $('#notifications__updates div.list-group').append(html);
+
+                    $('#notif_content' + asem).find("#username").text(uname);
+
+                    $('#notif_content' + asem).find("#description").text(content);
+                    asem++;
+                });
+
+            });
+
+            $.getJSON('/api/notif-user',function (result) {
+               $.each(result, function(i, element) {
+                   var uname = element.username;
+
+                   var content = element.description;
+
+                   var html = notificationMac;
+
+                   html = html.replace(/__name__/g, asem);
+
+                   $('#notifications__updates div.list-group').append(html);
+
+                   $('#notif_user' + asem).find("#username").text(uname);
+
+                   $('#notif_user' + asem).find("#description").text(content);
+                   asem++;
+               });
+            });
+
+            $.getJSON('/api/notif-validator',function (result) {
+                $.each(result, function(i, element) {
+                    var uname = element.username;
+
+                    var content = element.description;
+
+                    var html = notificationMac;
+
+                    html = html.replace(/__name__/g, asem);
+
+                    $('#notifications__updates div.list-group').append(html);
+
+                    $('#notif_validator' + asem).find("#username").text(uname);
+
+                    $('#notif_validator' + asem).find("#description").text(content);
+                    asem++;
+                });
+            });
+
+        });
+
+    </script>
+{% endblock %}

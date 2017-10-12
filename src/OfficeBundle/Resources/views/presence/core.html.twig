@@ -1,0 +1,72 @@
+{% extends 'layouts.html.twig' %}
+
+{% block innerLayout %}
+    <div class="login">
+        <div class="login__block toggled" id="l-login">
+            <div class="login__block__header">
+                <i class="zmdi zmdi-account-circle"></i>
+                <h3 style="color:#333">Kehadiran Pegawai</h3>
+                <p>Silahkan masukkan nama pengguna</p>
+
+            </div>
+
+            <div class="login__block__body">
+                <div class="form-group form-group--float form-group--centered form-group--centered">
+                    <input type="text" class="form-control" name="username" id="username"
+                           style="font-size:1.7em;color:#2980B9;" onchange="findUser()">
+                    <label style="font-size:1.5em">Nama Pengguna</label>
+                    <i class="form-group__bar"></i>
+                </div>
+
+                <a href="" id="submit_presence" onclick="startTimer()">Submit</a>
+            </div>
+
+            {% if userdata is defined and userdata is not null %}
+                <div class="alert alert-success">
+                    <p style="color:#eee">Absensi <strong style="color:#333">
+                        {% if presenceData.state > 0 %}
+                            PULANG
+                        {% else %}
+                            MASUK
+                        {% endif %}
+                    </strong> Untuk <strong style="color:#333">{{ userdata.nama }}</strong>Telah diterima.</p>
+
+                    <p>Waktu terima : {{ presenceData.createdAt|date('h:i:s') }}</p>
+                </div>
+            {% endif %}
+            {#{% for message in app.session.getFlashBag.get('presence_failure') %}#}
+                {#<div class="alert alert-warning">#}
+                    {#<span style="color:#444">{{ message|raw }}.</span>#}
+                {#</div>#}
+            {#{% endfor %}#}
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $(function () {
+            $('#username').focus();
+        });
+        function findUser() {
+            var uname = $('#username').val();
+            var subButton = $('#submit_presence');
+            $.ajax({
+                url: '/api/user-list/' + uname,
+                success: function () {
+                    subButton.attr('href', 'finspot:FingerspotVer;' + btoa(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/presence/checklog-process/' + uname));
+                    subButton[0].click();
+
+                }
+            });
+        }
+
+        function startTimer() {
+            setTimeout(function() {
+                var staticAddress = window.location.protocol + '//' + window.location.host + window.location.pathname + '?userlog=' + $('#username').val();
+
+                window.location.href = staticAddress;
+            }, 10000);
+        }
+    </script>
+{% endblock %}

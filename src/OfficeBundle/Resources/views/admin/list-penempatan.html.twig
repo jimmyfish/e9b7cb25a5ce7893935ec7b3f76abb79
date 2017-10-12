@@ -1,0 +1,63 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Daftar Penempatan{% endblock %}
+
+{% block content %}
+    <div class="content-header">
+        <h2><center><i class="zmdi zmdi-local-wc"></i> &nbsp;Daftar Penempatan</center></h2>
+    </div>
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message}}</span>
+            </div>
+        {% endfor %}
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table" id="test">
+                    <thead>
+                        <th>No.</th>
+                        <th>Nama Penempatan</th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <th>Aksi</th>
+                        {% endif %}
+                    </thead>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% if data|length > 0 %}
+                        {% for dat in data %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ dat.namaPerusahaan }}</td>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <td>
+                                        <a title="update data penempatan" href="{{ path('office_admin_update_penempatan',{'id':dat.id}) }}" class="btn btn-warning btn-xs"><i class="zmdi zmdi-account"></i></a>
+                                        <a title="hapus penempatan" href="{{ path('office_admin_delete_penempatan',{'id':dat.id}) }}" class="btn btn-danger btn-xs"><i class="zmdi zmdi-delete"></i></a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Tidak ada data</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                <p>
+                    <button class="btn btn-warning btn-xs"><i class="zmdi zmdi-account"></i></button>&nbsp;:&nbsp; update data penempatan &nbsp;
+                    <button class="btn btn-danger btn-xs"><i class="zmdi zmdi-delete"></i></button>&nbsp;:&nbsp; hapus data penempatan &nbsp;
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $('#test').dataTable({
+
+        });
+    </script>
+{% endblock %}

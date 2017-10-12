@@ -1,0 +1,90 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message}}</span>
+            </div>
+        {% endfor %}
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table test">
+                    <thead>
+                        <tr>
+                            <td>No.</td>
+                            <td>Nama</td>
+                            <td>Jabatan</td>
+                            <td>Penempatan</td>
+                            <td>Validate</td>
+                            <td>Status</td>
+                            {% if is_granted('ROLE_VALIDATOR') %}
+                                <td>Aksi</td>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if data|length > 0 %}
+                    {% set i = 1 %}
+                        {% for dat in data %}
+                            {% if dat.penempatan is not null %}
+                                {% if user.penempatan.namaPerusahaan == dat.penempatan.namaPerusahaan %}
+                                    <tr>
+                                        <td>{{ i }}</td>
+                                        <td>{{ dat.nama }}</td>
+                                        <td>{% if dat.job is not null %}{{ dat.job.jabatan }}{% endif %}</td>
+                                        <td>{% if dat.penempatan is not null %}{{ dat.penempatan.namaPerusahaan }}{% endif %}</td>
+                                        {% if dat.isValidated == 0 %}
+                                            <td><span class="label label-danger">Tidak tervalidasi</span></td>
+                                        {% else %}
+                                            <td><span class="label label-success">Tervalidasi</span></td>
+                                        {% endif %}
+                                        <td>
+                                            {% if dat.status == 0 %}
+                                                <span class="label label-success">TUL</span>
+                                            {% elseif dat.status == 1 %}
+                                                <span class="label label-success">PKWT 1</span>
+                                            {% elseif dat.status == 2 %}
+                                                <span class="label label-success">PKWT 2</span>
+                                            {% elseif dat.status == 3 %}
+                                                <span class="label label-success">PKWTT</span>
+                                            {% else %}
+                                                <span class="label label-success">Karyawan Tetap</span>
+                                            {% endif %}
+                                        </td>
+                                        {% if is_granted('ROLE_VALIDATOR') %}
+                                            <td>
+                                                {% if dat.status == 0 %}
+                                                    <a href="{{ path('office_validator_update_user',{id: dat.id}) }}" class="btn btn-warning btn-xs"><i class="zmdi zmdi-account"></i></a>
+                                                {% else %}
+                                                    <a href="{{ path('office_validator_update_user',{id: dat.id}) }}" class="btn btn-warning btn-xs"><i class="zmdi zmdi-account"></i></a>
+                                                    <a href="{{ path('office_validator_update_job',{id: dat.id}) }}" class="btn btn-primary btn-xs"><i class="zmdi zmdi-account-box-o"></i></a>
+                                                {% endif %}    
+                                                <a title="edit status" href="{{ path('office_validator_edit_status',{id: dat.id}) }}" class="btn btn-primary btn-xs"><i class="zmdi zmdi-assignment-check"></i></a>
+                                                <a title="edit validate" href="{{ path('office_validator_edit_validate',{id: dat.id}) }}" class="btn btn-success btn-xs"><i class="zmdi zmdi-check-circle"></i></a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                    {% set i = i + 1 %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Tidak ada data</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $('.test').dataTable({
+
+        });
+    </script>
+{% endblock %}

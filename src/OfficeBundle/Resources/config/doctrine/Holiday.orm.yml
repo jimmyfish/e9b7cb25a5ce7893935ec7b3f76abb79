@@ -1,0 +1,37 @@
+OfficeBundle\Entity\Holiday:
+    type: entity
+    table: null
+    repositoryClass: OfficeBundle\Repository\HolidayRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        inputBy:
+            targetEntity: UserPersonal
+            joinColumn:
+                name: input_by
+                referencedColumnName: id
+    fields:
+        days:
+            type: integer
+        month:
+            type: integer
+        year:
+            type: integer
+        day:
+            type: date
+            unique: true
+        title:
+            type: text
+            nullable: true
+        createdAt:
+            type: datetime
+            column: created_at
+        updatedAt:
+            type: datetime
+            nullable: true
+            column: updated_at
+    lifecycleCallbacks: {  }

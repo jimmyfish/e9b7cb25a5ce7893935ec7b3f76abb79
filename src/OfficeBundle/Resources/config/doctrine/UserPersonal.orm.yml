@@ -1,0 +1,160 @@
+OfficeBundle\Entity\UserPersonal:
+    type: entity
+    table: user_personal
+    repositoryClass: OfficeBundle\Repository\UserPersonalRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        penempatan:
+            targetEntity: CompanyProfile
+            joinColumn:
+                name: penempatan
+                referencedColumnName: id
+                onDelete: CASCADE
+    oneToOne:
+        job:
+            targetEntity: UserJob
+            mappedBy: userId
+            onDelete: CASCADE
+        finger:
+            targetEntity: Fingerprint
+            mappedBy: userId
+            onDelete: CASCADE
+    oneToMany:
+        cuti:
+            targetEntity: Cuti
+            mappedBy: userId
+            onDelete: CASCADE
+        cutiValidate:
+            targetEntity: Cuti
+            mappedBy: validatedBy
+            onDelete: CASCADE
+        presence:
+            targetEntity: UserPresence
+            mappedBy: userId
+            onDelete: CASCADE
+    fields:
+        nik:
+            type: string
+            length: 100
+            nullable: true
+        noRegistrasi:
+            type: string
+            length: 255
+            column: no_registrasi
+            nullable: true
+        username:
+            type: string
+            length: 255
+            unique: true
+        nama:
+            type: string
+            length: 255
+        email:
+            type: string
+            length: 255
+            nullable: true
+            unique: true
+        password:
+            type: string
+            length: 255
+            nullable: true
+        tempatLahir:
+            type: string
+            length: 255
+            column: tempat_lahir
+            nullable: true
+        tanggalLahir:
+            type: datetime
+            column: tanggal_lahir
+            nullable: true
+        tanggalPensiun:
+            type: datetime
+            column: tanggal_pensiun
+            nullable: true
+        jenisKelamin:
+            type: integer
+            column: jenis_kelamin
+            nullable: true
+        tempatTinggal:
+            type: text
+            column: tempat_tinggal
+            nullable: true
+        alamatSurat:
+            type: text
+            column: alamat_surat
+            nullable: true
+        golonganDarah:
+            type: string
+            length: 5
+            column: golongan_darah
+            nullable: true
+        noKtp:
+            type: string
+            length: 255
+            column: no_ktp
+            nullable: true
+        agama:
+            type: string
+            length: 255
+            nullable: true
+        kebangsaan:
+            type: string
+            length: 255
+            nullable: true
+        pendidikan:
+            type: string
+            length: 255
+            nullable: true
+        asalSekolah:
+            type: string
+            length: 255
+            column: asal_sekolah
+            nullable: true
+        jurusan:
+            type: string
+            length: 255
+            nullable: true
+        bpjs:
+            type: text
+            nullable: true
+        npwp:
+            type: string
+            length: 255
+            nullable: true
+        noTelp:
+            type: text
+            column: no_telp
+            nullable: true
+        ukuranPakaian:
+            type: text
+            column: ukuran_pakaian
+            nullable: true
+        profilePicture:
+            type: text
+            nullable: true
+        status:
+            type: integer
+        role:
+            type: integer
+        roles:
+            type: text
+            nullable: false
+        token:
+            type: string
+            length: 255
+            nullable: true
+        isValidated:
+            type: integer
+            column: is_validated
+        isDeleted:
+            type: integer
+            column: is_deleted
+        isActive:
+            type: boolean
+            name: is_active
+    lifecycleCallbacks: {  }

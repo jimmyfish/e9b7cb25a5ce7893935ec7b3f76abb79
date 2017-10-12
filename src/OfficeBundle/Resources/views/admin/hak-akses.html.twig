@@ -1,0 +1,67 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message}}</span>
+            </div>
+        {% endfor %}
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table test">
+                    <thead>
+                        <tr>
+                            <td>No.</td>
+                            <td>Nama</td>
+                            <td>Penempatan</td>
+                            <td>Hak Akses</td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <td>Aksi</td>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if data|length > 0 %}
+                    {% set i = 1 %}
+                      {% for dat in data %}
+                          <tr>
+                              <td>{{ i }}</td>
+                              <td>{{ dat.nama }}</td>
+                              <td>{% if dat.penempatan is not null %}{{ dat.penempatan.namaPerusahaan }}{% endif %}</td>
+                              <td>{{ dat.roles|join('') }}</td>
+                              {% if is_granted('ROLE_ADMIN') %}
+                                  <td>
+                                        <a title="ganti status admin" href="{{ path('office_admin_change_admin',{id: dat.id}) }}" class="btn btn-primary btn-xs"><i class="zmdi zmdi-account"></i></a>
+                                        <a title="ganti status validator" href="{{ path('office_admin_change_validator',{id: dat.id}) }}" class="btn btn-warning btn-xs"><i class="zmdi zmdi-assignment-account"></i></a>
+                                        <a title="ganti status user" href="{{ path('office_admin_change_user',{id: dat.id}) }}" class="btn btn-success btn-xs"><i class="zmdi zmdi-account-box"></i></a>
+                                  </td>
+                              {% endif %}
+                          </tr>
+                          {% set i = i + 1 %}
+                      {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Tidak ada data</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                <p>Keterangan&nbsp;:</p>
+                <p>
+                    <button class="btn btn-primary btn-xs"><i class="zmdi zmdi-account"></i></button>&nbsp;:&nbsp;mengganti status menjadi admin&nbsp;
+                    <button class="btn btn-warning btn-xs"><i class="zmdi zmdi-assignment-account"></i></button>&nbsp;:&nbsp;mengganti status menjadi validator&nbsp;
+                    <button class="btn btn-success btn-xs"><i class="zmdi zmdi-account-box"></i></button>&nbsp;:&nbsp; mengganti status menjadi pengguna
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $('.test').dataTable({
+
+        });
+    </script>
+{% endblock %}

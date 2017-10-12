@@ -1,0 +1,78 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th width="30%">Nama</th>
+                            <th>{{ data['user'].nama }}</th>
+                        </tr>
+                        <tr>
+                            <th width="30%">NIK</th>
+                            <th>{{ data['user'].nik }}</th>
+                        </tr>
+                        <tr>
+                            <th width="30%">Penempatan</th>
+                            <th>
+                                {% if data['user'].penempatan is not null %}
+                                    {{ data['user'].penempatan.namaPerusahaan }}
+                                {% endif %}
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% for item in data['cuti'] %}
+                        <tr>
+                            <td>{{ i }}</td>
+                            <td> {% if item.description is not empty %}{{ item.description }}{% else %}Pengajuan Cuti {% endif %} tanggal
+                                <strong>{{ item.absDate|date('d M Y') }}</strong></td>
+                            {% if item.isValidated == 0 %}
+                                <td>
+                                    <span class="label label-warning">Menunggu</span>
+                                </td>
+                            {% elseif (item.isValidated == 1) %}
+                                <td>
+                                    <span class="label label-success">Diterima</span>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <span class="label label-danger">Ditolak</span>
+                                </td>
+                            {% endif %}
+                            <td>
+                                {% if item.isValidated != 0 %}
+                                    <a href="{{ path('office_admin_dayoff_delete', {'cuti_id': item.id}) }}" class="btn btn-danger btn-xs">Hapus</a>
+                                {% else %}
+                                    <a href="{{ path('office_admin_dayoff_approve', {'cuti_id': item.id}) }}" class="btn btn-success btn-xs">Terima</a>
+                                    <a href="{{ path('office_admin_dayoff_reject', {'cuti_id': item.id}) }}" class="btn btn-warning btn-xs">Tolak</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% set i = i + 1 %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,75 @@
+OfficeBundle\Entity\UserJob:
+    type: entity
+    table: null
+    repositoryClass: OfficeBundle\Repository\UserJobRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    oneToOne:
+        userId:
+            targetEntity: UserPersonal
+            inversedBy: job
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    manyToOne:
+        shift:
+            targetEntity: Shift
+            joinColumn:
+                name: shift_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    fields:
+        quotas:
+            type: integer
+            nullable: true
+        golongan:
+            type: string
+            length: 255
+            nullable: true
+        jenjangPangkat:
+            type: string
+            length: 255
+            column: jenjang_pangkat
+            nullable: true
+        jabatan:
+            type: string
+            length: 255
+            nullable: true
+        tanggalMasuk:
+            type: datetime
+            column: tanggal_masuk
+            nullable: true
+        statusKaryawan:
+            type: integer
+            column: status_karyawan
+            nullable: true
+        pengalamanKerjaTerakhir:
+            type: string
+            length: 255
+            column: pengalaman_kerja_terakhir
+            nullable: true
+        kontrakTraining:
+            type: text
+            column: kontrak_training
+            nullable: true
+        kontrakKerja:
+            type: text
+            column: kontrak_kerja
+            nullable: true
+        tanggalPercobaan:
+            type: datetime
+            column: tanggal_percobaan
+            nullable: true
+        tanggalSkTetap:
+            type: datetime
+            column: tanggal_sk_tetap
+            nullable: true
+        isDeleted:
+            type: integer
+            column: is_deleted    
+    lifecycleCallbacks: {  }

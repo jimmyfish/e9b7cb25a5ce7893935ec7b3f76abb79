@@ -1,0 +1,67 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <section id="content">
+
+        <div class="content__header">
+        </div>
+        <div class="card">
+            <div class="card__header">
+                <h2>Daftar Perangkat <small>konfirmasi terhadap admin apabila ada perubahan pada perangkat.</small></h2>
+            </div>
+
+            <div class="card__body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="test">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Daftarkan ?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set i = 1 %}
+                            {% for item in data %}
+                                <tr>
+                                    <td>{{ i }}</td>
+                                    <td>
+                                        {{ item.nama }}
+                                        {% if (item.finger|length > 0) %}
+                                            <span class="text-success pull-right"><i class="zmdi zmdi-check"></i> &nbsp;Tersedia</span>
+                                        {% else %}
+                                            <span class="text-danger pull-right"><i class="zmdi zmdi-close"></i> &nbsp;Tidak Tersedia</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if (item.finger|length == 0) %}
+                                            <a href="finspot:FingerspotReg;{{ item.url }}" class="btn btn-primary btn-xs" onclick="initTimer()">Daftarkan</a>
+                                        {% else %}
+                                            <a href="{{ path('office_fingerprint_delete_user', {user_id: item.id}) }}" class="btn btn-danger btn-xs">Hapus</a>                                            
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% set i = i + 1 %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $(function() {
+            $('#test').dataTable({
+
+            });
+        });
+
+        function initTimer() {
+            setTimeout(function() { window.location.reload(true); }, 20000);
+            $(window).ajaxMask();
+        }
+    </script>
+{% endblock %}

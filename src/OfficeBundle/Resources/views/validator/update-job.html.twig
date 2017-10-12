@@ -1,0 +1,101 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Update User Job{% endblock %}
+
+{% block customCSS %}
+{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2></h2>
+    </div>
+    <div class="card">
+        <div class="card__body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="golongan">Golongan</label>
+                    <input type="text" name="golongan" id="golongan" class="form-control" value="{% if data.golongan is defined %}{{ data.golongan }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="jenjang_pangkat">Jenjang Pangkat</label>
+                    <input type="text" name="jenjang_pangkat" id="jenjang_pangkat" class="form-control" value="{% if data.jenjangPangkat is defined %}{{ data.jenjangPangkat }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="pengalaman_kerja">Pengalaman Kerja Terakhir</label>
+                    <input type="text" name="pengalaman_kerja" id="pengalaman_kerja" class="form-control" value="{% if data.pengalamanKerjaTerakhir is defined %}{{ data.pengalamanKerjaTerakhir }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="kontrak_pertama">Kontrak Training Dimulai</label>
+                    <input type="text" name="kontrak_training[start]" id="kontrak_pertama" class="form-control picker" value="{% if training[0] is defined %}{{ training[0]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label for="kontrak_kedua">Kontrak Training Berakhir</label>
+                    <input type="text" name="kontrak_training[end]" id="kontrak_kedua" class="form-control picker" value="{% if training[1] is defined %}{{ training[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="kontrak_ketiga">Kontrak Kerja Pertama Dimulai</label>
+                    <input type="text" name="kontrak_kerja[1][start]" id="kontrak_ketiga" class="form-control picker" value="{% if start[0] is defined %}{{ start[0]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="kontrak_keempat">Kontrak Kerja Pertama Berakhir</label>
+                    <input type="text" name="kontrak_kerja[1][end]" id="kontrak_keempat" class="form-control picker" value="{% if start[1] is defined %}{{ start[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="kontrak_kelima">Kontrak Kerja Kedua Dimulai</label>
+                    <input type="text" name="kontrak_kerja[2][start]" id="kontrak_kelima" class="form-control picker" value="{% if end[0] is defined %}{{ end[0]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="kontrak_keenam">Kontrak Kerja kedua Berakhir</label>
+                    <input type="text" name="kontrak_kerja[2][end]" id="kontrak_keenam" class="form-control picker" value="{% if end[1] is defined %}{{ end[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_percobaan">Tanggal Percobaan</label>
+                    <input type="text" name="tanggal_percobaan" id="tanggal_percobaan" class="form-control picker" value="{% if (data.tanggalPercobaan is defined) and (data.tanggalPercobaan is not null) and (data.tanggalPercobaan != '') %}{{ data.tanggalPercobaan|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_tetap">Tanggal Sk Tetap</label>
+                    <input type="text" name="tanggal_tetap" id="tanggal_tetap" class="form-control picker" value="{% if data.tanggalSkTetap is defined %}{{ data.tanggalSkTetap|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <button class="btn btn-primary">NEXT</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script>
+        $('.picker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        $('#jvalidate').validate({
+            rules: {
+                golongan: {
+                    required: true
+                },
+                jenjang_pangkat: {
+                    required: true
+                },
+                shift: {
+                    required: true
+                },
+                tanggal_masuk: {
+                    required: true
+                },
+                status_karyawan: {
+                    required: true
+                },
+                pengalaman_kerja: {
+                    required: true
+                },
+                tanggal_percobaan: {
+                    required: true
+                },
+                tanggal_tetap: {
+                    required: true
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

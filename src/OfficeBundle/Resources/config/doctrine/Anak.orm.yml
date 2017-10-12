@@ -1,0 +1,26 @@
+OfficeBundle\Entity\Anak:
+    type: entity
+    table: null
+    repositoryClass: OfficeBundle\Repository\AnakRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        userId:
+            targetEntity: UserPersonal
+            joinColumn:
+                name: user_id
+                referencedColumn: id
+    fields:
+        nama:
+            type: string
+            length: 255
+            nullable: true
+        tanggalLahir:
+            type: datetime
+            nullable: true
+            column: tanggal_lahir
+    lifecycleCallbacks: {  }

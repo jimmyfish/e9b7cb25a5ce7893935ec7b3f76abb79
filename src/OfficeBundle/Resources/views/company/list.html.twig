@@ -1,0 +1,45 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Daftar Perusahaan{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2><center>Daftar Perusahaaan</center></h2>
+    </div>
+    <div class="card">
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama Perusahaan</th>
+                        <th>Aksi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% if data|length > 0 %}
+                        {% for dat in data %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ dat.namaPerusahaan }}</td>
+                                <td>
+                                    <a href="/company/update-company/{{ dat.id }}" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-layers"></i></a>
+                                    &nbsp;
+                                    <a href="/company/delete-company/{{ dat.id }}" title="delete-company" onclick="return confirm('Apakah kamu yakin?')"><i class="zmdi zmdi-delete"></i></a>
+                                </td>
+                            </tr>
+                            {% set i = i + 1 %}
+                    {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Tidak ada data</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

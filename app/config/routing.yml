@@ -1,0 +1,17 @@
+# hrd:
+#     resource: "@HrdBundle/Resources/config/routing.yml"
+#     prefix:   /
+
+office:
+    resource: "@OfficeBundle/Resources/config/routing.yml"
+    prefix:   /
+
+office_login:
+    path: /login
+    defaults:
+        _controller: OfficeBundle:Security:login
+
+office_login_path:
+    path: /login_check
+    defaults:
+        _controller: OfficeBundle:Security:loginCheck

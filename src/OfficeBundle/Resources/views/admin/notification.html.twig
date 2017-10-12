@@ -1,0 +1,21 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block tab %}
+    <div class="tab-content">
+        {% for as in asem %}
+            <div class="list-group">
+                <a href="" class="list-group-item">
+                    <div class="list-group__heading">{{ as.userId.nama }}</div>
+                    <small class="list-group__text"></small>
+                    <small class="list-group__text">{% if as.isValidated == 0 %}<span class="label label-warning">Menunggu</span>{% endif %}</small>
+                </a>
+            </div>
+        {% endfor %}
+        {#<div class="tab-pane" id="notifications__messages">#}
+            {#<div class="list-group">#}
+                {##}
+            {#</div>#}
+        {#</div>#}
+        {#{{ dump(asem) }}#}
+    </div>
+{% endblock %}

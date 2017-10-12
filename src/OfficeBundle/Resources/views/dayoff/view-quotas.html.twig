@@ -1,0 +1,55 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Data Cuti{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2><center><i class="zmdi zmdi-local-wc"></i> &nbsp;Data Cuti</center></h2>
+    </div>
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message}}</span>
+            </div>
+        {% endfor %}
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Kuota</th>
+                    </tr>
+                    </thead>
+                    {% set i = 1 %}
+                    {% if data > 0 %}
+                        {% for item in data %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td class="text-capitalize">{{ item.nama }}</td>
+                                <td>{{ item.job.quotas }}</td>
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $(function() {
+            $('.table').DataTable({
+                "aoColumnDefs": [
+                    { "bSearchable": false, "aTargets": [ 0 ] }
+                ]
+            });
+
+            $('.dataTables_filter').find('input').addClass('datatable-search');
+        });
+    </script>
+{% endblock %}

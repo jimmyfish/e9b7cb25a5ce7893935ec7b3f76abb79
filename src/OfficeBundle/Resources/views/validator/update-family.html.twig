@@ -1,0 +1,93 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Update Data Keluarga{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2></h2>
+    </div>
+    <div class="card__body">
+        <form method="post">
+            <div class="form-group form-group--select">
+                <p>Status Perkawinan</p>
+                <select name="status_perkawinan" class="form-control">
+                    <option value="">-- Pilih Status Perkawinan --</option>
+                    <option value="1" {% if data.statusPerkawinan == 1 %}selected{% endif %}>Lajang</option>
+                    <option value="2" {% if data.statusPerkawinan == 2 %}selected{% endif %}>Menikah</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <p>Nama Pasangan</p>
+                <input type="text" name="pasangan[nama]" class="form-control" value="{% if pasangan[0] is defined %}{{ pasangan[0] }}{% endif %}">
+            </div>
+            <div class="form-group">
+                <p>Tanggal Lahir Pasangan</p>
+                <input type="text" name="pasangan[tanggal-lahir]" class="form-control picker" value="{% if pasangan[1] is defined %}{{ pasangan[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <p>Nama Ayah</p>
+                <input type="text" name="orang_tua[ayah][nama]" class="form-control" value="{% if ayah[0] is defined %}{{ ayah[0] }}{% endif %}">
+            </div>
+            <div class="form-group">
+                <p>Tanggal Lahir Ayah</p>
+                <input type="text" name="orang_tua[ayah][tanggal-lahir]" class="form-control picker" value="{% if ayah[1] is defined %}{{ ayah[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <p>Nama Ibu</p>
+                <input type="text" name="orang_tua[ibu][nama]" class="form-control" value="{% if ibu[0] is defined %}{{ ibu[0] }}{% endif %}">
+            </div>
+            <div class="form-group">
+                <p>Tanggal Lahir Ibu</p>
+                <input type="text" name="orang-tua[ibu][tanggal-lahir]" id="picker" class="form-control" value="{% if ibu[1] is defined %}{{ ibu[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <p>alamat orang tua</p>
+                <input type="text" name="alamat_orang_tua" id="" class="form-control" value="{% if data.alamatOrangTua is defined %}{{ data.alamatOrangTua }}{% endif %}">
+            </div>
+            <div class="form-group">
+                <p>Nama Ayah Mertua</p>
+                <input type="text" name="mertua[ayah][nama]" class="form-control" value="{% if merAyah[0] is defined %}{{ merAyah[0] }}{% endif %}">
+            </div>
+            <div class="form-group">
+                <p>Tanggal Lahir Ayah Mertua</p>
+                <input type="text" name="mertua[ayah][tanggal-lahir]" id="ayah-mertua" class="form-control" value="{% if merAyah[1] is defined %}{{ merAyah[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <p>Nama Ibu Mertua</p>
+                <input type="text" name="mertua[ibu][nama]" class="form-control" value="{% if merIbu[0] is defined %}{{ merIbu[0] }}{% endif %}">
+            </div>
+            <div class="form-group">
+                <p>Tanggal Lahir Ibu Mertua</p>
+                <input type="text" name="mertua[ibu][tanggal-lahir]" id="ibu-mertua" class="form-control" value="{% if merIbu[1] is defined %}{{ merIbu[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <p>alamat-mertua</p>
+                <input type="text" name="alamat_mertua" id="" class="form-control" value="{% if data.alamatMertua is defined %}{{ data.alamatMertua }}{% endif %}">
+            </div>
+            <button class="btn btn-primary">SIMPAN</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $('.picker').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+
+        $('#jvalidate').validate({
+            rules: {
+                status_perkawinan: {
+                    required: true
+                },
+                alamat_orang_tua: {
+                    required: true
+                },
+                alamat_mertua: {
+                    required: true
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

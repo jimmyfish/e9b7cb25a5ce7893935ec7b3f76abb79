@@ -1,0 +1,35 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+
+    <div class="content__header">
+        <h2>Input jenis hari cuti <small>Hari cuti yang diinputkan diluar cuti regular</small></h2>
+    </div>
+
+    <div class="card">
+        <div class="card__header"></div>
+        <div class="card__body">
+            <div class="row">
+                <div class="col-md-5">
+                    <form action="" method="post">
+                        <div class="form-group">
+                            <label for="" class="control-label">Nama Cuti :</label>
+                            <input type="text" name="day-type" id="" class="form-control" {% if data is defined %}value="{{ data.name }}" {% endif %}>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Jumlah Hari :</label>
+                            <input type="number" name="day-long" id="" class="form-control" {% if data is defined %}value="{{ data.count }}"{% endif %}>
+                        </div>
+                        <div class="form-group">
+                            <p class="pull-right">
+                                <a href="{{ path('office_admin_dayoff_list_jenis') }}" class="btn btn-default">Daftar Jenis Cuti</a>&nbsp;
+                                <input type="submit" class="btn btn-primary pull-right" value="{{ btn_name }}">
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

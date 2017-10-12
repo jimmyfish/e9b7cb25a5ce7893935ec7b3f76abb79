@@ -1,0 +1,222 @@
+# ROUTING FOR DAY-OFF
+office_admin_dayoff:
+    resource: "@OfficeBundle/Resources/config/routing/admin/routing_dayoff.yml"
+    prefix: /cuti
+
+# ROUTING FOR FINGERPRINT
+office_admin_fingerprint:
+    resource: "@OfficeBundle/Resources/config/routing/admin/routing_fingerprint.yml"
+    prefix: /finger
+
+# ROUTING FOR HOLIDAY
+office_admin_holiday:
+    resource: "@OfficeBundle/Resources/config/routing/admin/routing_holiday.yml"
+    prefix: /holiday
+
+# ROUTING FOR PRESENCE
+office_admin_presence:
+    resource: "@OfficeBundle/Resources/config/routing/admin/routing_presence.yml"
+    prefix: /presence
+
+office_admin_index:
+    path: /
+    defaults:
+        _controller: OfficeBundle:Admin:index
+
+# ROUTING FOR SHIFT
+office_admin_shift_index:
+    path: /shift
+    defaults:
+        _controller: OfficeBundle:Shift:index
+
+office_admin_shift_create:
+    path: /shift/create
+    defaults:
+        _controller: OfficeBundle:Shift:create
+
+office_admin_shift_edit:
+    path: /shift/edit/{id}
+    defaults:
+        _controller: OfficeBundle:Shift:edit
+
+office_admin_shift_delete:
+    path: /shift/delete/{id}
+    defaults:
+        _controller: OfficeBundle:Shift:delete
+
+office_admin_update:
+    path: /update-user/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:updateUser
+
+office_admin_list:
+    path: /list-user
+    defaults:
+        _controller: OfficeBundle:Admin:showUser
+
+office_admin_update_job:
+    path: /update-job/{id}
+    defaults: { _controller: OfficeBundle:Admin:updateDataJob }
+
+office_admin_update_family:
+    path: /update-family/{id}
+    defaults: { _controller: OfficeBundle:Admin:updateDataFamily }
+
+office_admin_uji_coba:
+    path: /status/test-uji-lapangan
+    defaults: { _controller: OfficeBundle:Admin:statusUjiCoba }
+
+office_admin_pkwt:
+    path: /status/pkwt-2
+    defaults:
+      _controller: OfficeBundle:Admin:statusPkwt
+
+office_admin_pkwtt:
+    path: /status/pkwtt
+    defaults:
+        _controller: OfficeBundle:Admin:statusPkwtt
+
+office_admin_kontrak:
+    path: /status/pkwt-1
+    defaults: { _controller: OfficeBundle:Admin:statusKontrak }
+
+office_admin_view_validate:
+    path: /data/view/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:viewDoc
+
+office_admin_confirm_validate:
+    path: /validate/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:validate
+
+office_admin_tetap:
+    path: /status/karyawan-tetap
+    defaults: { _controller: OfficeBundle:Admin:statusTetap }
+
+office_admin_edit_status:
+    path: /edit-status/{id}
+    defaults: { _controller: OfficeBundle:Admin:editStatus }
+
+office_admin_edit_validate:
+    path: /edit-validate/{id}
+    defaults: { _controller: OfficeBundle:Admin:editValidate }
+
+office_admin_edit_active:
+    path: /edit-active/{id}
+    defaults:
+      _controller: OfficeBundle:Admin:editActive
+
+office_admin_delete:
+    path: /delete/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:deleteUser
+
+office_admin_update_penempatan:
+    path: /update-penempatan/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:updatePenempatan
+
+office_admin_list_penempatan:
+    path: /list-penempatan
+    defaults:
+        _controller: OfficeBundle:Admin:listPenempatan
+
+office_admin_delete_penempatan:
+    path: /delete-penempatan/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:deletePenempatan
+
+office_admin_list_form:
+    path: /list-all-form
+    defaults:
+        _controller: OfficeBundle:Admin:formList
+
+office_admin_delete_form:
+    path: /delete-form/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:deleteForm
+
+office_admin_create_form:
+   path: /create-form
+   defaults:
+      _controller: OfficeBundle:Admin:formCreate
+
+office_admin_update_form:
+    path: /update-form/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:updateForm
+
+office_admin_view_validate_form:
+    path: /validate-form/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:viewValidateForm
+
+office_admin_validate_form:
+    path: /form/validate/{id}
+    methods: [GET]
+    defaults:
+        _controller: OfficeBundle:Admin:validateForm
+
+office_admin_reject_form:
+    path: /form/reject/{id}
+    methods: [GET]
+    defaults:
+        _controller: OfficeBundle:Admin:rejectForm
+
+office_company_create:
+    path: /company/new
+    defaults: { _controller: OfficeBundle:Company:create }
+
+office_admin_individu:
+    path: /laporan-individu/{id}
+    defaults:
+        _controller: OfficeBundle:Admin:individual
+
+office_admin_notification:
+    path: /notifications
+    defaults:
+        _controller: OfficeBundle:Admin:notification
+
+office_admin_hak_akses:
+    path: /hak-akses
+    defaults:
+      _controller: OfficeBundle:Admin:hakAkses
+
+office_admin_change_admin:
+    path: /change-admin/{id}
+    methods: [GET]
+    defaults:
+      _controller: OfficeBundle:Admin:changeAdmin
+
+office_admin_change_validator:
+    path: /change-validator/{id}
+    methods: [GET]
+    defaults:
+      _controller: OfficeBundle:Admin:changeValidator
+
+office_admin_change_user:
+    path: /change-user/{id}
+    methods: [GET]
+    defaults:
+      _controller: OfficeBundle:Admin:changeUser
+
+office_admin_report:
+   path: /report
+   defaults:
+      _controller: OfficeBundle:Admin:listReport
+
+office_admin_before_report:
+   path: /before-report
+   defaults:
+      _controller: OfficeBundle:Admin:beforeAllReport
+
+office_admin_all_report:
+   path: /all-report
+   defaults:
+      _controller: OfficeBundle:Admin:allUserReport
+
+office_admin_form_report:
+  path: /form-report
+  defaults:
+      _controller: OfficeBundle:Admin:formReport

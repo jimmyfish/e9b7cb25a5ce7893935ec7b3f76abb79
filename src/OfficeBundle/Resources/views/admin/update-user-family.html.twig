@@ -1,0 +1,82 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Update Data Keluarga{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2></h2>
+    </div>
+    <div class="card">
+
+        <div class="card__body">
+            <form method="post">
+                <div class="form-group form-group--select">
+                    <label for="status_perkawinan">Status Perkawinan</label>
+                    <select name="status_perkawinan" id="status_perkawinan" class="form-control">
+                        <option value="">-- Pilih Status Perkawinan --</option>
+                        <option value="1" {% if data.statusPerkawinan == 1 %}selected{% endif %}>Lajang</option>
+                        <option value="2" {% if data.statusPerkawinan == 2 %}selected{% endif %}>Menikah</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nama_pasangan">Nama Pasangan</label>
+                    <input type="text" name="pasangan[nama]" id="nama_pasangan" class="form-control" value="{% if pasangan[0] is defined %}{{ pasangan[0] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_pasangan">Tanggal Lahir Pasangan</label>
+                    <input type="text" name="pasangan[tanggal-lahir]" id="tanggal_pasangan" class="form-control picker" value="{% if pasangan[1] is defined %}{{ pasangan[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="nama_ayah">Nama Ayah</label>
+                    <input type="text" name="orang_tua[ayah][nama]" id="nama_ayah" class="form-control" value="{% if ayah[0] is defined %}{{ ayah[0] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_ayah">Tanggal Lahir Ayah</label>
+                    <input type="text" name="orang_tua[ayah][tanggal-lahir]" id="tanggal_ayah" class="form-control picker" value="{% if ayah[1] is defined %}{{ ayah[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="nama_ibu">Nama Ibu</label>
+                    <input type="text" name="orang_tua[ibu][nama]" id="nama_ibu" class="form-control" value="{% if ibu[0] is defined %}{{ ibu[0] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_ibu">Tanggal Lahir Ibu</label>
+                    <input type="text" name="orang-tua[ibu][tanggal-lahir]" id="tanggal_ibu" class="picker form-control" value="{% if ibu[1] is defined %}{{ ibu[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="alamat_orang_tua">alamat orang tua</label>
+                    <input type="text" name="alamat_orang_tua" id="alamat_orang_tua" class="form-control" value="{% if data.alamatOrangTua is defined %}{{ data.alamatOrangTua }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="ayah_mertua">Nama Ayah Mertua</label>
+                    <input type="text" name="mertua[ayah][nama]" id="ayah_mertua" class="form-control" value="{% if merAyah[0] is defined %}{{ merAyah[0] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_lahir_ayah_mertua">Tanggal Lahir Ayah Mertua</label>
+                    <input type="text" name="mertua[ayah][tanggal-lahir]" id="tanggal_lahir_ayah_mertua" class="form-control picker" value="{% if merAyah[1] is defined %}{{ merAyah[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="ibu_mertua">Nama Ibu Mertua</label>
+                    <input type="text" name="mertua[ibu][nama]" id="ibu_mertua" class="form-control" value="{% if merIbu[0] is defined %}{{ merIbu[0] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_lahir_ibu_mertua">Tanggal Lahir Ibu Mertua</label>
+                    <input type="text" name="mertua[ibu][tanggal-lahir]" id="tanggal_lahir_ibu_mertua" class="form-control picker" value="{% if merIbu[1] is defined %}{{ merIbu[1]|date('d m Y') }}{% endif %}" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <p>alamat-mertua</p>
+                    <input type="text" name="alamat_mertua" id="" class="form-control" value="{% if data.alamatMertua is defined %}{{ data.alamatMertua }}{% endif %}">
+                </div>
+                <button class="btn btn-primary">SIMPAN</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block customJS %}
+    <script>
+        $('.picker').datetimepicker({
+           format: 'DD-MM-YYYY'
+        });
+
+    </script>
+{% endblock %}

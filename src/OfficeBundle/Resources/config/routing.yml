@@ -1,0 +1,102 @@
+# ROUTING FOR PRINTING
+office_print:
+    resource: "@OfficeBundle/Resources/config/routing/routing_print.yml"
+    prefix: /print
+
+# ROUTING FOR TESTING PAGE
+office_test_page:
+    path: /test-page
+    defaults: { _controller: OfficeBundle:Default:test }
+
+# ROUTING FOR ATTACHMENT
+office_attachment_create:
+    path: /file/new
+    defaults: { _controller: OfficeBundle:Attachment:upload }
+
+#ROUTING FOR USER
+office_user:
+    resource: "@OfficeBundle/Resources/config/routing/routing_user.yml"
+    prefix: /user
+
+#ROUTING FOR ADMIN
+office_admin:
+    resource: "@OfficeBundle/Resources/config/routing/routing_admin.yml"
+    prefix: /admin
+
+office_validator:
+    resource: "@OfficeBundle/Resources/config/routing/routing_validator.yml"
+    prefix: /validator
+
+# ROUTING FOR PRESENCE
+office_presence:
+    resource: "@OfficeBundle/Resources/config/routing/routing_presence.yml"
+    prefix: /presence
+
+office_fingerprint:
+    resource: "@OfficeBundle/Resources/config/routing/routing_fingerprint.yml"
+    prefix: /finger
+
+# ROUTING FOR MOST API
+office_api:
+    resource: "@OfficeBundle/Resources/config/routing/routing_api.yml"
+    prefix: /api
+
+office_index:
+    path: /
+    defaults:
+        _controller: OfficeBundle:Security:loginCheck
+
+office_delete_user:
+    path: /delete-user/{id}
+    defaults: { _controller: OfficeBundle:User:delete }
+
+office_register:
+    path: /register
+    defaults: { _controller: OfficeBundle:User:register }
+
+office_logout:
+    path: /logout
+
+office_forgot_password:
+    path: /forgot-password
+    defaults:
+      _controller: OfficeBundle:User:forgotPassword
+
+office_reset_password:
+    path: /reset/{token}
+    defaults:
+      _controller: OfficeBundle:User:reset
+
+# ROUTING FOR USER
+office_user_list:
+    path: /user/list
+    defaults: { _controller: OfficeBundle:User:view }
+
+office_create_user:
+    path: /user/create
+    defaults: { _controller: OfficeBundle:User:create }
+
+office_update_user_job:
+    path: /user/update-job
+    defaults: { _controller: OfficeBundle:User:updateUserJob }
+
+office_update_user_family:
+    path: /user/update-family
+    defaults: { _controller: OfficeBundle:User:updateUserFamily }
+
+# ROUTING FOR COMPANY PROFILE
+office_company_create:
+    path: /company/new
+    defaults: { _controller: OfficeBundle:Company:create }
+
+office_show_company:
+    path: /company/list-company
+    defaults: { _controller: OfficeBundle:Company:listCompany }
+
+office_company_delete:
+    path: /company/delete-company/{id}
+    defaults: { _controller: OfficeBundle:Company:delete }
+
+office_company_update:
+    path: /company/update-company/{id}
+    defaults: { _controller: OfficeBundle:Company:updateCompany }  

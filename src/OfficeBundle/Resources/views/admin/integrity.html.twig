@@ -1,0 +1,71 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block title %}Daftar Karyawan{% endblock %}
+
+{% block content %}
+    <div class="content__header">
+        <h2><center><i class="zmdi zmdi-local-wc"></i> &nbsp;Daftar Karyawan</center></h2>
+    </div>
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message}}</span>
+            </div>
+        {% endfor %}
+        <div class="card__body">
+            <div class="table-responsive">
+                <table id="test" class="table">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Shift</th>
+                        <th>Penempatan</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i = 1 %}
+                    {% if data|length>0 %}
+                        {% for user in data %}
+                            <tr>
+                                <td>{{ i }}</td>
+                                <td>{{ user.nama }}</td>
+                                <td>
+                                    {% if user.job.shift is null %}
+                                        <span class="label label-warning">NULL</span>
+                                    {% else %}
+                                        <span class="label label-success">{{ user.job.shift.label }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.penempatan is null %}
+                                            Penempatan belum dipilih
+                                        {% else %}
+                                            {{ user.penempatan.namaPerusahaan }}
+                                    {% endif %}
+                                </td>
+                                {#{{ dump(user) }}#}
+                            </tr>
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Tidak Ada Data</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block customJS %}
+    <script type="text/javascript">
+        $(function () {
+            $('#test').dataTable({
+            });
+
+        });
+    </script>
+{% endblock %}

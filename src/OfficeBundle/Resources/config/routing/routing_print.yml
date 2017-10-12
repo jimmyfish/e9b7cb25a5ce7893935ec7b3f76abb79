@@ -1,0 +1,4 @@
+office_print_data_karyawan:
+    path: /karyawan
+    defaults:
+        _controller: OfficeBundle:Print:karyawan

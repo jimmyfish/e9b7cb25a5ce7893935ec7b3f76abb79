@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--[if IE 9 ]>
+<html class="ie9"><![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %} - MRV v1.0</title>
+    <!-- Vendors -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css') }}/vendor.min.css">
+    {#<link rel="stylesheet" type="text/css" href="{{ asset('css') }}/cdn.min.css">#}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('css') }}/ajaxmask.css">
+    {% if form is defined %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+            {{ form_stylesheet(form) }}
+        {% endblock %}
+    {% endif %}
+    {% block customCSS %}{% endblock %}
+    <!-- Site CSS -->
+    <link href="{{ asset('css') }}/app.min.css" rel="stylesheet">
+</head>
+<body>
+{% block innerLayout %}{% endblock %}
+<!-- Older IE Warning -->
+<!--[if lt IE 9]>
+<div class="ie-warning">
+    <h1>Warning!!</h1>
+    <p>You are using an outdated version of Internet Explorer, please upgrade <br/>to any of the following web browsers
+        to access this website.</p>
+    <div class="ie-warning__container">
+        <ul class="ie-warning__download">
+            <li>
+                <a href="http://www.google.com/chrome/">
+                    <img src="img/browsers/chrome.png" alt="">
+                    <div>Chrome</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                    <img src="img/browsers/firefox.png" alt="">
+                    <div>Firefox</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.opera.com">
+                    <img src="img/browsers/opera.png" alt="">
+                    <div>Opera</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.apple.com/safari/">
+                    <img src="img/browsers/safari.png" alt="">
+                    <div>Safari</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="img/browsers/ie.png" alt="">
+                    <div>IE (New)</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <p>Sorry for the inconvenience!</p>
+</div>
+<![endif]-->
+<!-- Javascript Libraries -->
+<script src="{{ asset('js') }}/vendor.min.js"></script>
+<!-- Placeholder for IE9 -->
+<!--[if IE 9 ]>
+<script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+<![endif]-->
+
+<!-- Demo Only -->
+{#<script src="{{ asset('js') }}/data-table.js"></script>#}
+<script src="{{ asset('js') }}/jquery.dataTables.min.js"></script>
+<script src="{{ asset('js') }}/cdn.min.js"></script>
+<script src="{{ asset('js') }}/dayoff.js"></script>
+<script src="{{ asset('js') }}/jquery.validate.js"></script>
+<script src="{{ asset('js') }}/jquery.maskedinput.min.js"></script>
+<script src="{{ asset('js') }}/global.js"></script>
+{% block javascripts %}
+{% if form is defined %}
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        {{ form_javascript(form) }}
+    
+{% else %}
+    <script></script>
+{% endif %}
+{% endblock %}
+{% block customJS %}{% endblock %}
+
+</body>
+</html>

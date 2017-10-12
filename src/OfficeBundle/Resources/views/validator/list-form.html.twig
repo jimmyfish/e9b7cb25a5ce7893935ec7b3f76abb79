@@ -1,0 +1,104 @@
+{% extends 'subLayout.html.twig' %}
+
+{% block content %}
+    <div class="card">
+        {% for message in app.session.getFlashBag.get('notice') %}
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i
+                            class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message }}</span>
+            </div>
+        {% endfor %}
+        {% for message in app.session.getFlashBag.get('error') %}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="zmdi zmdi-close" data-dismiss="alert" aria-hidden="true"><i
+                            class="fa fa-times"></i></button>
+                <span style="color:#444">{{ message }}</span>
+            </div>
+        {% endfor %}
+        <div class="card__header">
+            <h2>
+                <center><strong>Daftar Form Pengajuan</strong></center>
+            </h2>
+        </div>
+        <div class="card__body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>No.</td>
+                            <td>Tanggal Pengajuan</td>
+                            <td>Nama</td>
+                            <td>Penempatan</td>
+                            <td>Jabatan</td>
+                            <td>Status</td>
+                            {% if is_granted('ROLE_VALIDATOR') %}
+                                <td>Aksi</td>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if data|length > 0 %}
+                        {% set i = 1 %}
+                        {% for dat in data %}
+                            {% if dat.userId.penempatan.namaPerusahaan is defined and not null %}
+                                {% if dat.userId.penempatan.namaPerusahaan == user.penempatan.namaPerusahaan %}
+                                    <tr>
+                                        <td>{{ i }}</td>
+                                        <td>
+                                            {% if dat.createdAt is not null %}
+                                                {{ dat.createdAt|date('d-m-Y') }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ dat.userId.nama }}</td>
+                                        <td>{% if dat.userId.penempatan is not null %}{{ dat.userId.penempatan.namaPerusahaan }}{% endif %}</td>
+                                        <td>{% if dat.userId.job is not null %}{{ dat.userId.job.jabatan }}{% endif %}</td>
+                                        <td>
+                                            {% if dat.isValidated is not null %}
+                                                {% if dat.isValidated == 0 %}
+                                                    <span class="label label-warning">Menunggu</span>
+                                                {% elseif dat.isValidated == 1 %}
+                                                    <span class="label label-success">Diterima</span>
+                                                {% else %}
+                                                    <span class="label label-danger">Ditolak</span>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        {% if is_granted('ROLE_VALIDATOR') %}
+                                            <td>
+                                                <a href="{{ path('office_validator_update_form',{'id':dat.id}) }}"
+                                                   class="btn btn-warning btn-xs"
+                                                   onclick="return confirm('Apakah kamu yakin?')">
+                                                    <i class="zmdi zmdi-book"></i>
+                                                </a>
+                                                <a href="{{ path('office_validator_delete_form',{'id': dat.id}) }}"
+                                                   class="btn btn-danger btn-xs"
+                                                   onclick="return confirm('Apakah kamu yakin?')">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </a>
+                                                <a href="{{ path('office_validator_validate_form',{id: dat.id}) }}"
+                                                    class="btn btn-primary btn-xs"
+                                                    onclick="return confirm('Apakah kamu yakin?')">
+                                                    <i class="zmdi zmdi-layers"></i>
+                                                </a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endif %}
+                            {% endif %}
+                            {% set i = i + 1 %}
+                        {% endfor %}
+                    {% else %}
+                    {% endif %}
+                    </tbody>
+                </table>
+                <p>Keterangan&nbsp;:</p>
+                <p>
+                    <button class="btn btn-warning btn-xs"><i class="zmdi zmdi-book"></i></button>&nbsp;:&nbsp; update data form pengajuan &nbsp;
+                    <button class="btn btn-danger btn-xs"><i class="zmdi zmdi-delete"></i></button>&nbsp;:&nbsp; hapus data form pengajuan &nbsp;
+                    <button class="btn btn-primary btn-xs"><i class="zmdi zmdi-layers"></i></button>&nbsp;:&nbsp; validasi data form pengajuan
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

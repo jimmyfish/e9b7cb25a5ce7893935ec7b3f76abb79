@@ -1,0 +1,55 @@
+OfficeBundle\Entity\Attachment:
+    type: entity
+    table: attachment
+    repositoryClass: OfficeBundle\Repository\AttachmentRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        userId:
+          targetEntity: UserPersonal
+          inversedBy: Attachment
+          joinColumn:
+              name: user_id
+              referencedColumnName: id
+              onDelete: CASCADE
+    fields:
+        typeForm:
+            type: integer
+            column: type_form
+            nullable: true
+        absen:
+            type: integer
+            nullable: true
+        description:
+            type: string
+            length: 255
+            nullable: true
+        tglMulai:
+            type: datetime
+            column: tgl_mulai
+            nullable: true
+        tglAkhir:
+            type: datetime
+            column: tgl_akhir
+            nullable: true
+        hashDate:
+            type: string
+            name: hash_date
+            length: 1000
+            nullable: false
+        isValidated:
+            type: integer
+            column: is_validated
+        isDeleted:
+            type: integer
+            column: is_deleted
+            nullable: true
+        createdAt:
+            type: datetime
+            column: created_at
+            nullable: true
+    lifecycleCallbacks: {  }

@@ -1,0 +1,30 @@
+OfficeBundle\Entity\Fingerprint:
+    type: entity
+    table: fingerprint
+    repositoryClass: OfficeBundle\Repository\FingerprintRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    oneToOne:
+        userId:
+            targetEntity: UserPersonal
+            inversedBy: finger
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    fields:
+        fingerStatus:
+            type: integer
+            column: finger_status
+        fingerData:
+            type: text
+            column: finger_data
+        fingerSalt:
+            type: string
+            length: 100
+            column: finger_salt
+    lifecycleCallbacks: {  }
