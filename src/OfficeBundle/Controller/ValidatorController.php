@@ -543,7 +543,7 @@ class ValidatorController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $data = $em->getRepository(Attachment::class)->findByUserId($id);
+        $data = $em->getRepository(Attachment::class)->find($id);
 
         $em->remove($data);
 
