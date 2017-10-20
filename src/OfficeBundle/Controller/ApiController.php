@@ -137,7 +137,9 @@ class ApiController extends Controller
             ->select('attachment')
             ->from('OfficeBundle:UserPersonal', 'user')
             ->innerJoin('OfficeBundle:Attachment', 'attachment')
-            ->where('user.id = attachment.userId');
+            ->where('user.id = attachment.userId')
+            ->andWhere('user.roles = :asem')
+            ->setParameter('asem', '');
 
         $i = 0;
 
@@ -147,7 +149,5 @@ class ApiController extends Controller
 
             ++$i;
         }
-
-        return new JsonResponse($results);
     }
 }
