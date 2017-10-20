@@ -3,6 +3,7 @@
 namespace OfficeBundle\Controller;
 
 use OfficeBundle\Entity\Attachment;
+use OfficeBundle\Entity\CompanyProfile;
 use OfficeBundle\Entity\Holiday;
 use OfficeBundle\Entity\UserFamily;
 use OfficeBundle\Entity\UserJob;
@@ -133,21 +134,29 @@ class ApiController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
         $data = $em->createQueryBuilder()
             ->select('attachment')
             ->from('OfficeBundle:UserPersonal', 'user')
             ->innerJoin('OfficeBundle:Attachment', 'attachment')
-            ->where('user.id = attachment.userId')
-            ->andWhere('user.roles = :asem')
-            ->setParameter('asem', '');
+            ->where('user.id = attachment.userId');
 
         $i = 0;
 
         foreach ($data->getQuery()->getResult() as $item) {
-            $results[$i]['username'] = $item->getUserId()->getNama();
-            $results[$i]['description'] = $item->getDescription();
 
-            ++$i;
+            if($item->getUserId()->getPenempatan()->getNamaPerusahaan() == $user->getPenempatan()->getNamaPerusahaan()) {
+                $results[$i]['username'] = $item->getUserId()->getNama();
+                $results[$i]['description'] = $item->getDescription();
+                ++$i;
+            }
+
+
         }
+
+        return new JsonResponse($results);
+
+//        return var_dump($user->getPenempatan()->getId());
     }
 }
