@@ -270,7 +270,7 @@ class PresenceController extends Controller
                 ->setParameter('day', date('d', $timestamp))
                 ->setParameter('month', date('m', $timestamp))
                 ->setParameter('year', date('Y', $timestamp))
-                ->setMaxResults(1)->orderBy('u.id', 'DESC')->getQuery()->getResult()[0];
+                ->setMaxResults(1)->orderBy('u.id', 'DESC')->getQuery()->getResult();
 
         }
 

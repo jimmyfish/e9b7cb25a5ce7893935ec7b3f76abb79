@@ -21,18 +21,24 @@
                 <a href="" id="submit_presence" onclick="startTimer()">Submit</a>
             </div>
 
-            {% if userdata is defined and userdata is not null %}
-                <div class="alert alert-success">
-                    <p style="color:#eee">Absensi <strong style="color:#333">
-                        {% if presenceData.state > 0 %}
-                            PULANG
-                        {% else %}
-                            MASUK
-                        {% endif %}
-                    </strong> Untuk <strong style="color:#333">{{ userdata.nama }}</strong>Telah diterima.</p>
+            {% if (userdata is defined and userdata is not null) %}
+                {% if presenceData|length > 0 %}
+                    <div class="alert alert-success">
+                        <p style="color:#eee">Absensi <strong style="color:#333">
+                            {% if presenceData[0].state > 0 %}
+                                PULANG
+                            {% else %}
+                                MASUK
+                            {% endif %}
+                        </strong> Untuk <strong style="color:#333">{{ userdata.nama }}</strong>Telah diterima.</p>
 
-                    <p>Waktu terima : {{ presenceData.createdAt|date('h:i:s') }}</p>
-                </div>
+                        <p>Waktu terima : {{ presenceData[0].createdAt|date('h:i:s') }}</p>
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger">
+                        <p style="color:#eee">Maaf absensi untuk hari ini belum terekam, silahkan coba lagi</p>
+                    </div>
+                {% endif %}
             {% endif %}
             {#{% for message in app.session.getFlashBag.get('presence_failure') %}#}
                 {#<div class="alert alert-warning">#}
