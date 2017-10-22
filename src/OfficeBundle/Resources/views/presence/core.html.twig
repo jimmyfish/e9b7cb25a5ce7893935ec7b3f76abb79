@@ -62,8 +62,9 @@
         }
 
         function startTimer() {
+            var timestamp = Math.floor(Date.now() / 1000);
             setTimeout(function() {
-                var staticAddress = window.location.protocol + '//' + window.location.host + window.location.pathname + '?userlog=' + $('#username').val();
+                var staticAddress = window.location.protocol + '//' + window.location.host + window.location.pathname + '?userlog=' + $('#username').val() + '&timestamp=' + timestamp;
 
                 window.location.href = staticAddress;
             }, 10000);

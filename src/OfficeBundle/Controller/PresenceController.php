@@ -254,10 +254,24 @@ class PresenceController extends Controller
     {
         $userdata = null;
         $presenceData = null;
+
         if ($request->get('userlog') != null) {
             $userdata = $this->getDoctrine()->getManager()->getRepository(UserPersonal::class)->findOneBy(['username' => $request->get('userlog')]);
+
+            $timestamp = $request->get('timestamp');
             $presenceData = $this->getDoctrine()->getManager()->createQueryBuilder()
-                ->select('u')->from('OfficeBundle:UserPresence', 'u')->where('u.userId = :userId')->setParameter('userId', $userdata->getId())->setMaxResults(1)->orderBy('u.id', 'DESC')->getQuery()->getResult()[0];
+                ->select('u')
+                ->from('OfficeBundle:UserPresence', 'u')
+                ->where('u.userId = :userId')
+                ->setParameter('userId', $userdata->getId())
+                ->andWhere('u.day = :day')
+                ->andWhere('u.month = :month')
+                ->andWhere('u.year = :year')
+                ->setParameter('day', date('d', $timestamp))
+                ->setParameter('month', date('m', $timestamp))
+                ->setParameter('year', date('Y', $timestamp))
+                ->setMaxResults(1)->orderBy('u.id', 'DESC')->getQuery()->getResult()[0];
+
         }
 
         return $this->render('OfficeBundle:presence:core.html.twig', ['userdata' => $userdata, 'presenceData' => $presenceData]);
