@@ -173,4 +173,16 @@ class FingerprintController extends Controller
 
         return $this->redirect($request->headers->get('referer'));
     }
+
+    public function deleteDeviceAction($id)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $data = $em->getRepository(Device::class)->find($id);
+
+        $em->remove($data);
+        $em->flush();
+
+        return $this->redirectToRoute('office_admin_fingerprint_device_list');
+    }
 }

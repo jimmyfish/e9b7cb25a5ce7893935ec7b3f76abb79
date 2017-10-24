@@ -30,7 +30,7 @@
                                     <td>{{ item.deviceName }}</td>
                                     <td>{{ item.sn}}</td>
                                     <td>
-                                        <a href="#" class="btn btn-danger btn--icon-text btn-xs">DELETE</a>
+                                        <a href="{{ path('office_admin_fingerprint_device_delete',{id: item.id}) }}" class="btn btn-danger btn--icon-text btn-xs">DELETE</a>
                                         <a href="#" class="btn btn-primary btn--icon-text btn-xs">EDIT</a>
                                     </td>
                                 </tr>
