@@ -146,7 +146,7 @@ class ApiController extends Controller
 
         foreach ($data->getQuery()->getResult() as $item) {
 
-            if($item->getUserId()->getPenempatan()->getNamaPerusahaan() == $user->getPenempatan()->getNamaPerusahaan()) {
+            if($item->getUserId()->getPenempatan()->getId() == $user->getPenempatan()->getId()) {
                 $results[$i]['username'] = $item->getUserId()->getNama();
                 $results[$i]['description'] = $item->getDescription();
                 ++$i;
