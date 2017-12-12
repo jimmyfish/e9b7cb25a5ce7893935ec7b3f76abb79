@@ -418,7 +418,9 @@ class PresenceController extends Controller
             $manager->flush();
 
 //            echo $this->redirectToRoute('office_presence_interface');
-            echo 'http://' . $request->headers->get('host') . $this->generateUrl('office_presence_interface');
+//            echo 'http://' . $request->headers->get('host') . $this->generateUrl('office_presence_interface');
+
+	return new Response();
         }
     }
 
