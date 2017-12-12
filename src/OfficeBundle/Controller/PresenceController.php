@@ -350,11 +350,6 @@ class PresenceController extends Controller
                      * Normal for job start.
                      */
                     $presenceData->setState(-1);
-                    $this->get('session')->getFlashBag()->add(
-                        'presence_message',
-                        'Terima kasih <strong>' . $user->getNama() .
-                        '</strong>, absensi <strong>MASUK</strong> kamu telah diterima pada ' . $dateNow->format('h:i A')
-                    );
                 } elseif (count($tmpPresence) == 0 && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
 
                     /**
@@ -364,34 +359,18 @@ class PresenceController extends Controller
                     $presenceData->setState(1);
                     $presenceData->setDescription('LUPA CHECKLOG MASUK');
 
-                    $this->get('session')->getFlashBag()->add(
-                        'presence_message',
-                        'Terima kasih <strong>' . $user->getNama() .
-                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada ' . $dateNow->format('h:i A')
-                    );
                 } elseif (count($tmpPresence) == 1 && $dateNow > $endTime) {
 
                     /**
                      * Normal presence for job done.
                      */
                     $presenceData->setState(1);
-                    $this->get('session')->getFlashBag()->add(
-                        'presence_message',
-                        'Terima kasih <strong>' . $user->getNama() .
-                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada ' . $dateNow->format('h:i A')
-                    );
                 } elseif (count($tmpPresence) == 1 && $dateNow < $endTime) {
                     if ($dateNow < $startHour->add(new \DateInterval('PT3H'))) {
 
                         /**
                          * This statement to avoid multi-checklog when job start.
                          */
-                        $this->get('session')->getFlashBag()->add(
-                            'presence_failure',
-                            'Maaf, <strong>' . $user->getNama() .
-                            '</strong>. Absensi masuk kamu sudah kami terima sebelumnya.'
-                        );
-
                         return $this->redirectToRoute('office_presence_interface');
                     }
 
@@ -401,17 +380,7 @@ class PresenceController extends Controller
                      */
                     $presenceData->setState(1);
                     $presenceData->setDescription('PULANG LEBIH AWAL');
-                    $this->get('session')->getFlashBag()->add(
-                        'presence_message',
-                        'Terima kasih <strong>' . $user->getNama() .
-                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada ' . $dateNow->format('h:i A') . ', namun dengan status <strong>PULANG LEBIH AWAL</strong>'
-                    );
                 } else {
-                    $this->get('session')->getFlashBag()->add(
-                        'presence_failure',
-                        'Maaf, <strong>' . $user->getNama() .
-                        '</strong>. Absensi pulang kamu sudah kami terima sebelumnya.'
-                    );
                     return $this->redirectToRoute('office_presence_interface');
                 }
             } elseif ($startHour->format('a') == 'pm') {
@@ -430,7 +399,7 @@ class PresenceController extends Controller
                 $toleranceStart = $startTime->sub(new \DateInterval('PT1H'));
                 $toleranceEnd = $startTime->add(new \DateInterval('PT15M'));
                 if (count($tmpPresence) == 0) { // NORMAL FOR JOB START
-                    if ($dateNow > $toleranceStart && $dateNow < $toleranceEnd) {
+                    if ($dateNow > $toleranceStart ) {
                         $presenceData->setState(-1);
                     } elseif ($dateNow >= \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'))) {
                         $presenceData->setState(1); // NORMAL FOR JOB DONE
