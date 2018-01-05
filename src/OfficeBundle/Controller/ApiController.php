@@ -145,14 +145,11 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data->getQuery()->getResult() as $item) {
-
-            if($item->getUserId()->getPenempatan() == $user->getPenempatan()) {
+            if ($item->getUserId()->getPenempatan() == $user->getPenempatan()) {
                 $results[$i]['username'] = $item->getUserId()->getNama();
                 $results[$i]['description'] = $item->getDescription();
                 ++$i;
             }
-
-
         }
 
         return new JsonResponse($results);
