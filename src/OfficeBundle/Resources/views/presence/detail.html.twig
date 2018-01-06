@@ -112,15 +112,3 @@
     </div>
 </section>
 {% endblock %}
-{% block customJS %}
-    <script>
-        function print(printed) {
-            var isi = document.getElementById(printed);
-            var popupWin = window.open('', '_blank', 'width=1000,height=700');
-            popupWin.document.open();
-            // popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}assets/bootstrap/css/bootstrap.min.css" /><link rel="stylesheet" type="text/css" href="{{ app.request.basepath }}assets/dist/css/global.css" /></head><body>' + isi.innerHTML + '</body></html>');
-            popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" /><link rel="stylesheet" type="text/css" href="{{ asset('css') }}/vendor.min.css" /></head><body  onload="window.print();window.close();">' + isi.innerHTML + '</body></html>');
-            popupWin.document.close();
-        }
-    </script>
-{% endblock %}
