@@ -47,6 +47,32 @@ class FingerprintController extends Controller
         ]);
     }
 
+    public function deviceEditAction(Request $request,$id)
+    {
+        $manager = $this->getDoctrine()->getManager();
+
+        $data = $manager->getRepository(Device::class)->find($id);
+
+        if($request->getMethod() == 'POST')
+        {
+            if($data instanceof Device) {
+                $data->setDeviceName($request->get('device-name'));
+                $data->setSn($request->get('sn'));
+                $data->setAc($request->get('ac'));
+                $data->setVc($request->get('vc'));
+                $data->setVkey($request->get('vkey'));
+            }
+            $manager->persist($data);
+            $manager->flush();
+
+            return $this->redirect($this->generateUrl('office_admin_fingerprint_device_list'));
+        }
+
+        return $this->render('OfficeBundle:fingerprint:device-edit.html.twig',[
+            'data' => $data
+        ]);
+    }
+
     public function userListAction(Request $request)
     {
         $loginUser = $this->get('security.token_storage')->getToken()->getUser();

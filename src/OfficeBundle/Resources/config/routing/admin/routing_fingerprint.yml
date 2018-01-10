@@ -13,6 +13,11 @@ office_admin_fingerprint_device_delete:
     defaults:
         _controller:  OfficeBundle:Fingerprint:deleteDevice
 
+office_admin_fingerprint_device_edit:
+    path: /device/edit/{id}
+    defaults:
+      _controller:  OfficeBundle:Fingerprint:deviceEdit
+
 office_admin_fingerprint_user_list:
     path: /user
     defaults:
