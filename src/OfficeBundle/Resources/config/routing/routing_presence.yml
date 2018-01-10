@@ -31,7 +31,7 @@ office_presence_dopress:
 office_presence_legacy:
     path: /checklog/legacy
     defaults:
-        _controller: OfficeBundle:Presence:legacyChecklog
+        _controller: OfficeBundle:LegacyChecklog:index
 
 #office_presence_list:
 #    path: /list

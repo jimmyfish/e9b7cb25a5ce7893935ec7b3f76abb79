@@ -3,7 +3,6 @@
 namespace OfficeBundle\Controller;
 
 use OfficeBundle\Entity\Attachment;
-use OfficeBundle\Entity\CompanyProfile;
 use OfficeBundle\Entity\Holiday;
 use OfficeBundle\Entity\UserFamily;
 use OfficeBundle\Entity\UserJob;
@@ -54,7 +53,7 @@ class ApiController extends Controller
 
         $results = [];
 
-        if ($user->getStatus() == 0) {
+        if (0 == $user->getStatus()) {
             $results['nama'] = $user->getNama();
             $results['nama_registrasi'] = $user->getNoRegistrasi();
             $results['tempat-lahir'] = $user->getTempatLahir();

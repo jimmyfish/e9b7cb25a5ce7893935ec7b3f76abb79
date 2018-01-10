@@ -211,6 +211,7 @@ class Attachment
     /**
      * @param UserPersonal $user
      * @param $date
+     *
      * @return $this
      */
     public function setHashDate(UserPersonal $user, $dateStart, $dateFinish)

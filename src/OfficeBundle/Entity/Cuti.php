@@ -238,12 +238,12 @@ class Cuti
     }
 
     /**
-     * @var String
+     * @var string
      */
     private $hashDate;
 
     /**
-     * @return String
+     * @return string
      */
     public function getHashDate()
     {
@@ -253,6 +253,7 @@ class Cuti
     /**
      * @param UserPersonal $user
      * @param $date
+     *
      * @return $this
      */
     public function setHashDate(UserPersonal $user, $date)
@@ -267,7 +268,7 @@ class Cuti
     private $dayGroup;
 
     /**
-     * Get the value of Day Group
+     * Get the value of Day Group.
      *
      * @return mixed
      */
@@ -277,7 +278,7 @@ class Cuti
     }
 
     /**
-     * Set the value of Day Group
+     * Set the value of Day Group.
      *
      * @param mixed dayGroup
      *
@@ -289,5 +290,4 @@ class Cuti
 
         return $this;
     }
-
 }

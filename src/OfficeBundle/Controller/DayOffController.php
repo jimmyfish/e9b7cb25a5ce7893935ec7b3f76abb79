@@ -3,7 +3,6 @@
 namespace OfficeBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\Debug;
 use DoctrineExtensions\Query\Sqlite\Day;
 use OfficeBundle\Entity\Cuti;
 use OfficeBundle\Entity\DayType;
@@ -13,8 +12,6 @@ use OfficeBundle\Entity\UserPersonal;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Acl\Exception\Exception;
 
 class DayOffController extends Controller
 {
@@ -38,7 +35,7 @@ class DayOffController extends Controller
         $dateNow = new \DateTime();
 
         $monthNow = $dateNow->format('m');
-        
+
         $desireDate = new \DateTime($request->get('date-start'));
 
         if ($desireDate->format('m') <= 6) {
@@ -49,8 +46,8 @@ class DayOffController extends Controller
                 ->andWhere('c.userId = :user')
                 ->andWhere('c.isValidated = 0 OR c.isValidated = 1')
                 ->andWhere('c.type is null')
-                ->setParameter('firstMonth', $desireDate->format('Y') . '-01-01')
-                ->setParameter('secondMonth', $desireDate->format('Y') . '-06-30')
+                ->setParameter('firstMonth', $desireDate->format('Y').'-01-01')
+                ->setParameter('secondMonth', $desireDate->format('Y').'-06-30')
                 ->setParameter('user', $userdata);
 
             $quotas = $quotas - count($dataCuti->getQuery()->getResult());
@@ -62,25 +59,24 @@ class DayOffController extends Controller
                 ->andWhere('c.userId = :user')
                 ->andWhere('c.type is null')
                 ->andWhere('c.isValidated = 0 OR c.isValidated = 1')
-                ->setParameter('firstMonth', $desireDate->format('Y') . '-07-01')
-                ->setParameter('secondMonth', $desireDate->format('Y') . '-12-31')
+                ->setParameter('firstMonth', $desireDate->format('Y').'-07-01')
+                ->setParameter('secondMonth', $desireDate->format('Y').'-12-31')
                 ->setParameter('user', $userdata);
 
             $quotas = $quotas - count($dataCuti->getQuery()->getResult());
         }
 
-        if ($userdata == null) {
+        if (null == $userdata) {
             throw new \Exception('Error Processing Request', 1);
         }
 
-        if ($request->getMethod() === 'POST') {
-
+        if ('POST' === $request->getMethod()) {
             /**
-            * Checking if the day interval is not below 14.
-            */
+             * Checking if the day interval is not below 14.
+             */
             $dateGiven = \DateTime::createFromFormat('d-m-Y', $request->get('date-start'));
             $desireDateDiff = $dateNow->diff($dateGiven);
-            $desireDateFormat = $desireDateDiff->format("%a");
+            $desireDateFormat = $desireDateDiff->format('%a');
 
             if ($desireDateFormat <= 14) {
                 $this->get('session')->getFlashBag()->add('message_failure', 'Hari yang dipilih haruslah berada pada H-14, jika terdapat kepentingan mendesak harap menghubungi admin');
@@ -88,11 +84,11 @@ class DayOffController extends Controller
                 return $this->redirect($request->headers->get('referer'));
             }
 
-            /**
+            /*
             * If user has suficient quotas.
             */
             if ($quotas > 0) {
-                if ($request->get('day-type') == 0) {
+                if (0 == $request->get('day-type')) {
                     /*
                      * Do Sequence for regular day-off.
                      */
@@ -114,7 +110,6 @@ class DayOffController extends Controller
                 } else {
                     $cutiType = $manager->getRepository(DayType::class)->find($request->get('day-type'));
 
-
                     $manager = $this->getDoctrine()->getManager();
                     $userdata = $this->get('security.token_storage')->getToken()->getUser();
 
@@ -128,12 +123,12 @@ class DayOffController extends Controller
                     $cutiRaw = $manager->getRepository(Cuti::class)->findAll();
                     $grId = uniqid();
 
-                    for ($i = 0; $i <= $cutiType->getCount(); $i++) {
+                    for ($i = 0; $i <= $cutiType->getCount(); ++$i) {
                         $dateStart->add(new \DateInterval('P1D'));
                         $day = $dateStart->format('d');
                         $month = $dateStart->format('m');
                         $year = $dateStart->format('Y');
-                        $abs = $day . '-' . $month . '-' . $year;
+                        $abs = $day.'-'.$month.'-'.$year;
 
                         $data = new Cuti();
                         $data->setUserId($userdata);
@@ -165,6 +160,7 @@ class DayOffController extends Controller
                 }
             } else {
                 $this->get('session')->getFlashBag()->add('message_failure', 'Jatah cuti anda telah habis, sayang sekali.');
+
                 return $this->redirectToRoute('office_user_success', [
                     'proc_title' => 'Permintaan Cuti',
                 ]);
@@ -260,7 +256,7 @@ class DayOffController extends Controller
 
         $data = $manager->getRepository(Cuti::class)->find($request->get('cuti_id'));
 
-        if ((($this->isGranted('ROLE_ADMIN')) or ($data->getUserId()->getId() == $user->getId())) and ($data->getIsValidated() != 1)) {
+        if ((($this->isGranted('ROLE_ADMIN')) or ($data->getUserId()->getId() == $user->getId())) and (1 != $data->getIsValidated())) {
             $manager->remove($data);
             $manager->flush();
 
@@ -273,7 +269,7 @@ class DayOffController extends Controller
     public function inputDayTypeAction(Request $request)
     {
         $manager = $this->getDoctrine()->getManager();
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $data = new DayType();
 
             $dayName = ucwords($request->get('day-type'));
@@ -307,6 +303,7 @@ class DayOffController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function inputQuotasAction(Request $request)
@@ -315,7 +312,7 @@ class DayOffController extends Controller
 
         $data['user'] = $manager->getRepository(UserPersonal::class)->findAll();
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $data = $request->get('desire-user');
 
             foreach ($data as $item) {
@@ -338,7 +335,9 @@ class DayOffController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function inputSpecialAction(Request $request)
@@ -348,7 +347,7 @@ class DayOffController extends Controller
         $data['user'] = $manager->getRepository(UserPersonal::class)->findAll();
         $loginUser = $this->get('security.token_storage')->getToken()->getUser();
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $dataCutiOld = $manager->getRepository(Cuti::class)->findAll();
 
             $newCuti = [];
@@ -364,7 +363,7 @@ class DayOffController extends Controller
 
             $desireDate = new \DateTime($request->get('date-start'));
 
-            /**
+            /*
              * Checking which user has available quotas
              */
             foreach ($userList as $keyUser => $user) {
@@ -384,14 +383,14 @@ class DayOffController extends Controller
 
                 if ($desireDate->format('m') <= 6) {
                     $dataCuti
-                        ->setParameter('firstMonth', $desireDate->format('Y') . '-01-01')
-                        ->setParameter('secondMonth', $desireDate->format('Y') . '-06-30');
+                        ->setParameter('firstMonth', $desireDate->format('Y').'-01-01')
+                        ->setParameter('secondMonth', $desireDate->format('Y').'-06-30');
 
                     $quotas = $quotas - count($dataCuti->getQuery()->getResult());
                 } else {
                     $dataCuti
-                        ->setParameter('firstMonth', $desireDate->format('Y') . '-07-01')
-                        ->setParameter('secondMonth', $desireDate->format('Y') . '-12-31');
+                        ->setParameter('firstMonth', $desireDate->format('Y').'-07-01')
+                        ->setParameter('secondMonth', $desireDate->format('Y').'-12-31');
 
                     $quotas = $quotas - count($dataCuti->getQuery()->getResult());
                 }
@@ -403,8 +402,8 @@ class DayOffController extends Controller
                 $data = new Cuti();
 
                 $desireUser = $manager->getRepository(UserPersonal::class)->find($user);
-                $absDate = $desireDate->format('d') . '-' .
-                    $desireDate->format('m') . '-' .
+                $absDate = $desireDate->format('d').'-'.
+                    $desireDate->format('m').'-'.
                     $desireDate->format('Y');
 
                 $data->setUserId($desireUser);
@@ -414,7 +413,7 @@ class DayOffController extends Controller
                 $data->setAbsDate(new \DateTime($absDate));
                 $data->setIsvalidated(1);
                 $data->setValidatedBy($loginUser);
-                $data->setDescription('Cuti Bersama : ' . $request->get('description'));
+                $data->setDescription('Cuti Bersama : '.$request->get('description'));
                 $data->setHashDate($desireUser, $absDate);
                 $data->setDayGroup($grId);
 
@@ -442,7 +441,7 @@ class DayOffController extends Controller
             $dataHoliday->setDays($desireDate->format('d'));
             $dataHoliday->setMonth($desireDate->format('m'));
             $dataHoliday->setYear($desireDate->format('2017'));
-            $dataHoliday->setTitle('Cuti Bersama : ' . $request->get('description'));
+            $dataHoliday->setTitle('Cuti Bersama : '.$request->get('description'));
             $dataHoliday->setCreatedAt(new \DateTime());
             $dataHoliday->setDay($desireDate);
 
@@ -453,7 +452,7 @@ class DayOffController extends Controller
 
                 $this->get('session')->getFlashBag()->add('message_success', 'Proses telah berhasil di tambahkan.');
             } catch (UniqueConstraintViolationException $e) {
-                $this->get('session')->getFlashBag()->add('message_failure', 'Error terkait : ' . $e);
+                $this->get('session')->getFlashBag()->add('message_failure', 'Error terkait : '.$e);
             }
 
             return $this->redirectToRoute('office_user_success', [
@@ -461,7 +460,7 @@ class DayOffController extends Controller
             ]);
         }
 
-        return $this->render('OfficeBundle:dayoff:input-special.html.twig', ['data' => $data,]);
+        return $this->render('OfficeBundle:dayoff:input-special.html.twig', ['data' => $data]);
     }
 
     public function listSpecialAction()
@@ -479,7 +478,7 @@ class DayOffController extends Controller
 
         $data = $em->getRepository(DayType::class)->findBy(['isDeleted' => 0]);
 
-        return $this->render('OfficeBundle:dayoff:view-day-type.html.twig', ['data'=>$data]);
+        return $this->render('OfficeBundle:dayoff:view-day-type.html.twig', ['data' => $data]);
     }
 
     public function editDayTypeAction(Request $request)
@@ -492,7 +491,7 @@ class DayOffController extends Controller
 
         $data = $manager->getRepository(DayType::class)->find($request->get('type_id'));
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $dayName = ucwords($request->get('day-type'));
 
             $data->setName($dayName);
@@ -544,20 +543,19 @@ class DayOffController extends Controller
         //        $cutiData = new ArrayCollection($cutiRaw);
         $newAdd = [];
 
-
         for ($i = 0; $i <= $interval; ++$i) {
             $dateStart->add(new \DateInterval('P1D'));
             $day = $dateStart->format('d');
             $month = $dateStart->format('m');
             $year = $dateStart->format('Y');
-            $abs = \DateTime::createFromFormat('d m Y', $day . ' ' . $month . ' ' . $year);
-            $absDate = $day . '-' . $month . '-' . $year;
+            $abs = \DateTime::createFromFormat('d m Y', $day.' '.$month.' '.$year);
+            $absDate = $day.'-'.$month.'-'.$year;
 
             $data = new Cuti();
             $data->setUserId($userdata);
-            $data->setTanggal((int)$day);
-            $data->setBulan((int)$month);
-            $data->setTahun((int)$year);
+            $data->setTanggal((int) $day);
+            $data->setBulan((int) $month);
+            $data->setTahun((int) $year);
             $data->setAbsDate($abs);
             $data->setIsValidated(0);
             $data->setHashDate($userdata, $absDate);
@@ -568,7 +566,7 @@ class DayOffController extends Controller
 
             $quotas = $quotas - 1;
 
-            if ($quotas == 0) {
+            if (0 == $quotas) {
                 $this->get('session')->getFlashBag()->add('message_failure', 'Batas pengajuan anda melebihi kuota yang anda miliki.');
 
                 return $this->redirectToRoute('office_user_success', [

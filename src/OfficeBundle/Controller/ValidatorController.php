@@ -45,7 +45,7 @@ class ValidatorController extends Controller
 
         $shift = $em->getRepository(Shift::class)->findAll();
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserPersonal) {
                 $data->setTempatLahir($request->get('tempat_lahir'));
                 $data->setTempatTinggal($request->get('tempat_tinggal'));
@@ -81,7 +81,7 @@ class ValidatorController extends Controller
                     if (!empty($request->files->get('profile_picture'))) {
                         $file = $request->files->get('profile_picture');
 
-                        $filename = md5(uniqid()) . '.' . $file->guessExtension();
+                        $filename = md5(uniqid()).'.'.$file->guessExtension();
 
                         $exAllowed = array('jpg', 'png', 'jpeg');
 
@@ -92,7 +92,7 @@ class ValidatorController extends Controller
                                 if (!($file->getClientSize() > (1024 * 1024 * 1))) {
                                     ImageResize::createFromFile(
                                         $request->files->get('profile_picture')->getPathName()
-                                    )->saveTo($this->getParameter('profile_directory')['resource'] . '/' . $filename, 20, true);
+                                    )->saveTo($this->getParameter('profile_directory')['resource'].'/'.$filename, 20, true);
                                     $data->setProfilePicture($filename);
                                 } else {
                                     return 'ukuran tidak boleh lebih dari 1MB';
@@ -117,7 +117,6 @@ class ValidatorController extends Controller
             }
         }
 
-
         $arrBpjs = [];
 
         $bpjs = json_decode($data->getBpjs());
@@ -127,7 +126,6 @@ class ValidatorController extends Controller
                 array_push($arrBpjs, $item);
             }
         }
-
 
         $arrNoTelp = [];
 
@@ -139,7 +137,6 @@ class ValidatorController extends Controller
             }
         }
 
-
         $arrPakaian = [];
 
         $ukPakaian = json_decode($data->getUkuranPakaian());
@@ -149,6 +146,7 @@ class ValidatorController extends Controller
                 array_push($arrPakaian, $item);
             }
         }
+
         return $this->render('OfficeBundle:validator:update-user.html.twig', [
             'data' => $data,
             'bpjs' => $arrBpjs,
@@ -156,7 +154,7 @@ class ValidatorController extends Controller
             'pakaian' => $arrPakaian,
             'penempatan' => $penempatan,
             'job' => $job,
-            'shift' => $shift
+            'shift' => $shift,
         ]);
     }
 
@@ -168,7 +166,7 @@ class ValidatorController extends Controller
 
         $data = $em->getRepository(UserJob::class)->findByUserId($user);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserJob) {
                 $data->setGolongan($request->get('golongan'));
                 $data->setJenjangPangkat($request->get('jenjang_pangkat'));
@@ -226,7 +224,7 @@ class ValidatorController extends Controller
             'data' => $data,
             'training' => $arrTraining,
             'start' => $arrStart,
-            'end' => $arrEnd
+            'end' => $arrEnd,
         ]);
     }
 
@@ -242,7 +240,7 @@ class ValidatorController extends Controller
 
 //        return var_dump($user);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserFamily) {
                 $data->setUserId($user);
                 $data->setPasangan(json_encode($request->get('pasangan')));
@@ -355,7 +353,7 @@ class ValidatorController extends Controller
 
         $data = $em->getRepository(UserPersonal::class)->findById($id);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserPersonal) {
                 $data->setStatus($request->get('status'));
             }
@@ -379,7 +377,7 @@ class ValidatorController extends Controller
 
         $data = $em->getRepository(UserPersonal::class)->findById($id);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             UserPersonalServices::changeValidate($data);
 
             $em->persist($data);
@@ -422,7 +420,7 @@ class ValidatorController extends Controller
 
         $data = $em->getRepository(Attachment::class)->find($user->getId());
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $data = new Attachment();
             $data->setUserId($user);
             $data->setTypeForm($request->get('type-form'));
@@ -498,7 +496,7 @@ class ValidatorController extends Controller
 
         $data = $em->getRepository(Attachment::class)->findByUserId($user);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof Attachment) {
                 $data->setTypeForm($request->get('type-form'));
                 $data->setDescription($request->get('description'));
@@ -517,7 +515,7 @@ class ValidatorController extends Controller
         return $this->render('OfficeBundle:validator:update-form.html.twig', [
             'data' => $data,
             'username' => $user->getUsername(),
-            'nik' => $user->getNik()
+            'nik' => $user->getNik(),
         ]);
     }
 
@@ -535,7 +533,7 @@ class ValidatorController extends Controller
 
         return $this->render('OfficeBundle:validator:list-pengajuan.html.twig', [
             'dayOff' => $dayOff->getQuery()->getResult(),
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -571,7 +569,7 @@ class ValidatorController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $data = new Shift();
             $data->setLabel($request->get('keterangan'));
             $data->setStartTime($request->get('jam-masuk'));
@@ -592,7 +590,7 @@ class ValidatorController extends Controller
         $data = $this->getDoctrine()->getEntityManager()->getRepository(Shift::class)->findAll();
 
         return $this->render('OfficeBundle:validator:list-shift.html.twig', [
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -603,7 +601,7 @@ class ValidatorController extends Controller
         $data = $em->getRepository(Attachment::class)->find($id);
 
         return $this->render('OfficeBundle:validator:validator-form.html.twig', [
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -645,18 +643,18 @@ class ValidatorController extends Controller
 
         $yearPop = [date('Y')];
         for ($i = 1; $i < 5; ++$i) {
-            array_push($yearPop, date('Y', strtotime('-' . $i . ' year')));
+            array_push($yearPop, date('Y', strtotime('-'.$i.' year')));
         }
 
-        if ($request->get('month') != null) {
+        if (null != $request->get('month')) {
             $givenMonth = $request->get('month');
         }
 
-        if ($request->get('year') != null) {
+        if (null != $request->get('year')) {
             $givenYear = $request->get('year');
         }
 
-        if ($request->get('company') != null) {
+        if (null != $request->get('company')) {
             $givenCompany = $request->get('company');
         }
 
@@ -664,9 +662,8 @@ class ValidatorController extends Controller
 
         $userLogin = $this->get('security.token_storage')->getToken()->getUser();
 
-
-        if ($request->get('company') != null) {
-            if ($request->get('company') != 0) {
+        if (null != $request->get('company')) {
+            if (0 != $request->get('company')) {
                 $userData = $manager->getRepository(UserPersonal::class)->findBy([
                     'penempatan' => $request->get('company'),
                 ]);
@@ -692,10 +689,9 @@ class ValidatorController extends Controller
         $arrDuplicate = [];
 
         foreach ($allDataPresence as $item) {
-            $item->setAbsoluteDay(base64_encode($item->getUserId()->getId() .' '. $item->getCreatedAt()->format('d m Y')));
+            $item->setAbsoluteDay(base64_encode($item->getUserId()->getId().' '.$item->getCreatedAt()->format('d m Y')));
             array_push($arrDuplicate, $item->getAbsoluteDay());
         }
-
 
         $unique = array_unique($arrDuplicate, SORT_REGULAR);
 
@@ -719,11 +715,11 @@ class ValidatorController extends Controller
 
         $monthHoliday = 0;
 
-        for ($i = 1; $i <= $dayCount; $i++) {
-            $dayName = new \DateTime($i . '-' . $givenMonth . '-' . $givenYear);
+        for ($i = 1; $i <= $dayCount; ++$i) {
+            $dayName = new \DateTime($i.'-'.$givenMonth.'-'.$givenYear);
 
-            if ($dayName->format('D') == 'Sun') {
-                $monthHoliday++;
+            if ('Sun' == $dayName->format('D')) {
+                ++$monthHoliday;
             }
         }
 
@@ -738,7 +734,7 @@ class ValidatorController extends Controller
             'month' => $givenMonth,
             'year' => $givenYear,
             'dayCount' => $dayCount - $monthHoliday,
-            'userLogin' => $userLogin
+            'userLogin' => $userLogin,
         ]);
     }
 
@@ -830,13 +826,13 @@ class ValidatorController extends Controller
             $period = new \DatePeriod($startDate, $interval, $endDate);
 
             foreach ($period as $dt) {
-                $newDatePopulate[$dt->format('d-m-Y')] = [$itemRaw->getAbsen() ,$itemRaw->getDescription()];
+                $newDatePopulate[$dt->format('d-m-Y')] = [$itemRaw->getAbsen(), $itemRaw->getDescription()];
             }
 
-            $newDatePopulate[$endDate->format('d-m-Y')] = [$itemRaw->getAbsen() ,$itemRaw->getDescription()];
+            $newDatePopulate[$endDate->format('d-m-Y')] = [$itemRaw->getAbsen(), $itemRaw->getDescription()];
         }
 
-        /**
+        /*
          * Checking if populated date out of month.
          */
         foreach ($newDatePopulate as $key => $value) {

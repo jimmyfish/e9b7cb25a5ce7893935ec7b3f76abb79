@@ -43,6 +43,7 @@ interface UserPersonalInterface
 
     /**
      * @param $penempatan
+     *
      * @return UserPersonal
      */
     public function findByPenempatan($penempatan);

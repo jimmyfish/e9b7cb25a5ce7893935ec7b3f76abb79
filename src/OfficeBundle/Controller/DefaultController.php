@@ -21,11 +21,11 @@ class DefaultController extends Controller
 
     public function createUserAction(Request $request)
     {
-        if ($request->getMethod() == 'GET') {
+        if ('GET' == $request->getMethod()) {
             return $this->render('');
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $em = $this->getDoctrine()->getManager();
 
             $user = new UserPersonal();
@@ -55,7 +55,7 @@ class DefaultController extends Controller
 
     public function updateUserAction(Request $request, $id)
     {
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $em = $this->getDoctrine()->getManager();
 
             $test = $em->getRepository(UserPersonal::class)->findById($id);
@@ -106,14 +106,14 @@ class DefaultController extends Controller
 
     public function loginAction(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $username = $request->get('username');
             $password = md5($request->get('password'));
             $em = $this->getDoctrine()->getManager();
             $data = $em->getRepository(UserPersonal::class)->findByUsername($username);
 
             if ($data instanceof UserPersonal) {
-                if ($data != null) {
+                if (null != $data) {
                     if ($password == $data->getPassword()) {
                         $session = $request->getSession();
 

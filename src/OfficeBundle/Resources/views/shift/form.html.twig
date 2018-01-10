@@ -26,6 +26,13 @@
                             <p>Jam Pulang</p>
                             <input type="text" class="time form-control" name="jam-pulang" id="jam-pulang" value="{% if data is defined %}{{ data.endTime|date('h:i a') }}{% endif %}" required>
                         </div>
+                        <div class="form-group">
+                            <label for="type-shift">Tipe Shift</label>
+                            <select name="type-shift" id="type-shift" class="form-control">
+                                <option value="0">Luar Kantor</option>
+                                <option value="1">Kantor</option>
+                            </select>
+                        </div>
                         <div class="form-group"><input type="submit" class="btn btn-primary pull-right" value="{{ input_label }}"></div>
                     </form>
                 </div>

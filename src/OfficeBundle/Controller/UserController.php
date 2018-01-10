@@ -18,12 +18,9 @@ use Symfony\Bridge\Doctrine\Tests\Fixtures\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Doctrine\Common\Util\Debug;
 
 class UserController extends Controller
 {
-
     public function successIzinAction()
     {
         return $this->render('OfficeBundle:user:success-izin.html.twig');
@@ -77,7 +74,7 @@ class UserController extends Controller
      */
     public function loginAction(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $username = $request->get('username');
             $password = md5($request->get('password'));
             $em = $this->getDoctrine()->getManager();
@@ -85,7 +82,7 @@ class UserController extends Controller
             $data = $em->getRepository(UserPersonal::class)->findByUsername($username);
 
             if ($data instanceof UserPersonal) {
-                if ($data != null) {
+                if (null != $data) {
                     if ($password == $data->getPassword()) {
                         $session = $request->getSession();
 
@@ -94,7 +91,7 @@ class UserController extends Controller
                         $session->set('nama', ['value' => $data->getNama()]);
                         $session->set('role', ['value' => $data->getRole()]);
 
-                        if ($data->getRole() == 0) {
+                        if (0 == $data->getRole()) {
                             return $this->redirect($this->generateUrl('office_admin_index'));
                         } else {
                             return $this->redirect($this->generateUrl('office_user_homepage'));
@@ -151,7 +148,7 @@ class UserController extends Controller
 
     public function registerAction(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $user = new UserPersonal();
 
             $dataUser = $user->createUser($request);
@@ -198,7 +195,7 @@ class UserController extends Controller
 
         $shift = $em->getRepository(Shift::class)->findAll();
 
-        if ($data->getIsValidated() == 0) {
+        if (0 == $data->getIsValidated()) {
             $this->get('session')->getFlashBag()->add(
                 'notice',
                 'hubungin admin terlebih dahulu untuk memvalidasi status'
@@ -207,7 +204,7 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl('office_user_list'));
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserPersonal) {
                 $data->setTempatLahir($request->get('tempat_lahir'));
                 $data->setTempatTinggal($request->get('tempat_tinggal'));
@@ -242,7 +239,7 @@ class UserController extends Controller
                     if (!empty($request->files->get('profile_picture'))) {
                         $file = $request->files->get('profile_picture');
 
-                        if ($file != null) {
+                        if (null != $file) {
                             $filename = md5(uniqid()).'.'.$file->guessExtension();
 
                             $exAllowed = array('jpg', 'png', 'jpeg');
@@ -274,7 +271,6 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl('office_user_list'));
         }
 
-
         $arrBpjs = [];
 
         $bpjs = json_decode($data->getBpjs());
@@ -285,7 +281,6 @@ class UserController extends Controller
             }
         }
 
-
         $arrNoTelp = [];
 
         $noTelp = json_decode($data->getNoTelp());
@@ -295,7 +290,6 @@ class UserController extends Controller
                 array_push($arrNoTelp, $item);
             }
         }
-
 
         $arrPakaian = [];
 
@@ -314,7 +308,7 @@ class UserController extends Controller
             'pakaian' => $arrPakaian,
             'penempatan' => $penempatan,
             'job' => $job,
-            'shift' => $shift
+            'shift' => $shift,
         ]);
     }
 
@@ -330,7 +324,7 @@ class UserController extends Controller
 
         $data = $em->getRepository(UserJob::class)->findByUserId($user);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserJob) {
                 $data->setGolongan($request->get('golongan'));
                 $data->setJenjangPangkat($request->get('jenjang_pangkat'));
@@ -346,7 +340,7 @@ class UserController extends Controller
         }
 
         return $this->render('OfficeBundle:user:update-user-job.html.twig', [
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -360,7 +354,7 @@ class UserController extends Controller
 
         $data = $em->getRepository(UserFamily::class)->findByUserId($user);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserFamily) {
                 $data->setPasangan(json_encode($request->get('pasangan')));
                 $data->setStatusPerkawinan($request->get('status_perkawinan'));
@@ -453,7 +447,7 @@ class UserController extends Controller
 
         $newAdd = [];
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $data = new Attachment();
             $data->setUserId($user);
             $data->setTypeForm($request->get('type-form'));
@@ -465,11 +459,12 @@ class UserController extends Controller
             $data->setIsValidated(0);
             $data->setCreatedAt(new \DateTime());
 
-            if ($user->getIsValidated() == 0) {
+            if (0 == $user->getIsValidated()) {
                 $this->get('session')->getFlashBag()->add(
                     'error',
                     'hubungin admin terlebih dahulu untuk memvalidasi status'
                 );
+
                 return $this->redirect($this->generateUrl('office_user_create_form'));
             }
 
@@ -500,7 +495,7 @@ class UserController extends Controller
                 );
             }
 
-                return $this->redirect($this->generateUrl('office_user_success_izin'));
+            return $this->redirect($this->generateUrl('office_user_success_izin'));
 //                if($this->isGranted('ROLE_USER')) {
 //                    return $this->redirect($this->generateUrl('office_user_list_form'));
 //                }elseif ($this->isGranted('ROLE_ADMIN')) {
@@ -512,7 +507,7 @@ class UserController extends Controller
 
         return $this->render('OfficeBundle:attachment:create.html.twig', [
             'nik' => $user->getNik(),
-            'username' => $user->getUsername()
+            'username' => $user->getUsername(),
         ]);
     }
 
@@ -526,7 +521,7 @@ class UserController extends Controller
 
         $dayOff = $em->getRepository(Cuti::class)->findBy(['userId' => $userData->getId()]);
 
-        $data = $em->getRepository(Attachment::class)->findBy(['userId'=>$userData]);
+        $data = $em->getRepository(Attachment::class)->findBy(['userId' => $userData]);
 
         return $this->render('OfficeBundle:attachment:list.html.twig', [
             'data' => $data,
@@ -545,7 +540,7 @@ class UserController extends Controller
 
         $data = $em->getRepository(Attachment::class)->findByUserId($user);
 
-        if ($user->getIsValidated() == 0) {
+        if (0 == $user->getIsValidated()) {
             $this->get('session')->getFlashBag()->add(
                 'notice',
                 'hubungin admin terlebih dahulu untuk memvalidasi status'
@@ -554,7 +549,7 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl('office_user_list'));
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof Attachment) {
                 $data->setTypeForm($request->get('type-form'));
                 $data->setAbsen($request->get('absen'));
@@ -578,7 +573,7 @@ class UserController extends Controller
 
         $data = $em->getRepository(UserPersonal::class)->findByEmail($request->get('email'));
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $token = md5(uniqid());
             if ($data instanceof UserPersonal) {
                 $data->setToken($token);
@@ -613,7 +608,7 @@ class UserController extends Controller
 
 //        return var_dump();
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data[0] instanceof UserPersonal) {
                 $data[0]->setPassword($request->get('password'));
                 $data[0]->setToken('');
@@ -680,7 +675,7 @@ class UserController extends Controller
         $data = $em->getRepository(Attachment::class)->findByUserId($user);
 
         return $this->render('OfficeBundle:user:form-absen.html.twig', [
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -692,9 +687,9 @@ class UserController extends Controller
 
         $cutii = $user->getJob()->getQuotas();
 
-        $cuti = $em->getRepository(Cuti::class)->findOneBy(['userId'=>$user]);
+        $cuti = $em->getRepository(Cuti::class)->findOneBy(['userId' => $user]);
 
-        $cutiAll = $em->getRepository(Cuti::class)->findBy(['userId'=>$user]);
+        $cutiAll = $em->getRepository(Cuti::class)->findBy(['userId' => $user]);
 
         $totalCuti = count($cutiAll);
 
@@ -719,7 +714,7 @@ class UserController extends Controller
             'total' => $totalCuti,
             'cuti' => $cuti,
             'total_cuti' => $cutii,
-            'hasil' => $hasil
+            'hasil' => $hasil,
         ]);
     }
 
@@ -734,25 +729,25 @@ class UserController extends Controller
 
         $yearPop = [date('Y')];
         for ($i = 1; $i < 5; ++$i) {
-            array_push($yearPop, date('Y', strtotime('-' . $i . ' year')));
+            array_push($yearPop, date('Y', strtotime('-'.$i.' year')));
         }
 
-        if ($request->get('month') != null) {
+        if (null != $request->get('month')) {
             $givenMonth = $request->get('month');
         }
 
-        if ($request->get('year') != null) {
+        if (null != $request->get('year')) {
             $givenYear = $request->get('year');
         }
 
-        if ($request->get('company') != null) {
+        if (null != $request->get('company')) {
             $givenCompany = $request->get('company');
         }
 
         $userData = $this->get('security.token_storage')->getToken()->getUser();
 
-        if ($request->get('company') != null) {
-            if ($request->get('company') != 0) {
+        if (null != $request->get('company')) {
+            if (0 != $request->get('company')) {
                 $userData = $manager->getRepository(UserPersonal::class)->findBy([
                     'penempatan' => $request->get('company'),
                 ]);
@@ -779,10 +774,9 @@ class UserController extends Controller
         $arrDuplicate = [];
 
         foreach ($allDataPresence as $item) {
-            $item->setAbsoluteDay(base64_encode($item->getUserId()->getId() .' '. $item->getCreatedAt()->format('d m Y')));
+            $item->setAbsoluteDay(base64_encode($item->getUserId()->getId().' '.$item->getCreatedAt()->format('d m Y')));
             array_push($arrDuplicate, $item->getAbsoluteDay());
         }
-
 
         $unique = array_unique($arrDuplicate, SORT_REGULAR);
 
@@ -802,11 +796,11 @@ class UserController extends Controller
 
         $monthHoliday = 0;
 
-        for ($i = 1; $i <= $dayCount; $i++) {
-            $dayName = new \DateTime($i . '-' . $givenMonth . '-' . $givenYear);
+        for ($i = 1; $i <= $dayCount; ++$i) {
+            $dayName = new \DateTime($i.'-'.$givenMonth.'-'.$givenYear);
 
-            if ($dayName->format('D') == 'Sun') {
-                $monthHoliday++;
+            if ('Sun' == $dayName->format('D')) {
+                ++$monthHoliday;
             }
         }
 
@@ -912,13 +906,13 @@ class UserController extends Controller
             $period = new \DatePeriod($startDate, $interval, $endDate);
 
             foreach ($period as $dt) {
-                $newDatePopulate[$dt->format('d-m-Y')] = [$itemRaw->getAbsen() ,$itemRaw->getDescription()];
+                $newDatePopulate[$dt->format('d-m-Y')] = [$itemRaw->getAbsen(), $itemRaw->getDescription()];
             }
 
-            $newDatePopulate[$endDate->format('d-m-Y')] = [$itemRaw->getAbsen() ,$itemRaw->getDescription()];
+            $newDatePopulate[$endDate->format('d-m-Y')] = [$itemRaw->getAbsen(), $itemRaw->getDescription()];
         }
 
-        /**
+        /*
          * Checking if populated date out of month.
          */
         foreach ($newDatePopulate as $key => $value) {

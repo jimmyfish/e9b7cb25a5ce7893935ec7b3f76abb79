@@ -19,12 +19,14 @@ class ShiftController extends Controller
 
     public function createAction(Request $request)
     {
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $data = new Shift();
 
             $data->setLabel($request->get('keterangan'));
             $data->setStartTime($request->get('jam-masuk'));
             $data->setEndTime($request->get('jam-pulang'));
+            $data->setOffice($request->get('type-shift'));
+
             $data->setCreatedAt(new \DateTime());
 
             $manager = $this->getDoctrine()->getManager();
@@ -56,10 +58,12 @@ class ShiftController extends Controller
     {
         $data = $this->getDoctrine()->getManager()->getRepository(Shift::class)->find($id);
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod() && $data instanceof Shift) {
             $data->setLabel($request->get('keterangan'));
             $data->setStartTime($request->get('jam-masuk'));
             $data->setEndTime($request->get('jam-pulang'));
+            $data->setOffice($request->get('type-shift'));
+            $data->setUpdatedAt(new \DateTime());
 
             $manager = $this->getDoctrine()->getManager();
 

@@ -11,7 +11,7 @@ class CompanyController extends Controller
 {
     public function createAction(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $test = new CompanyProfile();
             $data = $test->createCompany($request);
 
@@ -66,7 +66,7 @@ class CompanyController extends Controller
         $data = $em->getRepository(CompanyProfile::class)->findById($id);
 
         if ($data instanceof CompanyProfile) {
-            if ($request->getMethod() == 'POST') {
+            if ('POST' == $request->getMethod()) {
                 $data->setNamaPerusahaan($request->get('nama-perusahaan'));
 
                 $em->persist($data);

@@ -225,7 +225,7 @@ class ImageResize
 
     private function determineImageFormat($extension)
     {
-        if (!is_string($extension) || trim($extension) == '') {
+        if (!is_string($extension) || '' == trim($extension)) {
             return $this->extension;
         }
         $extension = explode('.', trim($extension, '.'));
@@ -375,13 +375,13 @@ class ImageResize
     private function createResourceOfFile()
     {
         $type = @exif_imagetype($this->source_file);
-        if ($type === false || !isset($this->image_type_list[$type])) {
+        if (false === $type || !isset($this->image_type_list[$type])) {
             return;
         }
 
         $this->image_type = $this->image_type_list[$type][0];
         $this->real_extension = $this->image_type_list[$type][1];
-        if ($this->isUseImagick() || $this->image_type_function[$this->image_type] == 'class:imagick') {
+        if ($this->isUseImagick() || 'class:imagick' == $this->image_type_function[$this->image_type]) {
             if (!class_exists('Imagick')) {
                 trigger_error(
                     'Php Imagick does not exist in server. Please check configuration',
@@ -420,7 +420,7 @@ class ImageResize
         /*
          * if image type PNG save Alpha Blending
          */
-        if ($this->image_type == 'IMAGETYPE_PNG') {
+        if ('IMAGETYPE_PNG' == $this->image_type) {
             imagealphablending($this->resource, true); // setting alpha blending on
             imagesavealpha($this->resource, true); // save alpha blending setting (important)
         }
@@ -624,7 +624,7 @@ class ImageResize
         );
 
         // *** if option is 'cropProcess', then cropProcess too
-        if ($option == self::MODE_CROP) {
+        if (self::MODE_CROP == $option) {
             $this->cropProcess($optimalWidth, $optimalHeight, $newWidth, $newHeight);
         }
 
@@ -899,7 +899,7 @@ class ImageResize
             : ($imageQuality < 1 ? 1 : $imageQuality);
         // check if has on cropProcess
         if (!isset($this->image_resized)) {
-            if ($this->last_set_image[self::KEY_WIDTH] === false || !$this->image_resized) {
+            if (false === $this->last_set_image[self::KEY_WIDTH] || !$this->image_resized) {
                 $this->image_resized = $this->isUseImagick()
                     ? clone $this->resource
                     : $this->resource;
@@ -913,7 +913,7 @@ class ImageResize
             }
         }
 
-        $extension = $savePath !== null
+        $extension = null !== $savePath
             ? pathinfo($savePath, PATHINFO_EXTENSION)
             : ($extension ?: $this->extension);
         if ($this->isUseImagick()) {
@@ -1108,7 +1108,7 @@ class ImageResize
             return false;
         }
 
-        $extension = $savePath !== null
+        $extension = null !== $savePath
             ? pathinfo($savePath, PATHINFO_EXTENSION)
             : ($extension ?: $this->extension);
 

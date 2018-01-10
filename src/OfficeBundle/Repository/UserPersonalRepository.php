@@ -56,10 +56,11 @@ class UserPersonalRepository extends EntityRepository implements UserPersonalInt
 
     /**
      * @param $penempatan
+     *
      * @return UserPersonal
      */
     public function findByPenempatan($penempatan)
     {
-        return $this->findBy(['penempatan'=>$penempatan]);
+        return $this->findBy(['penempatan' => $penempatan]);
     }
 }

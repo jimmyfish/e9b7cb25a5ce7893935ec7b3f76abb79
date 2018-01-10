@@ -14,7 +14,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\User;
-use DoctrineExtensions\Query\Mysql;
 
 class PresenceController extends Controller
 {
@@ -29,25 +28,25 @@ class PresenceController extends Controller
 
         $yearPop = [date('Y')];
         for ($i = 1; $i < 5; ++$i) {
-            array_push($yearPop, date('Y', strtotime('-' . $i . ' year')));
+            array_push($yearPop, date('Y', strtotime('-'.$i.' year')));
         }
 
-        if ($request->get('month') != null) {
+        if (null != $request->get('month')) {
             $givenMonth = $request->get('month');
         }
 
-        if ($request->get('year') != null) {
+        if (null != $request->get('year')) {
             $givenYear = $request->get('year');
         }
 
-        if ($request->get('company') != null) {
+        if (null != $request->get('company')) {
             $givenCompany = $request->get('company');
         }
 
         $userData = $manager->getRepository(UserPersonal::class)->findAll();
 
-        if ($request->get('company') != null) {
-            if ($request->get('company') != 0) {
+        if (null != $request->get('company')) {
+            if (0 != $request->get('company')) {
                 $userData = $manager->getRepository(UserPersonal::class)->findBy([
                     'penempatan' => $request->get('company'),
                 ]);
@@ -73,10 +72,9 @@ class PresenceController extends Controller
         $arrDuplicate = [];
 
         foreach ($allDataPresence as $item) {
-            $item->setAbsoluteDay(base64_encode($item->getUserId()->getId() .' '. $item->getCreatedAt()->format('d m Y')));
+            $item->setAbsoluteDay(base64_encode($item->getUserId()->getId().' '.$item->getCreatedAt()->format('d m Y')));
             array_push($arrDuplicate, $item->getAbsoluteDay());
         }
-
 
         $unique = array_unique($arrDuplicate, SORT_REGULAR);
 
@@ -100,11 +98,11 @@ class PresenceController extends Controller
 
         $monthHoliday = 0;
 
-        for ($i = 1; $i <= $dayCount; $i++) {
-            $dayName = new \DateTime($i . '-' . $givenMonth . '-' . $givenYear);
+        for ($i = 1; $i <= $dayCount; ++$i) {
+            $dayName = new \DateTime($i.'-'.$givenMonth.'-'.$givenYear);
 
-            if ($dayName->format('D') == 'Sun') {
-                $monthHoliday++;
+            if ('Sun' == $dayName->format('D')) {
+                ++$monthHoliday;
             }
         }
 
@@ -133,7 +131,7 @@ class PresenceController extends Controller
         $requestedDate = new \DateTime('1-'.$givenMonth.'-'.$givenYear);
         $presenceRepository = $manager->getRepository(UserPresence::class);
         $dayOfMonth = cal_days_in_month(CAL_GREGORIAN, $requestedDate->format('m'), $requestedDate->format('Y'));
-        
+
         $user = $manager->getRepository(UserPersonal::class)->find($request->get('id'));
 
         $dataMasuk = [];
@@ -217,7 +215,7 @@ class PresenceController extends Controller
             $newDatePopulate[$endDate->format('d-m-Y')] = [$itemRaw->getAbsen(), $itemRaw->getDescription()];
         }
 
-        /**
+        /*
          * Checking if populated date out of month.
          */
         foreach ($newDatePopulate as $key => $value) {
@@ -247,7 +245,7 @@ class PresenceController extends Controller
             ->createQuery('SELECT e FROM OfficeBundle:Device e where e.vc = :vc')
             ->setParameter('vc', $vc)->getArrayResult()[0];
 
-        echo $data['ac'] . $data['sn'];
+        echo $data['ac'].$data['sn'];
     }
 
     public function presenceAction(Request $request)
@@ -255,7 +253,7 @@ class PresenceController extends Controller
         $userdata = null;
         $presenceData = null;
 
-        if ($request->get('userlog') != null) {
+        if (null != $request->get('userlog')) {
             $userdata = $this->getDoctrine()->getManager()->getRepository(UserPersonal::class)->findOneBy(['username' => $request->get('userlog')]);
 
             $timestamp = $request->get('timestamp');
@@ -271,7 +269,6 @@ class PresenceController extends Controller
                 ->setParameter('month', date('m', $timestamp))
                 ->setParameter('year', date('Y', $timestamp))
                 ->setMaxResults(1)->orderBy('u.id', 'DESC')->getQuery()->getResult();
-
         }
 
         return $this->render('OfficeBundle:presence:core.html.twig', ['userdata' => $userdata, 'presenceData' => $presenceData]);
@@ -283,11 +280,11 @@ class PresenceController extends Controller
 
         $finger = $data->getFinger();
         $id = $data->getId();
-        $verifyUrl = 'http://' . $request->headers->get('host') . $this->generateUrl('office_presence_do');
-        $getAcUrl = 'http://' . $request->headers->get('host') . $this->generateUrl('office_presence_user_get_ac');
+        $verifyUrl = 'http://'.$request->headers->get('host').$this->generateUrl('office_presence_do');
+        $getAcUrl = 'http://'.$request->headers->get('host').$this->generateUrl('office_presence_user_get_ac');
 
-        if ($data != null) {
-            echo "$id;" . $finger->getFingerData() . ';SecurityKey;10;' . $verifyUrl . ';' . $getAcUrl . ';extraParams';
+        if (null != $data) {
+            echo "$id;".$finger->getFingerData().';SecurityKey;10;'.$verifyUrl.';'.$getAcUrl.';extraParams';
         }
     }
 
@@ -314,7 +311,7 @@ class PresenceController extends Controller
 
             $user_name = $manager->getRepository(UserPersonal::class)->find($user_id)->getNama();
 
-            $salt = md5($sn . $fingerData->getFingerData() . $device->getVc() . $time . $user_id . $device->getVkey());
+            $salt = md5($sn.$fingerData->getFingerData().$device->getVc().$time.$user_id.$device->getVkey());
 
             $data = [];
             $dateNow = new \DateTime();
@@ -332,7 +329,7 @@ class PresenceController extends Controller
             /*
              * Confusing algorithm start here
              */
-            if ($startHour->format('a') == 'am') { // For Morning shift
+            if ('am' == $startHour->format('a')) { // For Morning shift
                 /**
                  * ALGORITHM FOR MORNING SHIFT.
                  */
@@ -340,41 +337,36 @@ class PresenceController extends Controller
                     ->where('up.userId = :userId')
                     ->andWhere('up.createdAt LIKE :givenDate')
                     ->setParameter('userId', $user->getId())
-                    ->setParameter('givenDate', '%' . $dateNow->format('Y-m-d') . '%')->getQuery()->getResult();
+                    ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
 
                 $endTime = new \DateTime($shift->getEndTime()->format('H:i'));
 
-                if (count($tmpPresence) == 0 && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
-
-                    /**
+                if (0 == count($tmpPresence) && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
+                    /*
                      * Normal for job start.
                      */
                     $presenceData->setState(-1);
-                } elseif (count($tmpPresence) == 0 && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
-
-                    /**
+                } elseif (0 == count($tmpPresence) && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
+                    /*
                      * If user forget to input when job start
                      * while execute job end.
                      */
                     $presenceData->setState(1);
                     $presenceData->setDescription('LUPA CHECKLOG MASUK');
-
-                } elseif (count($tmpPresence) == 1 && $dateNow > $endTime) {
-
-                    /**
+                } elseif (1 == count($tmpPresence) && $dateNow > $endTime) {
+                    /*
                      * Normal presence for job done.
                      */
                     $presenceData->setState(1);
-                } elseif (count($tmpPresence) == 1 && $dateNow < $endTime) {
+                } elseif (1 == count($tmpPresence) && $dateNow < $endTime) {
                     if ($dateNow < $startHour->add(new \DateInterval('PT3H'))) {
-
-                        /**
+                        /*
                          * This statement to avoid multi-checklog when job start.
                          */
                         return $this->redirectToRoute('office_presence_interface');
                     }
 
-                    /**
+                    /*
                      * When user decide to done the job earlier
                      * the Requirements is job must be start at least 3 hour after job start's time.
                      */
@@ -383,7 +375,7 @@ class PresenceController extends Controller
                 } else {
                     return $this->redirectToRoute('office_presence_interface');
                 }
-            } elseif ($startHour->format('a') == 'pm') {
+            } elseif ('pm' == $startHour->format('a')) {
                 /**
                  * ALGORITHM FOR NIGHT SHIFT.
                  */
@@ -395,17 +387,17 @@ class PresenceController extends Controller
                     ->where('up.userId = :id')
                     ->andWhere('up.createdAt LIKE :givenDate')
                     ->setParameter('id', $user->getId())
-                    ->setParameter('givenDate', '%' . $dateNow->format('Y-m-d') . '%')->getQuery()->getResult();
+                    ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
                 $toleranceStart = $startTime->sub(new \DateInterval('PT1H'));
                 $toleranceEnd = $startTime->add(new \DateInterval('PT15M'));
-                if (count($tmpPresence) == 0) { // NORMAL FOR JOB START
-                    if ($dateNow > $toleranceStart ) {
+                if (0 == count($tmpPresence)) { // NORMAL FOR JOB START
+                    if ($dateNow > $toleranceStart) {
                         $presenceData->setState(-1);
                     } elseif ($dateNow >= \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'))) {
                         $presenceData->setState(1); // NORMAL FOR JOB DONE
                     }
-                } elseif (count($tmpPresence) == 1) {
-                    if ($tmpPresence->getState() == 1) {
+                } elseif (1 == count($tmpPresence)) {
+                    if (1 == $tmpPresence->getState()) {
                         $presenceData->setState(-1);
                     } else {
                         $presenceData->setState(-1);
@@ -420,7 +412,7 @@ class PresenceController extends Controller
 //            echo $this->redirectToRoute('office_presence_interface');
 //            echo 'http://' . $request->headers->get('host') . $this->generateUrl('office_presence_interface');
 
-	return new Response();
+            return new Response();
         }
     }
 
@@ -442,7 +434,7 @@ class PresenceController extends Controller
         /*
          * Confusing algorithm start here
          */
-        if ($startHour->format('a') == 'am') { // For Morning shift
+        if ('am' == $startHour->format('a')) { // For Morning shift
             /**
              * ALGORITHM FOR MORNING SHIFT.
              */
@@ -450,20 +442,20 @@ class PresenceController extends Controller
                 ->where('up.userId = :userId')
                 ->andWhere('up.createdAt LIKE :givenDate')
                 ->setParameter('userId', $user->getId())
-                ->setParameter('givenDate', '%' . $dateNow->format('Y-m-d') . '%')->getQuery()->getResult();
+                ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
 
-            if (count($tmpPresence) == 0 && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
+            if (0 == count($tmpPresence) && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
                 // normal presence for job start
                 $presenceData->setState(-1);
-            } elseif (count($tmpPresence) == 0 && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
+            } elseif (0 == count($tmpPresence) && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
                 // if user forget to input when job start
                 $presenceData->setState(1);
-            } elseif (count($tmpPresence) == 1) { // normal presence for job done
+            } elseif (1 == count($tmpPresence)) { // normal presence for job done
                 $presenceData->setState(1);
             } else {
                 return 'Unknown error detected';
             }
-        } elseif ($startHour->format('a') == 'pm') {
+        } elseif ('pm' == $startHour->format('a')) {
             /**
              * ALGORITHM FOR NIGHT SHIFT.
              */
@@ -475,17 +467,17 @@ class PresenceController extends Controller
                 ->where('up.userId = :id')
                 ->andWhere('up.createdAt LIKE :givenDate')
                 ->setParameter('id', $user->getId())
-                ->setParameter('givenDate', '%' . $dateNow->format('Y-m-d') . '%')->getQuery()->getResult();
+                ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
             $toleranceStart = $startTime->sub(new \DateInterval('PT1H'));
             $toleranceEnd = $startTime->add(new \DateInterval('PT15M'));
-            if (count($tmpPresence) == 0) { // NORMAL FOR JOB START
+            if (0 == count($tmpPresence)) { // NORMAL FOR JOB START
                 if ($dateNow > $toleranceStart && $dateNow < $toleranceEnd) {
                     $presenceData->setState(-1);
                 } elseif ($dateNow >= \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'))) {
                     $presenceData->setState(1); // NORMAL FOR JOB DONE
                 }
-            } elseif (count($tmpPresence) == 1) {
-                if ($tmpPresence->getState() == 1) {
+            } elseif (1 == count($tmpPresence)) {
+                if (1 == $tmpPresence->getState()) {
                     $presenceData->setState(-1);
                 } else {
                     $presenceData->setState(0);
@@ -516,7 +508,7 @@ class PresenceController extends Controller
     {
         $manager = $this->getDoctrine()->getManager();
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $id = $request->get('user_id');
             $data = [];
             $dateNow = new \DateTime();
@@ -542,7 +534,6 @@ class PresenceController extends Controller
             $startHour = new \DateTime($shift->getStartTime()->format('H:i'));
 
             return new JsonResponse(Debug::dump($shift));
-            
 
 //            $manager->persist($presenceData);
 //            $manager->flush();

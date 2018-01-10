@@ -18,9 +18,9 @@ class UserPersonalServices
     {
         $kampret = $user->getStatus();
 
-        if ($kampret == 0) {
+        if (0 == $kampret) {
             $user->setStatus(1);
-        } elseif ($kampret == 1) {
+        } elseif (1 == $kampret) {
             $user->setStatus(2);
         } else {
             $user->setStatus(0);
@@ -31,7 +31,7 @@ class UserPersonalServices
     {
         $kampret = $user->getIsValidated();
 
-        if ($kampret == 1) {
+        if (1 == $kampret) {
             $user->setIsValidated(0);
         } else {
             $user->setIsValidated(1);
@@ -42,7 +42,7 @@ class UserPersonalServices
     {
         $kampret = $user->getIsActive();
 
-        if ($kampret == 1) {
+        if (1 == $kampret) {
             $user->setIsActive(0);
         } else {
             $user->setIsActive(1);

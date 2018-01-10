@@ -2,7 +2,6 @@
 
 namespace OfficeBundle\Controller;
 
-use Doctrine\Common\Util\Debug;
 use OfficeBundle\Entity\CompanyProfile;
 use OfficeBundle\Entity\Device;
 use OfficeBundle\Entity\Fingerprint;
@@ -10,7 +9,6 @@ use OfficeBundle\Entity\UserPersonal;
 use OfficeBundle\Form\DeviceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class FingerprintController extends Controller
 {
@@ -84,7 +82,7 @@ class FingerprintController extends Controller
 
             if ($penempatan instanceof CompanyProfile) {
                 $data = $this->getDoctrine()->getManager()->getRepository(UserPersonal::class)->findBy([
-                    'penempatan' => $loginUser->getPenempatan()->getId()
+                    'penempatan' => $loginUser->getPenempatan()->getId(),
                 ]);
             } else {
                 $data = null;
@@ -132,7 +130,7 @@ class FingerprintController extends Controller
             $fid = $manager->createQuery('SELECT e FROM OfficeBundle:Fingerprint e where e.userId = :id')
             ->setParameter('id', $user_id)->getArrayResult();
 
-            if (count($fid) == 0) {
+            if (0 == count($fid)) {
                 $user = $manager->getRepository(UserPersonal::class)->find($user_id);
 
                 $data = new Fingerprint();

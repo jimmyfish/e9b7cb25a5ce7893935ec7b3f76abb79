@@ -48,7 +48,7 @@ class AdminController extends Controller
             'notice',
             'data has been deleted'
         );
-        
+
 //        if (!file_exists($this->getParameter('profile_directory')['resource'].'/'.$data->getProfilePicture())) {
 //            unlink($this->getParameter('profile_directory')['resource'].'/'.$data->getProfilePicture());
 //        }
@@ -68,7 +68,7 @@ class AdminController extends Controller
 
         $shift = $em->getRepository(Shift::class)->findAll();
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserPersonal) {
                 $data->setTempatLahir($request->get('tempat_lahir'));
                 $data->setTempatTinggal($request->get('tempat_tinggal'));
@@ -104,7 +104,7 @@ class AdminController extends Controller
                     if (!empty($request->files->get('profile_picture'))) {
                         $file = $request->files->get('profile_picture');
 
-                        if ($file != null) {
+                        if (null != $file) {
                             $filename = md5(uniqid()).'.'.$file->guessExtension();
 
                             $exAllowed = array('jpg', 'png', 'jpeg');
@@ -179,7 +179,7 @@ class AdminController extends Controller
             'pakaian' => $arrPakaian,
             'penempatan' => $penempatan,
             'job' => $job,
-            'shift' => $shift
+            'shift' => $shift,
         ]);
     }
 
@@ -191,7 +191,7 @@ class AdminController extends Controller
 
         $data = $em->getRepository(UserJob::class)->findByUserId($user);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserJob) {
                 $data->setGolongan($request->get('golongan'));
                 $data->setJenjangPangkat($request->get('jenjang_pangkat'));
@@ -247,7 +247,7 @@ class AdminController extends Controller
             'data' => $data,
             'training' => $arrTraining,
             'start' => $arrStart,
-            'end' => $arrEnd
+            'end' => $arrEnd,
         ]);
     }
 
@@ -257,7 +257,7 @@ class AdminController extends Controller
 
         $user = $em->getRepository(UserPersonal::class)->findById($id);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $user->setIsvalidated(1);
 
             $em->persist($user);
@@ -320,7 +320,7 @@ class AdminController extends Controller
 
         $data = $em->getRepository(UserFamily::class)->findByUserId($user);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof UserFamily) {
                 $data->setUserId($user);
                 $data->setPasangan(json_encode($request->get('pasangan')));
@@ -472,20 +472,20 @@ class AdminController extends Controller
         $data = $em->getRepository(UserPersonal::class)->findById($id);
 
         if ($data instanceof UserPersonal) {
-            if ($request->getMethod() == 'POST') {
+            if ('POST' == $request->getMethod()) {
                 $data->setStatus($request->get('status'));
 
                 $em->persist($data);
                 $em->flush();
 
                 if ($data instanceof UserPersonal) {
-                    if ($data->getStatus() == 0) {
+                    if (0 == $data->getStatus()) {
                         return $this->redirect($this->generateUrl('office_admin_uji_coba'));
-                    } elseif ($data->getStatus() == 1) {
+                    } elseif (1 == $data->getStatus()) {
                         return $this->redirect($this->generateUrl('office_admin_kontrak'));
-                    } elseif ($data->getStatus() == 2) {
+                    } elseif (2 == $data->getStatus()) {
                         return $this->redirect($this->generateUrl('office_admin_pkwt'));
-                    } elseif ($data->getStatus() == 3) {
+                    } elseif (3 == $data->getStatus()) {
                         return $this->redirect($this->generateUrl('office_admin_pkwtt'));
                     } else {
                         return $this->redirect($this->generateUrl('office_admin_tetap'));
@@ -503,7 +503,7 @@ class AdminController extends Controller
 
         $data = $em->getRepository(UserPersonal::class)->findById($id);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             UserPersonalServices::changeValidate($data);
 
             $em->persist($data);
@@ -526,7 +526,7 @@ class AdminController extends Controller
 
         $data = $em->getRepository(UserPersonal::class)->findById($id);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             UserPersonalServices::changeActive($data);
 
             $em->persist($data);
@@ -613,7 +613,7 @@ class AdminController extends Controller
 
         $data = $em->getRepository(CompanyProfile::class)->find($id);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof CompanyProfile) {
                 $data->setNamaPerusahaan($request->get('nama-perusahaan'));
                 $data->setIsDeleted(0);
@@ -641,17 +641,17 @@ class AdminController extends Controller
 
         $newAdd = [];
 
-        if ($request->getMethod() == 'POST') {
-                $data = new Attachment();
-                $data->setUserId($user);
-                $data->setTypeForm($request->get('type-form'));
-                $data->setAbsen($request->get('absen'));
-                $data->setDescription($request->get('description'));
-                $data->setTglMulai(date('Y-m-d', strtotime($request->get('tanggal_mulai'))));
-                $data->setTglAkhir(date('Y-m-d', strtotime($request->get('tanggal_akhir'))));
-                $data->setHashDate($userData, $request->get('tanggal_mulai'), $request->get('tanggal_akhir'));
-                $data->setIsValidated(0);
-                $data->setCreatedAt(new \DateTime());
+        if ('POST' == $request->getMethod()) {
+            $data = new Attachment();
+            $data->setUserId($user);
+            $data->setTypeForm($request->get('type-form'));
+            $data->setAbsen($request->get('absen'));
+            $data->setDescription($request->get('description'));
+            $data->setTglMulai(date('Y-m-d', strtotime($request->get('tanggal_mulai'))));
+            $data->setTglAkhir(date('Y-m-d', strtotime($request->get('tanggal_akhir'))));
+            $data->setHashDate($userData, $request->get('tanggal_mulai'), $request->get('tanggal_akhir'));
+            $data->setIsValidated(0);
+            $data->setCreatedAt(new \DateTime());
 
             array_push($newAdd, $data);
 
@@ -689,7 +689,7 @@ class AdminController extends Controller
         return $this->render('OfficeBundle:admin:create-form.html.twig', [
             'data' => $data,
             'nik' => $user->getNik(),
-            'username' => $user->getUsername()
+            'username' => $user->getUsername(),
         ]);
     }
 
@@ -722,7 +722,7 @@ class AdminController extends Controller
 
         return $this->render('OfficeBundle:admin:list-form.html.twig', [
             'data' => $data,
-            'dayOff' => $dayOff->getQuery()->getResult()
+            'dayOff' => $dayOff->getQuery()->getResult(),
         ]);
     }
 
@@ -752,7 +752,7 @@ class AdminController extends Controller
 
         $data = $em->getRepository(Attachment::class)->findByUserId($user);
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             if ($data instanceof Attachment) {
                 $data->setTypeForm($request->get('type-form'));
                 $data->setDescription($request->get('description'));
@@ -947,27 +947,26 @@ class AdminController extends Controller
             'ibu' => $arrIbu,
             'merAyah' => $merAyah,
             'merIbu' => $merIbu,
-            'training' => $arrTraining
+            'training' => $arrTraining,
         ]);
     }
 
     public function beforeAllReportAction(Request $request)
     {
-
         $em = $this->getDoctrine()->getEntityManager();
 
         $penempatan = $em->getRepository(CompanyProfile::class)->findAll();
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $session = $request->getSession();
 
-            $session->set('test', ['value'=>$request->get('penempatan')]);
+            $session->set('test', ['value' => $request->get('penempatan')]);
 
             return $this->redirect($this->generateUrl('office_admin_all_report'));
         }
 
         return $this->render('OfficeBundle:admin:before-report.html.twig', [
-            'penempatan' => $penempatan
+            'penempatan' => $penempatan,
         ]);
     }
 
@@ -1005,7 +1004,7 @@ class AdminController extends Controller
         $arrTraining = [];
 
         $arrKerja = [];
-        
+
         $arrStart = [];
         $arrEnd = [];
 
@@ -1017,14 +1016,12 @@ class AdminController extends Controller
                 }
             }
 
-
             $kerja = json_decode($job[$i]->getKontrakKerja());
             if (isset($kerja)) {
                 foreach ($kerja as $item) {
                     array_push($arrKerja, $item);
                 }
             }
-
 
             if (isset($arrKerja[0])) {
                 foreach ($arrKerja[0] as $item) {
@@ -1052,7 +1049,7 @@ class AdminController extends Controller
 
         $merAyah = [];
         $merIbu = [];
-        
+
         for ($i = 0; $i < count($family); ++$i) {
             $pasangan = json_decode($family[$i]->getPasangan());
 
@@ -1062,7 +1059,6 @@ class AdminController extends Controller
                 }
             }
 
-
             $orangTua = json_decode($family[$i]->getOrangTua());
 
             if (isset($orangTua)) {
@@ -1070,7 +1066,6 @@ class AdminController extends Controller
                     array_push($arrOrangTua, $item);
                 }
             }
-
 
             if (isset($arrOrangTua[0])) {
                 foreach ($arrOrangTua[0] as $item) {
@@ -1084,7 +1079,6 @@ class AdminController extends Controller
                 }
             }
 
-
             $mertua = json_decode($family[$i]->getMertua());
 
             if (isset($mertua)) {
@@ -1092,7 +1086,6 @@ class AdminController extends Controller
                     array_push($arrMertua, $item);
                 }
             }
-
 
             if (isset($arrMertua[0])) {
                 foreach ($arrMertua[0] as $item) {
@@ -1120,7 +1113,7 @@ class AdminController extends Controller
             'ibu' => $arrIbu,
             'merAyah' => $merAyah,
             'merIbu' => $merIbu,
-            'training' => $arrTraining
+            'training' => $arrTraining,
         ]);
     }
 

@@ -27,11 +27,11 @@ class PresenceControllerOld extends Controller
             array_push($yearPop, date('Y', strtotime('-'.$i.' year')));
         }
 
-        if ($request->get('month') != null) {
+        if (null != $request->get('month')) {
             $givenMonth = $request->get('month');
         }
 
-        if ($request->get('year') != null) {
+        if (null != $request->get('year')) {
             $givenYear = $request->get('year');
         }
 
@@ -51,7 +51,7 @@ class PresenceControllerOld extends Controller
             'year' => $givenYear,
         ]);
 
-        if ($request->get('month') != null) {
+        if (null != $request->get('month')) {
             $dataAbsen = $manager->createQueryBuilder()
                 ->select('p')
                 ->from('OfficeBundle:UserPresence', 'p')
@@ -164,7 +164,7 @@ class PresenceControllerOld extends Controller
         $verifyUrl = 'http://'.$request->headers->get('host').$this->generateUrl('office_presence_do');
         $getAcUrl = 'http://'.$request->headers->get('host').$this->generateUrl('office_presence_user_get_ac');
 
-        if ($data != null) {
+        if (null != $data) {
             echo "$id;".$finger->getFingerData().';SecurityKey;10;'.$verifyUrl.';'.$getAcUrl.';extraParams';
         }
     }
@@ -210,7 +210,7 @@ class PresenceControllerOld extends Controller
             /*
              * Confusing algorithm start here
              */
-            if ($startHour->format('a') == 'am') { // For Morning shift
+            if ('am' == $startHour->format('a')) { // For Morning shift
                 /**
                  * ALGORITHM FOR MORNING SHIFT.
                  */
@@ -220,19 +220,19 @@ class PresenceControllerOld extends Controller
                     ->setParameter('userId', $user->getId())
                     ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
 
-                if (count($tmpPresence) == 0 && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
+                if (0 == count($tmpPresence) && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
                     // normal presence for job start
                     $presenceData->setState(-1);
-                } elseif (count($tmpPresence) == 0 && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
+                } elseif (0 == count($tmpPresence) && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
                     $presenceData->setDescription('Lupa absen masuk');
                     $presenceData->setState(1);
-                } elseif (count($tmpPresence) == 1) { // normal presence for job done
+                } elseif (1 == count($tmpPresence)) { // normal presence for job done
                     $presenceData->setState(1);
                 } else {
                     $presenceData->setState(1);
                     $presenceData->setDescription('Melebihi batas');
                 }
-            } elseif ($startHour->format('a') == 'pm') {
+            } elseif ('pm' == $startHour->format('a')) {
                 /**
                  * ALGORITHM FOR NIGHT SHIFT.
                  */
@@ -247,14 +247,14 @@ class PresenceControllerOld extends Controller
                     ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
                 $toleranceStart = $startTime->sub(new \DateInterval('PT1H'));
                 $toleranceEnd = $startTime->add(new \DateInterval('PT15M'));
-                if (count($tmpPresence) == 0) { // NORMAL FOR JOB START
+                if (0 == count($tmpPresence)) { // NORMAL FOR JOB START
                     if ($dateNow > $toleranceStart && $dateNow < $toleranceEnd) {
                         $presenceData->setState(-1);
                     } elseif ($dateNow >= \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'))) {
                         $presenceData->setState(1); // NORMAL FOR JOB DONE
                     }
-                } elseif (count($tmpPresence) == 1) {
-                    if ($tmpPresence->getState() == 1) {
+                } elseif (1 == count($tmpPresence)) {
+                    if (1 == $tmpPresence->getState()) {
                         $presenceData->setState(-1);
                     } else {
                         $presenceData->setState(-1);
@@ -286,7 +286,7 @@ class PresenceControllerOld extends Controller
         /*
          * Confusing algorithm start here
          */
-        if ($startHour->format('a') == 'am') { // For Morning shift
+        if ('am' == $startHour->format('a')) { // For Morning shift
             /**
              * ALGORITHM FOR MORNING SHIFT.
              */
@@ -296,18 +296,18 @@ class PresenceControllerOld extends Controller
                 ->setParameter('userId', $user->getId())
                 ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
 
-            if (count($tmpPresence) == 0 && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
+            if (0 == count($tmpPresence) && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
                 // normal presence for job start
                 $presenceData->setState(-1);
-            } elseif (count($tmpPresence) == 0 && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
+            } elseif (0 == count($tmpPresence) && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
                 // if user forget to input when job start
                 $presenceData->setState(1);
-            } elseif (count($tmpPresence) == 1) { // normal presence for job done
+            } elseif (1 == count($tmpPresence)) { // normal presence for job done
                 $presenceData->setState(1);
             } else {
                 return 'Unknown error detected';
             }
-        } elseif ($startHour->format('a') == 'pm') {
+        } elseif ('pm' == $startHour->format('a')) {
             /**
              * ALGORITHM FOR NIGHT SHIFT.
              */
@@ -322,14 +322,14 @@ class PresenceControllerOld extends Controller
                 ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
             $toleranceStart = $startTime->sub(new \DateInterval('PT1H'));
             $toleranceEnd = $startTime->add(new \DateInterval('PT15M'));
-            if (count($tmpPresence) == 0) { // NORMAL FOR JOB START
+            if (0 == count($tmpPresence)) { // NORMAL FOR JOB START
                 if ($dateNow > $toleranceStart && $dateNow < $toleranceEnd) {
                     $presenceData->setState(-1);
                 } elseif ($dateNow >= \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'))) {
                     $presenceData->setState(1); // NORMAL FOR JOB DONE
                 }
-            } elseif (count($tmpPresence) == 1) {
-                if ($tmpPresence->getState() == 1) {
+            } elseif (1 == count($tmpPresence)) {
+                if (1 == $tmpPresence->getState()) {
                     $presenceData->setState(-1);
                 } else {
                     $presenceData->setState(0);
@@ -360,7 +360,7 @@ class PresenceControllerOld extends Controller
     {
         $manager = $this->getDoctrine()->getManager();
 
-        if ($request->getMethod() === 'POST') {
+        if ('POST' === $request->getMethod()) {
             $id = $request->get('user_id');
             $data = [];
             $dateNow = new \DateTime();
@@ -385,12 +385,11 @@ class PresenceControllerOld extends Controller
             $presenceData = UserPresence::createDefault($user, $dateNow, $shift);
             $startHour = new \DateTime($shift->getStartTime()->format('H:i'));
 
-            /**
+            /*
              * Confusing algorithm start here
              * don't dare to change.
              */
-            if ($startHour->format('a') == 'am') { // For Morning shift
-
+            if ('am' == $startHour->format('a')) { // For Morning shift
                 /**
                  * ALGORITHM FOR MORNING SHIFT.
                  */
@@ -402,20 +401,18 @@ class PresenceControllerOld extends Controller
 
                 $endTime = new \DateTime($shift->getEndTime()->format('H:i'));
 
-                if (count($tmpPresence) == 0 && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
-
-                    /**
+                if (0 == count($tmpPresence) && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
+                    /*
                      * Normal for job start.
                      */
                     $presenceData->setState(-1);
                     $this->get('session')->getFlashBag()->add(
                         'presence_message',
-                        'Terima kasih <strong>' . $user->getNama() .
-                        '</strong>, absensi <strong>MASUK</strong> kamu telah diterima pada ' . $dateNow->format('h:i A')
+                        'Terima kasih <strong>'.$user->getNama().
+                        '</strong>, absensi <strong>MASUK</strong> kamu telah diterima pada '.$dateNow->format('h:i A')
                     );
-                } elseif (count($tmpPresence) == 0 && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
-
-                    /**
+                } elseif (0 == count($tmpPresence) && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
+                    /*
                      * If user forget to input when job start
                      * while execute job end.
                      */
@@ -424,36 +421,34 @@ class PresenceControllerOld extends Controller
 
                     $this->get('session')->getFlashBag()->add(
                         'presence_message',
-                        'Terima kasih <strong>' . $user->getNama() .
-                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada ' . $dateNow->format('h:i A')
+                        'Terima kasih <strong>'.$user->getNama().
+                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada '.$dateNow->format('h:i A')
                     );
-                } elseif (count($tmpPresence) == 1 && $dateNow > $endTime) {
-
-                    /**
+                } elseif (1 == count($tmpPresence) && $dateNow > $endTime) {
+                    /*
                      * Normal presence for job done.
                      */
                     $presenceData->setState(1);
                     $this->get('session')->getFlashBag()->add(
                         'presence_message',
-                        'Terima kasih <strong>' . $user->getNama() .
-                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada ' . $dateNow->format('h:i A')
+                        'Terima kasih <strong>'.$user->getNama().
+                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada '.$dateNow->format('h:i A')
                     );
-                } elseif (count($tmpPresence) == 1 && $dateNow < $endTime) {
+                } elseif (1 == count($tmpPresence) && $dateNow < $endTime) {
                     if ($dateNow < $startHour->add(new \DateInterval('PT3H'))) {
-
-                        /**
+                        /*
                          * This statement to avoid multi-checklog when job start.
                          */
                         $this->get('session')->getFlashBag()->add(
                             'presence_failure',
-                            'Maaf, <strong>' . $user->getNama() .
+                            'Maaf, <strong>'.$user->getNama().
                             '</strong>. Absensi masuk kamu sudah kami terima sebelumnya.'
                         );
 
                         return $this->redirectToRoute('office_presence_legacy');
                     }
 
-                    /**
+                    /*
                      * When user decide to done the job earlier
                      * the Requirements is job must be start at least 3 hour after job start's time.
                      */
@@ -461,22 +456,23 @@ class PresenceControllerOld extends Controller
                     $presenceData->setDescription('PULANG LEBIH AWAL');
                     $this->get('session')->getFlashBag()->add(
                         'presence_message',
-                        'Terima kasih <strong>' . $user->getNama() .
-                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada ' . $dateNow->format('h:i A') . ', namun dengan status <strong>PULANG LEBIH AWAL</strong>'
+                        'Terima kasih <strong>'.$user->getNama().
+                        '</strong>, absensi <strong>PULANG</strong> kamu telah diterima pada '.$dateNow->format('h:i A').', namun dengan status <strong>PULANG LEBIH AWAL</strong>'
                     );
                 } else {
                     $this->get('session')->getFlashBag()->add(
                         'presence_failure',
-                        'Maaf, <strong>' . $user->getNama() .
+                        'Maaf, <strong>'.$user->getNama().
                         '</strong>. Absensi kamu gagal karena <strong>shift kamu belum terisi</strong>'
                     );
+
                     return $this->redirectToRoute('office_presence_legacy');
                 }
 
-                /**
+                /*
                  * Second algorithm for night shift.
                  */
-            } elseif ($startHour->format('a') == 'pm') {
+            } elseif ('pm' == $startHour->format('a')) {
                 $startTime = \DateTime::createFromFormat('H:i a', $shift->getStartTime()->format('H:i a'));
                 $endTime = \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'));
 
@@ -488,14 +484,14 @@ class PresenceControllerOld extends Controller
                     ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
                 $toleranceStart = $startTime->sub(new \DateInterval('PT1H'));
                 $toleranceEnd = $startTime->add(new \DateInterval('PT15M'));
-                if (count($tmpPresence) == 0) { // NORMAL FOR JOB START
+                if (0 == count($tmpPresence)) { // NORMAL FOR JOB START
                     if ($dateNow > $toleranceStart && $dateNow < $toleranceEnd) {
                         $presenceData->setState(-1);
                     } elseif ($dateNow >= \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'))) {
                         $presenceData->setState(1); // NORMAL FOR JOB DONE
                     }
-                } elseif (count($tmpPresence) == 1) {
-                    if ($tmpPresence->getState() == 1) {
+                } elseif (1 == count($tmpPresence)) {
+                    if (1 == $tmpPresence->getState()) {
                         $presenceData->setState(-1);
                     } else {
                         $presenceData->setState(0);
