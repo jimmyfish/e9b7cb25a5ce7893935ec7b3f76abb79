@@ -8,10 +8,12 @@
 
 namespace OfficeBundle\Controller;
 
+use Doctrine\Common\Util\Debug;
 use OfficeBundle\Entity\Shift;
 use OfficeBundle\Entity\UserPersonal;
 use OfficeBundle\Entity\UserPresence;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -130,7 +132,7 @@ class LegacyChecklogController extends Controller
                             $presenceData->setState(-1);
                             $this->addFlash(
                                 'presence_success',
-                                'Absensi kamu pada '.$dateNow->format('H:i').
+                                'Absensi anda pada '.$dateNow->format('H:i').
                                 ' kami terima.'
                             );
                         } elseif ($dateNow > $startHour && $dateNow < $endTime) {
@@ -142,11 +144,12 @@ class LegacyChecklogController extends Controller
                                 $presenceData->setDescription('Terlambat');
                                 $this->addFlash(
                                     'presence_info',
-                                    'Absensi kamu pada '.$dateNow->format('H:i').
+                                    'Absensi anda pada '.$dateNow->format('H:i').
                                     ' kami terima, tetapi dengan status terlambat'
                                 );
                             }
-                        } elseif ($dateNow > $startHour && $dateNow < $startHour->add(new \DateInterval('PT'.$interval.'H'))) {
+                        } else if ($dateNow > $startHour && $dateNow < $startHour->add(new \DateInterval('PT'.$interval.'H'))) {
+                            return new Response('HUBUNGI ADMIN');
                         }
                     } else {
                         /*
@@ -156,7 +159,7 @@ class LegacyChecklogController extends Controller
                             $presenceData->setState(1);
                             $this->addFlash(
                                 'presence_success',
-                                'Absensi kamu pada '.$dateNow->format('H:i').
+                                'Absensi anda pada '.$dateNow->format('H:i').
                                 ' kami terima'
                             );
                         }
@@ -167,6 +170,104 @@ class LegacyChecklogController extends Controller
                          * Filtering for cross-day presence shift.
                          * Midnight start and daylight end.
                          */
+                        $secondInterval =  round(1/2 * ($interval));
+
+                        $tmpPresence = null;
+
+                        /**
+                         * Fill the tmpPresence
+                         */
+                        if ($dateNow->format('G') > 12) {
+                            $tmpPresence = $manager->getRepository(
+                                UserPresence::class
+                            )->createQueryBuilder('up')
+                                ->where('up.userId = :userId')
+                                ->andWhere('up.createdAt LIKE :givenDate')
+                                ->setParameter('userId', $user->getId())
+                                ->setParameter(
+                                    'givenDate',
+                                    '%'.$dateNow->format('Y-m-d').'%'
+                                )->getQuery()->getResult();
+                        } else {
+                            $negativeInterval = new \DateInterval('P1D');
+                            $negativeInterval->invert = true;
+
+                            $dateYesterday = $dateNow->add($negativeInterval);
+
+                            $tmpPresence = $manager->getRepository(
+                                UserPresence::class
+                            )->createQueryBuilder('up')
+                                ->where('up.userId = :userId')
+                                ->andWhere('up.createdAt LIKE :givenDate')
+                                ->setParameter('userId', $user->getId())
+                                ->setParameter(
+                                    'givenDate',
+                                    '%'.$dateYesterday->format('Y-m-d').'%'
+                                )->getQuery()->getResult();
+                        }
+
+                        if ($dateNow < $startHour) {
+                            // Statement 7
+                            $presenceData->setState(-1);
+                            $flash = array(
+                                'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                    ' telah kami terima.'
+                            );
+                        } else {
+                            // Statement 8
+                            $presenceData->setState(-1);
+                            $flash = array(
+                                'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                    ' telah kami terima.'
+                            );
+
+                            if ($dateNow > $startHour->add(new \DateInterval('PT15M'))) {
+                                if ($dateNow < $startHour->add(new \DateInterval('PT'.$secondInterval.'H'))) {
+                                    // Statement 9
+                                    $presenceData->setDescription('TERLAMBAT');
+                                    $flash = array(
+                                        'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                            ' telah kami terima. Namun dengan status '. $presenceData->getDescription()
+                                    );
+                                } else {
+                                    // Lebih dari jam masuk, jam toleransi dan interval.
+                                    if ($dateNow < $endTime) {
+                                        $presenceData->setState(1);
+                                        if (count($tmpPresence) == 0) {
+                                            // Statement 10a
+                                            $presenceData->setDescription('PULANG LEBIH AWAL, LUPA CHECKLOG');
+                                            $flash = array(
+                                                'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                                    ' telah kami terima. Namun dengan status '. $presenceData->getDescription()
+                                            );
+                                        } else {
+                                            // Statement 10b
+                                            $presenceData->setDescription('PULANG LEBIH AWAL');
+                                            $flash = array(
+                                                'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                                    ' telah kami terima. Namun dengan status '. $presenceData->getDescription()
+                                            );
+                                        }
+                                    } else {
+                                        $presenceData->setState(1);
+                                        $flash = array(
+                                            'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                                ' telah kami terima.'
+                                        );
+
+                                        if (count($tmpPresence) == 0) {
+                                            // Statement 10c
+                                            $presenceData->setDescription('LUPA CHECKLOG MASUK');
+                                            $flash = array(
+                                                'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                                    ' telah kami terima. Namun dengan status '. $presenceData->getDescription()
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                     } else {
                         /*
                          * This is for normal afternoon presence.
@@ -187,7 +288,7 @@ class LegacyChecklogController extends Controller
                                 // Statement 1
                                 $presenceData->setState(-1);
                                 $flash = array(
-                                    'presence_success' => 'Absensi kamu pada '.$dateNow->format('H:i').
+                                    'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
                                         ' kami terima',
                                 );
                             }
@@ -196,7 +297,7 @@ class LegacyChecklogController extends Controller
                                 // Statement 2
                                 $presenceData->setState(-1);
                                 $flash = array(
-                                    'presence_success' => 'Absensi kamu pada '.$dateNow->format('H:i').
+                                    'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
                                         ' kami terima',
                                 );
                             }
@@ -207,7 +308,7 @@ class LegacyChecklogController extends Controller
                                     $presenceData->setState(-1);
                                     $presenceData->setDescription('MASUK TERLAMBAT');
                                     $flash = array(
-                                        'presence_info' => 'Absensi kamu pada '.$dateNow->format('H:i').
+                                        'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
                                             ' kami terima, tetapi dengan status terlambat',
                                     );
                                 }
@@ -224,7 +325,7 @@ class LegacyChecklogController extends Controller
                                     $presenceData->setState(1);
                                     $presenceData->setDescription('PULANG LEBIH AWAL');
                                     $flash = array(
-                                        'presence_info' => 'Absensi kamu pada '.$dateNow->format('H:i').
+                                        'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
                                             ' kami terima, pulang lebih awal dan lupa checklog masuk',
                                     );
                                 }
@@ -234,7 +335,7 @@ class LegacyChecklogController extends Controller
                                 // Statement 5
                                 $presenceData->setState(1);
                                 $flash = array(
-                                    'presence_info' => 'Memutuskan pulang lebih awal ?. Absensi kamu pada '.$dateNow->format('H:i').
+                                    'presence_info' => 'Memutuskan pulang lebih awal ?. Absensi anda pada '.$dateNow->format('H:i').
                                         ' kami terima.',
                                 );
                             }
@@ -243,7 +344,7 @@ class LegacyChecklogController extends Controller
                                 // Statement 6
                                 $presenceData->setState(1);
                                 $flash = array(
-                                    'presence_success' => 'Absensi kamu pada '.$dateNow->format('H:i').
+                                    'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
                                         ' kami terima.',
                                 );
                             }
@@ -270,6 +371,8 @@ class LegacyChecklogController extends Controller
                     'Data anda tidak terekam, silahkan hubungi admin'
                 );
             }
+
+            return new Response();
         }
 
         $data = $manager->createQuery(
