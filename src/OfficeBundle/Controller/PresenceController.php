@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Yaml\Yaml;
 
 class PresenceController extends Controller
 {
@@ -253,6 +254,12 @@ class PresenceController extends Controller
         $userdata = null;
         $presenceData = null;
 
+        try {
+            $notif = Yaml::parse(file_get_contents(dirname(__DIR__).'/notification.yml'));
+        } catch (\Exception $e) {
+            $notif = null;
+        }
+
         if (null != $request->get('userlog')) {
             $userdata = $this->getDoctrine()->getManager()->getRepository(UserPersonal::class)->findOneBy(['username' => $request->get('userlog')]);
 
@@ -271,7 +278,11 @@ class PresenceController extends Controller
                 ->setMaxResults(1)->orderBy('u.id', 'DESC')->getQuery()->getResult();
         }
 
-        return $this->render('OfficeBundle:presence:core.html.twig', ['userdata' => $userdata, 'presenceData' => $presenceData]);
+        return $this->render('OfficeBundle:presence:core.html.twig', [
+            'userdata' => $userdata,
+            'presenceData' => $presenceData,
+            'notif' => $notif,
+        ]);
     }
 
     public function presenceProcessAction(Request $request, $username)
@@ -634,17 +645,16 @@ class PresenceController extends Controller
                 $manager->persist($presenceData);
                 $manager->flush();
 
-                foreach ($flash as $key => $value) {
-                    $this->addFlash(
-                        $key,
-                        $value
-                    );
-                }
             } catch (\Exception $e) {
-                $this->addFlash(
-                    'presence_error',
-                    'Data anda tidak terekam, silahkan hubungi admin'
-                );
+                $flash['presence_failure'] = 'Data anda tidak terekam, silahkan hubungi Admin';
+            }
+
+            foreach ($flash as $key => $value) {
+                $ymlarray = [$key => $value];
+
+                $ymlDump = Yaml::dump($ymlarray);
+
+                $open = file_put_contents(dirname(__DIR__).'/notification.yml', $ymlDump);
             }
             
             return new Response();
@@ -728,15 +738,9 @@ class PresenceController extends Controller
 
     public function dummyDataAction()
     {
-        $manager = $this->getDoctrine()->getManager();
+        $value = Yaml::parse(file_get_contents(dirname(__DIR__).'/menu.yml'));
 
-        $data = new Dummy();
-        $data->setDescription('Something');
-
-        $manager->persist($data);
-        $manager->flush();
-
-        return 'ok';
+        return new Response(var_dump($value));
     }
 
     public function legacyChecklogAction(Request $request)

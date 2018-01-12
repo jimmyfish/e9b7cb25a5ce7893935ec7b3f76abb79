@@ -17,3 +17,5 @@ bower_components/
 .php_cs.cache
 test/
 web/uploads/images/profile
+src/OfficeBundle/notification.yml
+web/*.yml

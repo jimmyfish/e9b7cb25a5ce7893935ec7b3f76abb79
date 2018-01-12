@@ -20,22 +20,24 @@
 
                 <a href="" id="submit_presence" onclick="startTimer()">Submit</a>
             </div>
-            
-            {% for message in app.session.getFlashBag.get('presence_success') %}
-                <div class="alert alert-success">
-                    <span style="color:#fff">{{ message }}.</span>
-                </div>
-            {% endfor %}
-            {% for message in app.session.getFlashBag.get('presence_failure') %}
-                <div class="alert alert-warning">
-                    <span style="color:#444">{{ message|raw }}.</span>
-                </div>
-            {% endfor %}
-            {% for message in app.session.getFlashBag.get('presence_info') %}
-                <div class="alert alert-info">
-                    <span style="color:#fff">{{ message }}.</span>
-                </div>
-            {% endfor %}
+
+            {% if (notif is not null) %}
+                {% for ntfKey, ntfValue in notif %}
+                    {% if ntfKey == 'presence_success' %}
+                        <div class="alert alert-success">
+                            <span style="color:#444">{{ ntfValue }}.</span>
+                        </div>
+                    {% elseif ntfKey == 'presence_info' %}
+                        <div class="alert alert-info">
+                            <span style="color:#fff">{{ ntfValue }}.</span>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger">
+                            <span style="color:#fff">{{ ntfValue }}.</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -24,6 +24,8 @@
                     <input type="submit" value="Absen" class="btn btn-primary btn-block">
                 </form>
             </div>
+
+            {{ dump(app.session.getFlashBag()) }}
             {% for message in app.session.getFlashBag.get('presence_success') %}
                 <div class="alert alert-success">
                     <span style="color:#fff">{{ message }}.</span>
