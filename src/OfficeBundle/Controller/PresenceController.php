@@ -325,93 +325,328 @@ class PresenceController extends Controller
             // Init new UserPresence
             $presenceData = UserPresence::createDefault($user, $dateNow, $shift);
             $startHour = new \DateTime($shift->getStartTime()->format('H:i'));
+            
+            // Init new UserPresence
+            $presenceData = UserPresence::createDefault($user, $dateNow, $shift);
+            $startHour = new \DateTimeImmutable($shift->getStartTime()->format('H:i'));
+            $startStmp = strtotime($shift->getStartTime()->format('H:i'));
+            $endHour = new \DateTimeImmutable($shift->getEndTime()->format('H:i'));
+            $endStmp = strtotime($shift->getEndTime()->format('H:i'));
 
-            /*
-             * Confusing algorithm start here
-             */
-            if ('am' == $startHour->format('a')) { // For Morning shift
-                /**
-                 * ALGORITHM FOR MORNING SHIFT.
-                 */
-                $tmpPresence = $manager->getRepository(UserPresence::class)->createQueryBuilder('up')
+            if ($endStmp < $startStmp) {
+                $endStmp = $endStmp + (24 * 3600);
+            }
+            
+            $flash = [];
+
+            $interval = round(abs($endStmp - $startStmp) / 3600, 2);
+
+            if (1 == $shift->getOffice()) { // Shift Kantor
+                $tmpPresence = $manager->getRepository(
+                    UserPresence::class
+                )->createQueryBuilder('up')
                     ->where('up.userId = :userId')
                     ->andWhere('up.createdAt LIKE :givenDate')
                     ->setParameter('userId', $user->getId())
-                    ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
+                    ->setParameter(
+                        'givenDate',
+                        '%'.$dateNow->format('Y-m-d').'%'
+                    )->getQuery()->getResult();
 
-                $endTime = new \DateTime($shift->getEndTime()->format('H:i'));
+                $endTime = new \DateTimeImmutable($shift->getEndTime()->format('H:i'));
 
-                if (0 == count($tmpPresence) && $dateNow < $startHour->add(new \DateInterval('PT1H'))) {
-                    /*
-                     * Normal for job start.
-                     */
+                if (0 == count($tmpPresence)) {
                     $presenceData->setState(-1);
-                } elseif (0 == count($tmpPresence) && $dateNow > $startHour->add(new \DateInterval('PT6H'))) {
-                    /*
-                     * If user forget to input when job start
-                     * while execute job end.
-                     */
-                    $presenceData->setState(1);
-                    $presenceData->setDescription('LUPA CHECKLOG MASUK');
-                } elseif (1 == count($tmpPresence) && $dateNow > $endTime) {
-                    /*
-                     * Normal presence for job done.
-                     */
-                    $presenceData->setState(1);
-                } elseif (1 == count($tmpPresence) && $dateNow < $endTime) {
-                    if ($dateNow < $startHour->add(new \DateInterval('PT3H'))) {
-                        /*
-                         * This statement to avoid multi-checklog when job start.
-                         */
-                        return $this->redirectToRoute('office_presence_interface');
-                    }
+                    
+                    $flash = array(
+                        'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                        ' kami terima.',
+                    );
 
-                    /*
-                     * When user decide to done the job earlier
-                     * the Requirements is job must be start at least 3 hour after job start's time.
-                     */
-                    $presenceData->setState(1);
-                    $presenceData->setDescription('PULANG LEBIH AWAL');
-                } else {
-                    return $this->redirectToRoute('office_presence_interface');
-                }
-            } elseif ('pm' == $startHour->format('a')) {
-                /**
-                 * ALGORITHM FOR NIGHT SHIFT.
-                 */
-                $startTime = \DateTime::createFromFormat('H:i a', $shift->getStartTime()->format('H:i a'));
-                $endTime = \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'));
-
-                $duration = ($endTime->getTimestamp() - $startTime->getTimestamp()) / 3600;
-                $tmpPresence = $manager->getRepository(UserPresence::class)->createQueryBuilder('up')
-                    ->where('up.userId = :id')
-                    ->andWhere('up.createdAt LIKE :givenDate')
-                    ->setParameter('id', $user->getId())
-                    ->setParameter('givenDate', '%'.$dateNow->format('Y-m-d').'%')->getQuery()->getResult();
-                $toleranceStart = $startTime->sub(new \DateInterval('PT1H'));
-                $toleranceEnd = $startTime->add(new \DateInterval('PT15M'));
-                if (0 == count($tmpPresence)) { // NORMAL FOR JOB START
-                    if ($dateNow > $toleranceStart) {
-                        $presenceData->setState(-1);
-                    } elseif ($dateNow >= \DateTime::createFromFormat('H:i a', $shift->getEndTime()->format('H:i a'))) {
-                        $presenceData->setState(1); // NORMAL FOR JOB DONE
+                    if ($dateNow > $endTime) {
+                        $presenceData->setState(1);
+                        $flash = array(
+                            'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                            ' kami terima, namun anda lupa checklog masuk',
+                        );
                     }
                 } elseif (1 == count($tmpPresence)) {
-                    if (1 == $tmpPresence->getState()) {
-                        $presenceData->setState(-1);
+                    $presenceData->setState(1);
+                    $flash = array(
+                        'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                        ' kami terima.',
+                    );
+
+                    if ($dateNow < $endTime && $dateNow > $startHour->add(new \DateInterval('PT'.$interval.'H'))) {
+                        $flash = array(
+                            'presence_info' => 'Memutuskan untuk pulang lebih awal',
+                        );
                     } else {
-                        $presenceData->setState(-1);
-                        $presenceData->setDescription('Malfungsi absen malam');
+                        $flash = array(
+                            'presence_info' => 'Data anda telah kami terima sebelumnya',
+                        );
                     }
                 }
+            } elseif (0 == $shift->getOffice()) {
+                $tmpPresence = $manager->getRepository(
+                    UserPresence::class
+                )->createQueryBuilder('up')
+                    ->where('up.userId = :userId')
+                    ->andWhere('up.createdAt LIKE :givenDate')
+                    ->setParameter('userId', $user->getId())
+                    ->setParameter(
+                        'givenDate',
+                        '%'.$dateNow->format('Y-m-d').'%'
+                    )->getQuery()->getResult();
+
+                $endTime = new \DateTimeImmutable($shift->getEndTime()->format('H:i'));
+
+                if ('am' == $startHour->format('a')) { // Absensi Shift 1
+                    if (0 == count($tmpPresence)) {
+                        /*
+                         * Datang Normal
+                         */
+                        if ($dateNow < $startHour->add(new \DateInterval('PT15M'))) {
+                            $presenceData->setState(-1);
+                            $flash = array(
+                                'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                ' kami terima.',
+                            );
+                        } elseif ($dateNow > $startHour && $dateNow < $endTime) {
+                            /*
+                             * Masuk Terlambat
+                             */
+                            if ($dateNow < $endTime) {
+                                $presenceData->setState(-1);
+                                $presenceData->setDescription('Terlambat');
+                                $flash = array(
+                                    'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                    ' kami terima, tetapi dengan status terlambat',
+                                );
+                            }
+                        } else if ($dateNow > $startHour && $dateNow < $startHour->add(new \DateInterval('PT'.$interval.'H'))) {
+                            return new Response('HUBUNGI ADMIN');
+                        }
+                    } else {
+                        /*
+                         * Pulang Normal
+                         */
+                        if ($dateNow > $endTime) {
+                            $presenceData->setState(1);
+                            $flash = array(
+                                'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                ' kami terima.',
+                            );
+                        }
+                    }
+                } elseif ('pm' == $startHour->format('a')) {
+                    if ($endTime->format('G') < '12') {
+                        /*
+                         * Filtering for cross-day presence shift.
+                         * Midnight start and daylight end.
+                         */
+                        $secondInterval =  round(1/2 * ($interval));
+
+                        $tmpPresence = null;
+
+                        /**
+                         * Fill the tmpPresence
+                         */
+                        if ($dateNow->format('G') > 12) {
+                            $tmpPresence = $manager->getRepository(
+                                UserPresence::class
+                            )->createQueryBuilder('up')
+                                ->where('up.userId = :userId')
+                                ->andWhere('up.createdAt LIKE :givenDate')
+                                ->setParameter('userId', $user->getId())
+                                ->setParameter(
+                                    'givenDate',
+                                    '%'.$dateNow->format('Y-m-d').'%'
+                                )->getQuery()->getResult();
+                        } else {
+                            $negativeInterval = new \DateInterval('P1D');
+                            $negativeInterval->invert = true;
+
+                            $dateYesterday = $dateNow->add($negativeInterval);
+
+                            $tmpPresence = $manager->getRepository(
+                                UserPresence::class
+                            )->createQueryBuilder('up')
+                                ->where('up.userId = :userId')
+                                ->andWhere('up.createdAt LIKE :givenDate')
+                                ->setParameter('userId', $user->getId())
+                                ->setParameter(
+                                    'givenDate',
+                                    '%'.$dateYesterday->format('Y-m-d').'%'
+                                )->getQuery()->getResult();
+                        }
+
+                        if ($dateNow < $startHour) {
+                            // Statement 7
+                            $presenceData->setState(-1);
+                            $flash = array(
+                                'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                    ' telah kami terima.'
+                            );
+                        } else {
+                            // Statement 8
+                            $presenceData->setState(-1);
+                            $flash = array(
+                                'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                    ' telah kami terima.'
+                            );
+
+                            if ($dateNow > $startHour->add(new \DateInterval('PT15M'))) {
+                                if ($dateNow < $startHour->add(new \DateInterval('PT'.$secondInterval.'H'))) {
+                                    // Statement 9
+                                    $presenceData->setDescription('TERLAMBAT');
+                                    $flash = array(
+                                        'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                            ' telah kami terima. Namun dengan status '. $presenceData->getDescription()
+                                    );
+                                } else {
+                                    // Lebih dari jam masuk, jam toleransi dan interval.
+                                    if ($dateNow < $endTime) {
+                                        $presenceData->setState(1);
+                                        if (count($tmpPresence) == 0) {
+                                            // Statement 10a
+                                            $presenceData->setDescription('PULANG LEBIH AWAL, LUPA CHECKLOG');
+                                            $flash = array(
+                                                'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                                    ' telah kami terima. Namun dengan status '. $presenceData->getDescription()
+                                            );
+                                        } else {
+                                            // Statement 10b
+                                            $presenceData->setDescription('PULANG LEBIH AWAL');
+                                            $flash = array(
+                                                'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                                    ' telah kami terima. Namun dengan status '. $presenceData->getDescription()
+                                            );
+                                        }
+                                    } else {
+                                        $presenceData->setState(1);
+                                        $flash = array(
+                                            'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                                ' telah kami terima.'
+                                        );
+
+                                        if (count($tmpPresence) == 0) {
+                                            // Statement 10c
+                                            $presenceData->setDescription('LUPA CHECKLOG MASUK');
+                                            $flash = array(
+                                                'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                                    ' telah kami terima. Namun dengan status '. $presenceData->getDescription()
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+                        /*
+                         * This is for normal afternoon presence.
+                         */
+                        $tmpPresence = $manager->getRepository(
+                            UserPresence::class
+                        )->createQueryBuilder('up')
+                            ->where('up.userId = :userId')
+                            ->andWhere('up.createdAt LIKE :givenDate')
+                            ->setParameter('userId', $user->getId())
+                            ->setParameter(
+                                'givenDate',
+                                '%'.$dateNow->format('Y-m-d').'%'
+                            )->getQuery()->getResult();
+
+                        if (0 == count($tmpPresence)) {
+                            if ($dateNow <= $startHour) {
+                                // Statement 1
+                                $presenceData->setState(-1);
+                                $flash = array(
+                                    'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                        ' kami terima',
+                                );
+                            }
+
+                            if ($dateNow > $startHour && $dateNow < $startHour->add(new \DateInterval('PT15M'))) {
+                                // Statement 2
+                                $presenceData->setState(-1);
+                                $flash = array(
+                                    'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                        ' kami terima',
+                                );
+                            }
+
+                            if ($dateNow > $startHour->add(new \DateInterval('PT15M'))) {
+                                if ($dateNow < $startHour->add(new \DateInterval('PT'.$interval.'H'))) {
+                                    // Statement 3
+                                    $presenceData->setState(-1);
+                                    $presenceData->setDescription('MASUK TERLAMBAT');
+                                    $flash = array(
+                                        'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                            ' kami terima, tetapi dengan status terlambat',
+                                    );
+                                }
+
+                                // Statement 4
+                                $presenceData->setState(-1);
+                                $flash = array(
+                                    'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                        ' kami terima, namun anda lupa checklog masuk',
+                                );
+
+                                if ($dateNow < $startHour->add(new \DateInterval('PT'.$interval * (3 / 4).'H'))) {
+                                    // Statement 4a
+                                    $presenceData->setState(1);
+                                    $presenceData->setDescription('PULANG LEBIH AWAL');
+                                    $flash = array(
+                                        'presence_info' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                            ' kami terima, pulang lebih awal dan lupa checklog masuk',
+                                    );
+                                }
+                            }
+                        } else {
+                            if ($dateNow < $endTime) {
+                                // Statement 5
+                                $presenceData->setState(1);
+                                $flash = array(
+                                    'presence_info' => 'Memutuskan pulang lebih awal ?. Absensi anda pada '.$dateNow->format('H:i').
+                                        ' kami terima.',
+                                );
+                            }
+
+                            if ($dateNow >= $endTime) {
+                                // Statement 6
+                                $presenceData->setState(1);
+                                $flash = array(
+                                    'presence_success' => 'Absensi anda pada '.$dateNow->format('H:i').
+                                        ' kami terima.',
+                                );
+                            }
+                        }
+                    }
+                }
+            } else {
+                return new Response('Ohno', 406);
             }
 
-            $manager->persist($presenceData);
-            $manager->flush();
+            try {
+                $manager->persist($presenceData);
+                $manager->flush();
 
-//            echo $this->redirectToRoute('office_presence_interface');
-//            echo 'http://' . $request->headers->get('host') . $this->generateUrl('office_presence_interface');
-
+                foreach ($flash as $key => $value) {
+                    $this->addFlash(
+                        $key,
+                        $value
+                    );
+                }
+            } catch (\Exception $e) {
+                $this->addFlash(
+                    'presence_error',
+                    'Data anda tidak terekam, silahkan hubungi admin'
+                );
+            }
+            
             return new Response();
         }
     }
