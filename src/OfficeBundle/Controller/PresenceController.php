@@ -193,6 +193,7 @@ class PresenceController extends Controller
             ->from('OfficeBundle:Attachment', 'a')
             ->where('a.userId = :userId')
             ->andWhere('MONTH(a.tglMulai) = :desireMonth')
+            ->andWhere('a.isValidated = 1')
             ->setParameter('userId', $request->get('id'))
             ->setParameter('desireMonth', $givenMonth)
             ->getQuery()->getResult();
