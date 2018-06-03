@@ -14,26 +14,6 @@
             <div class="row">
                 <div class="col-md-5">
                     <form action="" method="post">
-                        {#<div class="form-group">#}
-                            {#<label for="day-long">Lama cuti :</label>#}
-                            {#<div class="radio">#}
-                                {#<label>#}
-                                    {#<input type="radio" name="day-long" value="1">#}
-                                    {#<i class="input-helper"></i>#}
-                                    {#1 Hari#}
-                                {#</label>#}
-                            {#</div>#}
-                            {#<div class="clearfix"></div>#}
-                            {#<div class="radio">#}
-                                {#<label>#}
-                                    {#<input type="radio" name="day-long" value="2">#}
-                                    {#<i class="input-helper"></i>#}
-                                    {#Lebih dari 1 Hari#}
-                                {#</label>#}
-                            {#</div>#}
-                            {#<div class="clearfix"></div>#}
-                        {#</div>#}
-
                         <div id="input-time">
                             <div class="form-group">
                                 <label for="date-start">Tanggal Mulai :</label>
@@ -58,6 +38,7 @@
                                       class="form-control"></textarea>
                         </div>
                         <div class="form-group">
+                            <a href="{{ path('office_admin_dayoff_list_special') }}" class="btn btn-default">Daftar Cuti Bersama</a>
                             <input type="submit" value="Proses" class="btn btn-primary pull-right">
                         </div>
                     </form>

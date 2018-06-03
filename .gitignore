@@ -19,3 +19,4 @@ test/
 web/uploads/images/profile
 src/OfficeBundle/notification.yml
 web/*.yml
+web/config.php

@@ -62,3 +62,8 @@ office_admin_dayoff_list_jenis:
    path: /list-jenis-cuti
    defaults:
         _controller: OfficeBundle:DayOff:listDayType
+
+office_admin_dayoff_list_special:
+    path: /list-together
+    defaults:
+        _controller: OfficeBundle:DayOff/DayOffList:listSpecial
