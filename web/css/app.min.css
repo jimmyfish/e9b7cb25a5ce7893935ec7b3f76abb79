@@ -11472,7 +11472,7 @@ only screen and (min-resolution:2dppx) {
         transition: opacity;
         transition-duration: .3s
     }
-    
+
     .profile {
         display: table
     }

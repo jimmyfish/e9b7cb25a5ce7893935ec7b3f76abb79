@@ -1,114 +1,164 @@
 {% extends 'subLayout.html.twig' %}
+
+{% block customCSS %}
+    <style>
+        .printedfont {
+            font-size: 9px;
+        }
+
+        .paddingedtable {
+            padding: 5px !important;
+        }
+
+        .card__body {
+            padding-bottom: 15px !important;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <section id="content">
-        <button title="Cetak Laporan" type="button" onclick="print('printed-area')" class="btn btn-success hidden-print" style="vertical-align: middle;position: absolute;right:10px;border-radius: 0;"><i class="zmdi zmdi-print"></i></button>
+        <button title="Cetak Laporan" type="button" onclick="printPage()" class="btn btn-success hidden-print" style="vertical-align: middle;position: absolute;right:10px;border-radius: 0;">
+            <i class="zmdi zmdi-print"></i>
+        </button>
         <div id="printed-area">
-        <div class="card">
-            <div class="card__header" style="padding: 0 0 0 0;">
-                <p><h3 class="text-center" style="color: black;">Data Presensi Pegawai</h3></p>
+            <div class="card">
+                <div class="card__header" style="padding: 0 0 0 0;">
+                    <p>
+                        <h3 class="text-center" style="color: black;">Data Presensi Pegawai</h3>
+                    </p>
                 </div>
-            <div class="card__body" style="margin: 0 0 0 0; font-size: 11px;">
-                <div class="row">
-                    <div class="col-md-6">
-                        <table class="table table-bordered text-uppercase">
+                <div class="card__body" style="margin: 0 0 0 0;font-size: 11px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-bordered text-uppercase">
+                                <tbody>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <td>{{ user.nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nik</th>
+                                        <td>{{ user.nik }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Jabatan</th>
+                                        <td>
+                                            {% if (user.job is not null) %}
+                                                {{ user.job.jabatan }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Penempatan</th>
+                                        <td>
+                                            {% if (user.penempatan is not null) %}
+                                                {{ user.penempatan.namaPerusahaan }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-bordered" id="main__table">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="vertical-align: middle;" class="text-center">Tanggal</th>
+                                    <th colspan="4" class="text-center" width="50">Kehadiran</th>
+                                    <th width="55%" rowspan="2" style="vertical-align: middle;" class="text-center">Keterangan
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="text-center">Masuk</th>
+                                    <th colspan="2" class="text-center">Pulang</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                <tr>
-                                    <th>Nama</th>
-                                    <td>{{ user.nama }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Nik</th>
-                                    <td>{{ user.nik }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Jabatan</th>
-                                    <td>
-                                        {% if (user.job is not null) %}
-                                            {{ user.job.jabatan }}
+                                {% set i = 1 %}
+                                {% for dateInt in 1..monthCount %}
+                                    <tr {% if (holiday[dateInt] is defined) or ((dateInt ~ ' ' ~ variable.month ~ ' ' ~ variable.year)|date('D') == 'Sun') %} class="bg-danger text-light" {% endif %}>
+                                        <td class="text-center">{{ dateInt ~ ' ' ~ variable.month ~ ' ' ~ variable.year }}</td>
+                                        {% if (dataMasuk[dateInt] is defined) %}
+                                            <td class="text-center">
+                                                <span class="label label-success">ADA</span></td>
+                                            <td class="text-center">
+                                                <span class="label label-success">{{ dataMasuk[dateInt]['date']|date('H:i') }}</span>
+                                            </td>
+                                        {% else %}
+                                            <td class="text-center">
+                                                <span class="label label-warning">KOSONG</span></td>
+                                            <td class="text-center">-</td>
                                         {% endif %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Penempatan</th>
-                                    <td>
-                                        {% if(user.penempatan is not null) %}
-                                            {{ user.penempatan.namaPerusahaan }}
+                                        {% if (dataPulang[dateInt] is defined) %}
+                                            <td class="text-center" data-th="true">
+                                                <span class="label label-success">ADA</span></td>
+                                            <td class="text-center">
+                                                <span class="label label-success">{{ dataPulang[dateInt]['date']|date('H:i') }}</span>
+                                            </td>
+                                        {% else %}
+                                            <td class="text-center">
+                                                <span class="label label-warning">KOSONG</span></td>
+                                            <td class="text-center">-</td>
                                         {% endif %}
-                                    </td>
-                                </tr>
+                                        <td class="text-capitalize">
+                                            {% if holiday[dateInt] is defined %}
+                                                {{ holiday[dateInt]['title'] }}
+                                            {% elseif ((dateInt ~ ' ' ~ variable.month ~ ' ' ~ variable.year)|date('D')) == 'Sun' %}
+                                                Minggu
+                                            {% endif %}
+                                            {% for cuti in variable.cuti %}
+                                                {% if cuti.tanggal == dateInt %}
+                                                    {{ cuti.description }}
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% for key, ijin in newDatePopulate %}
+                                                {% if key | date('d') == dateInt %}
+                                                    {% if ijin[0] == 1 %}
+                                                        Ijin :
+                                                    {% elseif ijin[0] == 2 %}
+                                                        Sakit :
+                                                    {% else %}
+                                                        Dinas :
+                                                    {% endif %}
+
+                                                    {{ ijin[1] }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-condensed table-bordered" id="main__table">
-                        <thead>
-                            <tr>
-                                <th rowspan="2" style="vertical-align: middle;" class="text-center">Tanggal</th>
-                                <th colspan="4" class="text-center" width="50">Kehadiran</th>
-                                <th width="55%" rowspan="2" style="vertical-align: middle;" class="text-center">Keterangan
-                                </th>
-                            </tr>
-                            <tr>
-                                <th colspan="2" class="text-center">Masuk</th>
-                                <th colspan="2" class="text-center">Pulang</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% set i = 1 %}
-                            {% for dateInt in 1..monthCount %}
-                                <tr {% if (holiday[dateInt] is defined) or ((dateInt ~ ' ' ~ variable.month ~ ' ' ~ variable.year)|date('D') == 'Sun') %}class="bg-danger text-light"{% endif %}>
-                                <td class="text-center">{{ dateInt ~ ' ' ~ variable.month ~ ' ' ~ variable.year }}</td>
-                                {% if (dataMasuk[dateInt] is defined) %}
-                                    <td class="text-center"><span class="label label-success">ADA</span></td>
-                                    <td class="text-center">
-                                        <span class="label label-success">{{ dataMasuk[dateInt]['date']|date('H:i') }}</span>
-                                    </td>
-                                {% else %}
-                                    <td class="text-center"><span class="label label-warning">KOSONG</span></td>
-                                    <td class="text-center">-</td>
-                                {% endif %}
-                                {% if (dataPulang[dateInt] is defined) %}
-                                    <td class="text-center"><span class="label label-success">ADA</span></td>
-                                    <td class="text-center">
-                                        <span class="label label-success">{{ dataPulang[dateInt]['date']|date('H:i') }}</span>
-                                    </td>
-                                {% else %}
-                                    <td class="text-center"><span class="label label-warning">KOSONG</span></td>
-                                    <td class="text-center">-</td>
-                                {% endif %}
-                                <td class="text-capitalize">
-                                    {% if holiday[dateInt] is defined %}
-                                        {{ holiday[dateInt]['title'] }}
-                                    {% elseif ((dateInt ~ ' ' ~ variable.month ~ ' ' ~ variable.year)|date('D')) == 'Sun' %}
-                                        Minggu
-                                    {% endif %}
-                                    {% for cuti in variable.cuti %}
-                                        {% if cuti.tanggal == dateInt %}
-                                            {{ cuti.description }}
-                                        {% endif %}
-                                    {% endfor %}
-                                    {% for key,ijin in newDatePopulate %}
-                                        {% if key|date('d') == dateInt %}
-                                            {% if ijin[0] == 1 %}
-                                                Ijin :
-                                            {% elseif ijin[0] == 2 %}
-                                                Sakit :
-                                            {% else %}
-                                                Dinas :
-                                            {% endif %}
-
-                                            {{ ijin[1] }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+{% endblock %}
+
+{% block customJS %}
+    <script type="text/javascript">
+        $(function() {});
+
+        function printPage() {
+            var printedArea = jQuery('#printed-area'),
+                labeled = printedArea.find('.label'),
+                tede = $('#main__table').find('td');
+
+            $.each(labeled, function(index, val) {
+                var value = $(val);
+
+                value.removeAttr('class');
+                value.addClass('printedfont');
+            });
+
+            $.each(tede, function(index, val) {
+                $(val).addClass('paddingedtable');
+            });
+
+            printedArea.print({globalStyles: true, noPrintSelector: ".no-print"});
+        }
+    </script>
 {% endblock %}

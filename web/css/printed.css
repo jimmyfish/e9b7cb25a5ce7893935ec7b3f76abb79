@@ -1,0 +1,7 @@
+.hide-print {
+    display: none;
+}
+
+td {
+    padding: 5px !important;
+}

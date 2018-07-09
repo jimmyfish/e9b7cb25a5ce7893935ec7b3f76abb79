@@ -84,14 +84,15 @@
 <script src="{{ asset('js') }}/jquery.validate.js"></script>
 <script src="{{ asset('js') }}/jquery.maskedinput.min.js"></script>
 <script src="{{ asset('js') }}/global.js"></script>
+<script src="{{ asset('js/jQuery.print.min.js') }}" charset="utf-8"></script>
 {% block javascripts %}
 {% if form is defined %}
-    
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
         {{ form_javascript(form) }}
-    
+
 {% else %}
     <script></script>
 {% endif %}
