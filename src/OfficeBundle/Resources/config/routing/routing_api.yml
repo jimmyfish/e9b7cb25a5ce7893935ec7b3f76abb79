@@ -18,6 +18,56 @@ office_api_testing:
     defaults:
         _controller: OfficeBundle:Api:testing
 
+office_api_list_shift:
+    path: /api-shift
+    defaults:
+      _controller: OfficeBundle:Api:listApiShift
+
+office_api_list_user_presence:
+    path: /api-user-presence
+    defaults:
+      _controller: OfficeBundle:Api:listApiUserPresence
+
+office_api_list_company_profile:
+   path: /api-company-profile
+   defaults:
+      _controller: OfficeBundle:Api:listApiCompanyProfile
+
+office_api_list_holiday:
+  path: /api-holiday
+  defaults:
+      _controller: OfficeBundle:Api:listApiHoliday
+
+office_api_list_attachment:
+  path: /api-attachment
+  defaults:
+      _controller: OfficeBundle:Api:listApiAttachment
+
+office_api_list_device:
+  path: /api-device
+  defaults:
+      _controller: OfficeBundle:Api:listApiDevice
+
+office_api_list_cuti:
+  path: /api-cuti
+  defaults:
+      _controller: OfficeBundle:Api:listApiCuti
+
+office_api_list_day_type:
+  path: /api-day-type
+  defaults:
+      _controller: OfficeBundle:Api:listApiDayType
+
+office_api_list_fingerprint:
+  path: /api-fingerprint
+  defaults:
+      _controller: OfficeBundle:Api:listApiFingerprint
+
+office_api_list_all_user:
+  path: /api-all-user
+  defaults:
+      _controller: OfficeBundle:Api:listApiUserFamily
+
 office_api_notif_user:
     path: /notif-user
     defaults:
