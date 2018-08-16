@@ -1016,7 +1016,7 @@ class UserPersonal implements UserInterface, \Serializable
         return $this;
     }
 
-    public $job;
+    private $job;
 
     public function getJob()
     {
