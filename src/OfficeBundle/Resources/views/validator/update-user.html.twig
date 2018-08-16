@@ -41,7 +41,7 @@
                     <select name="penempatan" id="penempatan" class="form-control">
                         <option value="">-- Pilih Penempatan --</option>
                         {% for pen in penempatan %}
-                            {% if data.penempatan is defined %}
+                            {% if data.penempatan is not null %}
                                 <option value="{{ pen.id }}" {% if data.penempatan.id == pen.id %}selected{% endif %}>{{ pen.namaPerusahaan }}</option>
                                 {% else %}
                                 <option value="{{ pen.id }}">{{ pen.namaPerusahaan }}</option>
@@ -70,7 +70,7 @@
                     <select name="shift" id="shift" class="form-control" required>
                         <option value="null" selected>Pilih jam kerja</option>
                         {% for item in shift %}
-                            {% if job.shift is defined %}
+                            {% if job.shift is not null %}
                                 <option value="{{ item.id }}" {% if job.shift.id == item.id %}selected{% endif %}>{{ item.label }}</option>
                                 {% else %}
                                 <option value="{{ item.id }}">{{ item.label }}</option>

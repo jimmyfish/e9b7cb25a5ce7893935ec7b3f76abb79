@@ -75,6 +75,7 @@ class FingerprintController extends Controller
     {
         $loginUser = $this->get('security.token_storage')->getToken()->getUser();
 
+        $data = '';
         if ($this->isGranted('ROLE_ADMIN')) {
             $data = $this->getDoctrine()->getManager()->getRepository(UserPersonal::class)->findAll();
         } elseif ($this->isGranted('ROLE_VALIDATOR')) {
@@ -135,7 +136,7 @@ class FingerprintController extends Controller
 
                 $data = new Fingerprint();
 
-                $data->setUserId($user);
+                $data->setUserId($user->getId());
                 $data->setFingerStatus(count($fid) + 1);
                 $data->setFingerData($regTemp);
                 $data->setFingerSalt($salt);
@@ -167,7 +168,7 @@ class FingerprintController extends Controller
 
     public function presenceProcessAction(Request $request, $username)
     {
-        $data = $this->getDoctrine()->getManager()->getRepository(User::class)->findOneBy(['username' => $username]);
+        $data = $this->getDoctrine()->getManager()->getRepository(UserPersonal::class)->findOneBy(['username' => $username]);
         $finger = $data->getFinger();
         $id = $data->getId();
         $verifyUrl = 'http://'.$request->headers->get('host').$this->generateUrl('fingertest_finger_verifyProcess');

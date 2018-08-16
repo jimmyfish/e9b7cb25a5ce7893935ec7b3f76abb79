@@ -9,7 +9,7 @@ office_admin_fingerprint_device_add:
         _controller: OfficeBundle:Fingerprint:deviceAdd
 
 office_admin_fingerprint_device_delete:
-    path: /device/delete{id}
+    path: /device/delete/{id}
     defaults:
         _controller:  OfficeBundle:Fingerprint:deleteDevice
 

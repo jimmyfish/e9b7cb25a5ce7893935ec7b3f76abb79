@@ -441,6 +441,7 @@ class UserController extends Controller
 
         $pengajuan = $em->getRepository(Attachment::class)->findAll();
 
+
         $user = $em->getRepository(UserPersonal::class)->findById($userData->getId());
 
         $asem = $em->getRepository(Attachment::class)->findByUserId($user);
@@ -476,8 +477,9 @@ class UserController extends Controller
 
             foreach ($newAdd as $key => $item) {
                 foreach ($pengajuan as $keyPengajuan => $itemPengajuan) {
+  
                     if ($itemPengajuan->getHashDate() == $item->getHashDate()) {
-                        unset($newAdd[$key]);
+                       unset($newAdd[$key]);
                     }
                 }
             }
