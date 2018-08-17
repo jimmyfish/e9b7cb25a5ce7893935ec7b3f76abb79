@@ -1023,6 +1023,13 @@ class UserPersonal implements UserInterface, \Serializable
         return $this->job;
     }
 
+    private $family;
+
+    public function getFamily()
+    {
+        return $this->family;
+    }
+
     private $cuti;
 
     /**

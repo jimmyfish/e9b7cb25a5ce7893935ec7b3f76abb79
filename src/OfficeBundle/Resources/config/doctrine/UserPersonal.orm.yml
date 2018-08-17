@@ -20,6 +20,10 @@ OfficeBundle\Entity\UserPersonal:
             targetEntity: UserJob
             mappedBy: userId
             onDelete: CASCADE
+        family:
+            targetEntity: UserFamily
+            mappedBy: userId
+            onDelete: CASCADE
         finger:
             targetEntity: Fingerprint
             mappedBy: userId

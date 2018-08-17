@@ -401,4 +401,75 @@ class ApiController extends Controller
 
         return new JsonResponse($results);
     }
+
+    public function listApiUserFamilyAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('u')
+            ->from('OfficeBundle:UserPersonal', 'u')
+            ->innerJoin('OfficeBundle:UserJob','r')
+            ->where('u.id = r.userId');
+
+        $data = $qb->getQuery()->getResult();
+
+        $i = 0;
+
+        foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
+            $results[$i]['nik'] = $item->getNik();
+            $results[$i]['no_registrasi'] = $item->getNoRegistrasi();
+            $results[$i]['username'] = $item->getUsername();
+            $results[$i]['name'] = $item->getNama();
+            $results[$i]['email'] = $item->getEmail();
+            $results[$i]['password'] = $item->getPassword();
+            $results[$i]['tempat_lahir'] = $item->getTempatLahir();
+            $results[$i]['tanggal_lahir'] = $item->getTanggalLahir();
+            $results[$i]['tanggal_pensiun'] = $item->getTanggalPensiun();
+            $results[$i]['jenis_kelamin'] = $item->getJenisKelamin();
+            $results[$i]['tempat_tinggal'] = $item->getTempatTinggal();
+            $results[$i]['alamat_surat'] = $item->getAlamatSurat();
+            $results[$i]['golongan_darah'] = $item->getGolonganDarah();
+            $results[$i]['no_ktp'] = $item->getNoKtp();
+            $results[$i]['agama'] = $item->getAgama();
+            $results[$i]['pendidikan'] = $item->getPendidikan();
+            $results[$i]['asal_sekolah'] = $item->getAsalSekolah();
+            $results[$i]['kebangsaan'] = $item->getKebangsaan();
+            $results[$i]['jurusan'] = $item->getJurusan();
+            $results[$i]['bpjs'] = $item->getBpjs();
+            $results[$i]['npwp'] = $item->getNpwp();
+            $results[$i]['no_telp'] = $item->getNoTelp();
+            $results[$i]['ukuran_pakaian'] = $item->getUkuranPakaian();
+            $results[$i]['profile_picture'] = $item->getProfilePicture();
+            $results[$i]['status'] = $item->getStatus();
+            $results[$i]['role'] = $item->getRole();
+            $results[$i]['golongan'] = $item->getJob() ? $item->getJob()->getGolongan() : null;
+            $results[$i]['jenjang_pangkat'] = $item->getJob() ? $item->getJob()->getJenjangPangkat() : null;
+            $results[$i]['jabatan'] = $item->getJob() ? $item->getJob()->getJabatan() : null;
+            $results[$i]['tanggal_masuk'] = $item->getJob() ? $item->getJob()->getTanggalMasuk() : null;
+            $results[$i]['status_karyawan'] = $item->getJob() ? $item->getJob()->getStatusKaryawan() : null;
+            $results[$i]['pengalaman_kerja_terakhir'] = $item->getJob() ? $item->getJob()->getPengalamanKerjaTerakhir() : null;
+            $results[$i]['kontrak_training'] = $item->getJob() ? $item->getJob()->getKontrakTraining() : null;
+            $results[$i]['kontrak_kerja'] = $item->getJob() ? $item->getJob()->getKontrakKerja() : null;
+            $results[$i]['tanggal_percobaan'] = $item->getJob() ? $item->getJob()->getTanggalPercobaan() : null;
+            $results[$i]['tanggal_sk_tetap'] = $item->getJob() ? $item->getJob()->getTanggalSkTetap() : null;
+            $results[$i]['dayoff_quotas'] = $item->getJob() ? $item->getJob()->getQuotas() : null;
+            $results[$i]['status_perkawinan'] = $item->getFamily() ? $item->getFamily()->getStatusPerkawinan() : null;
+            $results[$i]['pasangan'] = $item->getFamily() ? $item->getFamily()->getPasangan() : null;
+            $results[$i]['orang_tua'] = $item->getFamily() ? $item->getFamily()->getOrangTua() : null;
+            $results[$i]['alamat_orang_tua'] = $item->getFamily() ? $item->getFamily()->getAlamatOrangTua() : null;
+            $results[$i]['mertua'] = $item->getFamily() ? $item->getFamily()->getMertua() : null;
+            $results[$i]['company_profile_id'] = $item->getPenempatan() ? $item->getPenempatan()->getId() : null;
+            $results[$i]['fingerprint_id'] = $item->getFinger() ? $item->getFinger()->getUserId()->getId() : null;
+            $results[$i]['shift_id'] = $item->getJob()->getShift() ? $item->getJob()->getShift()->getId() : null;
+            foreach ($item->getPresence() as $value)
+                $results[$i]['presence_id'] = $value ? $value->getUserId()->getId() : null;
+
+            $i++;
+        }
+
+        return new JsonResponse($results);
+    }
 }
