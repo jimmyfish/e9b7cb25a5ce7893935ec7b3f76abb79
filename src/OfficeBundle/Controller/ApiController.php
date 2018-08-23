@@ -341,9 +341,9 @@ class ApiController extends Controller
             $results[$i]['bulan'] = $item->getBulan();
             $results[$i]['tahun'] = $item->getTahun();
             $results[$i]['is_validated'] = $item->getIsValidated();
-            $results[$i]['validated_by'] = $item->getValidatedBy()->getId();
+            $results[$i]['validated_by'] = $item->getValidatedBy() ? $item->getValidatedBy()->getId() : null;
             $results[$i]['abs_date'] = $item->getAbsDate();
-            $results[$i]['type_id'] = $item->getTypeId();
+            $results[$i]['type_id'] = $item ? $item->getType() : null;
             $results[$i]['description'] = $item->getDescription();
             $results[$i]['hash_date'] = $item->getHashDate();
             $results[$i]['day_group'] = $item->getDayGroup();
