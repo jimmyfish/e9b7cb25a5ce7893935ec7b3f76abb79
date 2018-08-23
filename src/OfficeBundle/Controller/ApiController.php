@@ -329,7 +329,7 @@ class ApiController extends Controller
 
         $qb = $em->createQueryBuilder();
 
-        $qb->select('u')->from(Device::class, 'u');
+        $qb->select('u')->from(Cuti::class, 'u');
 
         $data = $qb->getQuery()->getResult();
 
