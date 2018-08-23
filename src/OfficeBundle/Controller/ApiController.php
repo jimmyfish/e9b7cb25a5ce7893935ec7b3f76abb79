@@ -370,7 +370,7 @@ class ApiController extends Controller
             $results[$i]['data'] = $item->getData();
             $results[$i]['name'] = $item->getName();
             $results[$i]['count'] = $item->getCount();
-            $results[$i]['is_deleted'] = $item->isDeleted();
+            $results[$i]['is_deleted'] = $item->getIsDeleted();
 
             $i++;
         }
