@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Request;
 $loader = require __DIR__.'/../app/autoload.php';
 include_once __DIR__.'/../app/bootstrap.php.cache';
 
+ini_set('memory_limit','1024M');
+
 date_default_timezone_set('Asia/Jakarta');
 
 $kernel = new AppKernel('prod', false);
