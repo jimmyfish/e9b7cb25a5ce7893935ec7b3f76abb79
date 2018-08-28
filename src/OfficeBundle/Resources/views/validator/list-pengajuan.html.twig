@@ -9,7 +9,7 @@
         </div>
         <div class="card__body">
             <div class="table-responsive">
-                <table class="table table-striped" id="application-form">
+                <table class="table table-striped datatables" id="application-form">
                     <thead>
                     <tr>
                         <th>No.</th>
@@ -94,7 +94,7 @@
 {% block customJS %}
     <script type="text/javascript">
         $(function () {
-
+            $('.datatables').DataTable({});
         });
     </script>
 {% endblock %}

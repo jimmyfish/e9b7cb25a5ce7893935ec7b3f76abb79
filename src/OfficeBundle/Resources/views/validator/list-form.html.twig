@@ -23,7 +23,7 @@
         </div>
         <div class="card__body">
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-striped datatables">
                     <thead>
                         <tr>
                             <td>No.</td>
@@ -101,4 +101,11 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block customJS %}
+    <script type="text/javascript">
+        $(function () {
+            $('.datatables').DataTable({});
+        });
+    </script>
 {% endblock %}
