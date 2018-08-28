@@ -177,6 +177,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['label'] = $item->getLabel();
             $results[$i]['start_time'] = $item->getStartTime();
             $results[$i]['end_time'] = $item->getEndTime();
@@ -203,6 +204,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['user_id'] = $item->getUserId()->getId();
             $results[$i]['shift_id'] = $item->getShift()->getId();
             $results[$i]['day'] = $item->getDay();
@@ -232,6 +234,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['nama_perusahaan'] = $item->getNamaPerusahaan();
             $results[$i]['is_deleted'] = $item->getIsDeleted();
 
@@ -254,6 +257,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['input_by'] = $item->getInputBy()->getId();
             $results[$i]['day'] = $item->getDay();
             $results[$i]['title'] = $item->getTitle();
@@ -282,6 +286,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['user_id'] = $item->getUserId()->getId();
             $results[$i]['type_form'] = $item->getTypeForm();
             $results[$i]['absen'] = $item->getAbsen();
@@ -311,6 +316,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['user_id'] = $item->getDeviceName();
             $results[$i]['sn'] = $item->getSn();
             $results[$i]['ac'] = $item->getAc();
@@ -336,6 +342,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['user_id'] = $item->getUserId()->getId();
             $results[$i]['tanggal'] = $item->getTanggal();
             $results[$i]['bulan'] = $item->getBulan();
@@ -367,6 +374,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['data'] = $item->getData();
             $results[$i]['name'] = $item->getName();
             $results[$i]['count'] = $item->getCount();
@@ -391,6 +399,7 @@ class ApiController extends Controller
         $i = 0;
 
         foreach ($data as $item) {
+            $results[$i]['id'] = $item->getId();
             $results[$i]['user_id'] = $item->getUserId()->getId();
             $results[$i]['finger_status'] = $item->getFingerStatus();
             $results[$i]['finger_data'] = $item->getFingerData();
