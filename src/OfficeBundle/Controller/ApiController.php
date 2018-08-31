@@ -317,7 +317,7 @@ class ApiController extends Controller
 
         foreach ($data as $item) {
             $results[$i]['id'] = $item->getId();
-            $results[$i]['user_id'] = $item->getDeviceName();
+            $results[$i]['device_name'] = $item->getDeviceName();
             $results[$i]['sn'] = $item->getSn();
             $results[$i]['ac'] = $item->getAc();
             $results[$i]['vc'] = $item->getVc();
