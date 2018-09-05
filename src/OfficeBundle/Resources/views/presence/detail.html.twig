@@ -110,7 +110,9 @@
                                             {% endif %}
                                             {% for cuti in variable.cuti %}
                                                 {% if cuti.tanggal == dateInt %}
-                                                    {{ cuti.description }}
+                                                    {% if cuti.tahun == givenYear %}
+                                                        {{ cuti.description }}
+                                                    {% endif %}    
                                                 {% endif %}
                                             {% endfor %}
                                             {% for key, ijin in newDatePopulate %}
