@@ -115,7 +115,8 @@
                                             {% endfor %}
                                             {% for key, ijin in newDatePopulate %}
                                                 {% if key | date('d') == dateInt %}
-                                                    {% if ijin[0] == 1 %}
+                                                    {% if key | date('Y') == givenYear %}
+                                                        {% if ijin[0] == 1 %}
                                                         Ijin :
                                                     {% elseif ijin[0] == 2 %}
                                                         Sakit :
@@ -124,6 +125,7 @@
                                                     {% endif %}
 
                                                     {{ ijin[1] }}
+                                                    {% endif %}    
                                                 {% endif %}
                                             {% endfor %}
                                         </td>

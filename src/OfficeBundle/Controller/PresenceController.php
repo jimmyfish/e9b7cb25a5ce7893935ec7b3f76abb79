@@ -192,7 +192,7 @@ class PresenceController extends Controller
             ->select('a')
             ->from('OfficeBundle:Attachment', 'a')
             ->where('a.userId = :userId')
-            ->andWhere('MONTH(a.tglMulai) = :desireMonth')
+            ->andWhere(':desireMonth BETWEEN MONTH(a.tglMulai) AND MONTH(a.tglAkhir)')
             ->andWhere('a.isValidated = 1')
             ->setParameter('userId', $request->get('id'))
             ->setParameter('desireMonth', $givenMonth)
@@ -232,6 +232,7 @@ class PresenceController extends Controller
             'monthCount' => $dayOfMonth,
             'dataMasuk' => $dataMasuk,
             'dataPulang' => $dataPulang,
+            'givenYear' => $givenYear,
             'holiday' => $holiday,
             'user' => $user,
             'variable' => $variable,
