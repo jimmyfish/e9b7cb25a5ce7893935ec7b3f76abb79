@@ -471,13 +471,11 @@ class ApiController extends Controller
             $results[$i]['alamat_orang_tua'] = $item->getFamily() ? $item->getFamily()->getAlamatOrangTua() : null;
             $results[$i]['mertua'] = $item->getFamily() ? $item->getFamily()->getMertua() : null;
             $results[$i]['company_profile_id'] = $item->getPenempatan() ? $item->getPenempatan()->getId() : null;
-            $results[$i]['fingerprint_id'] = $item->getFinger() ? $item->getFinger()->getUserId()->getId() : null;
+            $results[$i]['fingerprint_id'] = $item->getFinger() ? $item->getFinger()->getId() : null;
             $results[$i]['shift_id'] = $item->getJob()->getShift() ? $item->getJob()->getShift()->getId() : null;
             $results[$i]['is_validated'] = $item->getIsValidated();
             $results[$i]['is_active'] = $item->getIsActive();
-            foreach ($item->getPresence() as $value)
-                $results[$i]['presence_id'] = $value ? $value->getUserId()->getId() : null;
-
+            
             $i++;
         }
 
