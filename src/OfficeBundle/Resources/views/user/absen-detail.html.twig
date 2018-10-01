@@ -91,20 +91,24 @@
                                         {% endif %}
                                         {% for cuti in variable.cuti %}
                                             {% if cuti.tanggal == dateInt %}
-                                                {{ cuti.description }}
+                                                {% if cuti.tahun == givenYear %}
+                                                    {{ cuti.description }}
+                                                {% endif %}
                                             {% endif %}
                                         {% endfor %}
                                         {% for key,ijin in newDatePopulate %}
-                                            {% if key|date('d') == dateInt %}
-                                                {% if ijin[0] == 1 %}
-                                                    Ijin :
-                                                {% elseif ijin[0] == 2 %}
-                                                    Sakit :
-                                                {% else %}
-                                                    Dinas :
-                                                {% endif %}
+                                            {% if key | date('d') == dateInt %}
+                                                {% if key | date('Y') == givenYear %}
+                                                    {% if ijin[0] == 1 %}
+                                                        Ijin :
+                                                    {% elseif ijin[0] == 2 %}
+                                                        Sakit :
+                                                    {% else %}
+                                                        Dinas :
+                                                    {% endif %}
 
-                                                {{ ijin[1] }}
+                                                    {{ ijin[1] }}
+                                                {% endif %}
                                             {% endif %}
                                         {% endfor %}
                                     </td>
