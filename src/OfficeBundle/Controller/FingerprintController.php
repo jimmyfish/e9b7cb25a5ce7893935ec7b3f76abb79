@@ -56,8 +56,8 @@ class FingerprintController extends Controller
             if($data instanceof Device) {
                 $data->setDeviceName($request->get('device-name'));
                 $data->setSn($request->get('sn'));
-                $data->setAc($request->get('ac'));
                 $data->setVc($request->get('vc'));
+                $data->setAc($request->get('ac'));
                 $data->setVkey($request->get('vkey'));
             }
             $manager->persist($data);

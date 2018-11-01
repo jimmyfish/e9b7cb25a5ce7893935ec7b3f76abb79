@@ -18,11 +18,11 @@ class DeviceType extends AbstractType
         ->add('sn', TextType::class, [
             'label' => 'Serial Number',
         ])
-        ->add('ac', TextType::class, [
-            'label' => 'Activation Code',
-        ])
         ->add('vc', TextType::class, [
             'label' => 'Virtual Code',
+        ])
+        ->add('ac', TextType::class, [
+            'label' => 'Activation Code',
         ])
         ->add('vkey', TextType::class, [
             'label' => 'Virtual Key',
