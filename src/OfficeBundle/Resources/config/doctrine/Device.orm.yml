@@ -17,14 +17,14 @@ OfficeBundle\Entity\Device:
             type: string
             length: 255
             unique: true
-        ac:
-            type: string
-            length: 255
-            unique: true
         vc:
             type: string
             length: 255
             unique: true
+        ac:
+            type: string
+            length: 255
+            unique: true    
         vkey:
             type: string
             length: 255

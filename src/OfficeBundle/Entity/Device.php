@@ -25,12 +25,12 @@ class Device
     /**
      * @var string
      */
-    private $ac;
-
+    private $vc;
+    
     /**
      * @var string
      */
-    private $vc;
+    private $ac;
 
     /**
      * @var string
@@ -96,30 +96,6 @@ class Device
     }
 
     /**
-     * Set ac.
-     *
-     * @param string $ac
-     *
-     * @return Device
-     */
-    public function setAc($ac)
-    {
-        $this->ac = $ac;
-
-        return $this;
-    }
-
-    /**
-     * Get ac.
-     *
-     * @return string
-     */
-    public function getAc()
-    {
-        return $this->ac;
-    }
-
-    /**
      * Set vc.
      *
      * @param string $vc
@@ -141,6 +117,30 @@ class Device
     public function getVc()
     {
         return $this->vc;
+    }
+
+    /**
+     * Set ac.
+     *
+     * @param string $ac
+     *
+     * @return Device
+     */
+    public function setAc($ac)
+    {
+        $this->ac = $ac;
+
+        return $this;
+    }
+
+    /**
+     * Get ac.
+     *
+     * @return string
+     */
+    public function getAc()
+    {
+        return $this->ac;
     }
 
     /**
