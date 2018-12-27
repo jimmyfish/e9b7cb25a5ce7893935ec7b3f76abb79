@@ -477,9 +477,8 @@ class UserController extends Controller
 
             foreach ($newAdd as $key => $item) {
                 foreach ($pengajuan as $keyPengajuan => $itemPengajuan) {
-  
                     if ($itemPengajuan->getHashDate() == $item->getHashDate()) {
-                       unset($newAdd[$key]);
+                        unset($newAdd[$key]);
                     }
                 }
             }

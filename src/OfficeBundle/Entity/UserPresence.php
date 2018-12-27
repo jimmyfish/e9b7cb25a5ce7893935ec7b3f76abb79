@@ -7,35 +7,18 @@ namespace OfficeBundle\Entity;
  */
 class UserPresence
 {
-    /**
-     * @var int
-     */
     private $id;
 
-    /**
-     * @var int
-     */
     private $userId;
 
-    /**
-     * @var int
-     */
-    private $month;
+    private $date;
+
+    private $state;
+
+    private $description;
 
     /**
-     * @var int
-     */
-    private $year;
-
-    /**
-     * @var string
-     */
-    private $data;
-
-    /**
-     * Get id.
-     *
-     * @return int
+     * @return mixed
      */
     public function getId()
     {
@@ -43,21 +26,15 @@ class UserPresence
     }
 
     /**
-     * @param UserPersonal $userId
-     *
-     * @return $this
+     * @param mixed $id
      */
-    public function setUserId(UserPersonal $userId)
+    public function setId($id): void
     {
-        $this->userId = $userId;
-
-        return $this;
+        $this->id = $id;
     }
 
     /**
-     * Get userId.
-     *
-     * @return int
+     * @return mixed
      */
     public function getUserId()
     {
@@ -65,130 +42,30 @@ class UserPresence
     }
 
     /**
-     * Set month.
-     *
-     * @param int $month
-     *
-     * @return UserPresence
+     * @param mixed $userId
      */
-    public function setMonth($month)
+    public function setUserId(UserPersonal $userId): void
     {
-        $this->month = $month;
-
-        return $this;
+        $this->userId = $userId;
     }
 
     /**
-     * Get month.
-     *
-     * @return int
-     */
-    public function getMonth()
-    {
-        return $this->month;
-    }
-
-    /**
-     * @param $year
-     *
-     * @return $this
-     */
-    public function setYear($year)
-    {
-        $this->year = $year;
-
-        return $this;
-    }
-
-    /**
-     * Get year.
-     *
-     * @return int
-     */
-    public function getYear()
-    {
-        return $this->year;
-    }
-
-    /**
-     * @param $data
-     *
-     * @return $this
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * Get data.
-     *
-     * @return string
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    private $createdAt;
-
-    private $day;
-
-    /**
-     * Gets the value of day.
-     *
      * @return mixed
      */
-    public function getDay()
+    public function getDate()
     {
-        return $this->day;
+        return $this->date;
     }
 
     /**
-     * Sets the value of day.
-     *
-     * @param mixed $day the day
-     *
-     * @return self
+     * @param mixed $date
      */
-    public function setDay($day)
+    public function setDate($date): void
     {
-        $this->day = $day;
-
-        return $this;
+        $this->date = $date;
     }
 
     /**
-     * Gets the value of createdAt.
-     *
-     * @return mixed
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Sets the value of createdAt.
-     *
-     * @param mixed $createdAt the created at
-     *
-     * @return self
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    private $state;
-
-    /**
-     * Gets the value of state.
-     *
      * @return mixed
      */
     public function getState()
@@ -197,52 +74,12 @@ class UserPresence
     }
 
     /**
-     * Sets the value of state.
-     *
-     * @param mixed $state the state
-     *
-     * @return self
+     * @param mixed $state
      */
-    public function setState($state)
+    public function setState($state): void
     {
         $this->state = $state;
-
-        return $this;
     }
-
-    private $shift;
-
-    /**
-     * @return mixed
-     */
-    public function getShift()
-    {
-        return $this->shift;
-    }
-
-    /**
-     * @param mixed $shift
-     */
-    public function setShift(Shift $shift)
-    {
-        $this->shift = $shift;
-    }
-
-    public static function createDefault($user, $dateNow, Shift $shift)
-    {
-        $data = new self();
-        $data->setUserId($user);
-        $data->setDay($dateNow->format('d'));
-        $data->setMonth($dateNow->format('m'));
-        $data->setYear($dateNow->format('Y'));
-        $data->setData(1);
-        $data->setShift($shift);
-        $data->setCreatedAt($dateNow);
-
-        return $data;
-    }
-
-    private $description;
 
     /**
      * @return mixed
@@ -254,31 +91,19 @@ class UserPresence
 
     /**
      * @param mixed $description
-     *
-     * @return self
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
-
-        return $this;
     }
 
-    private $absoluteDay;
-
-    /**
-     * @return mixed
-     */
-    public function getAbsoluteDay()
+    public static function createDefault(UserPersonal $user, $date)
     {
-        return $this->absoluteDay;
-    }
+        $data = new self();
 
-    /**
-     * @param mixed $absoluteDay
-     */
-    public function setAbsoluteDay($absoluteDay)
-    {
-        $this->absoluteDay = $absoluteDay;
+        $data->setUserId($user);
+        $data->setDate($data);
+
+        return $data;
     }
 }

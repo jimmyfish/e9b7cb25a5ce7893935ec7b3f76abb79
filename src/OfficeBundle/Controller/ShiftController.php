@@ -25,7 +25,6 @@ class ShiftController extends Controller
             $data->setLabel($request->get('keterangan'));
             $data->setStartTime($request->get('jam-masuk'));
             $data->setEndTime($request->get('jam-pulang'));
-            $data->setOffice($request->get('type-shift'));
 
             $data->setCreatedAt(new \DateTime());
 

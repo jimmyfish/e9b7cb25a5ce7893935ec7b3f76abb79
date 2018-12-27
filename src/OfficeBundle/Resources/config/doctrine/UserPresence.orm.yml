@@ -16,29 +16,15 @@ OfficeBundle\Entity\UserPresence:
                 name: user_id
                 referencedColumnName: id
                 onDelete: CASCADE
-        shift:
-            targetEntity: Shift
-            joinColumn:
-                name: shift_id
-                refereceColumnName: id
-                onDelete: CASCADE
     fields:
-        day:
-            type: integer
-        month:
-            type: integer
-        year:
-            type: integer
-        data:
-            type: boolean
+        date:
+            type: datetime
             nullable: false
         state:
             type: integer
             nullable: false
-        createdAt:
-            type: datetime
-            nullable: false
         description:
             type: string
+            length: 255
             nullable: true
     lifecycleCallbacks: {  }

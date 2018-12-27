@@ -29,8 +29,4 @@ OfficeBundle\Entity\Shift:
             name: updated_at
             type: datetime
             nullable: true
-        office:
-            name: office
-            type: integer
-            nullable: false
     lifecycleCallbacks: {  }

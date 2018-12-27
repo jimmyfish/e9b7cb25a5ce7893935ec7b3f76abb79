@@ -8,7 +8,6 @@
 
 namespace OfficeBundle\EventListener;
 
-
 use Doctrine\ORM\EntityManager;
 use OfficeBundle\Entity\Attachment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -69,5 +68,4 @@ class ModalEventListener extends \Twig_Extension implements \Twig_Extension_Glob
 //
 //        return $results;
 //    }
-
 }

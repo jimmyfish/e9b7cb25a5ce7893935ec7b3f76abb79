@@ -419,7 +419,7 @@ class ApiController extends Controller
 
         $qb->select('u')
             ->from('OfficeBundle:UserPersonal', 'u')
-            ->innerJoin('OfficeBundle:UserJob','r')
+            ->innerJoin('OfficeBundle:UserJob', 'r')
             ->where('u.id = r.userId');
 
         $data = $qb->getQuery()->getResult();

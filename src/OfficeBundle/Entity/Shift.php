@@ -21,25 +21,7 @@ class Shift
     private $createdAt;
 
     private $updatedAt;
-
-    private $office = 0;
-
-    /**
-     * @return mixed
-     */
-    public function getOffice()
-    {
-        return $this->office;
-    }
-
-    /**
-     * @param mixed $office
-     */
-    public function setOffice($office)
-    {
-        $this->office = $office;
-    }
-
+    
     /**
      * Get id.
      *
