@@ -23,6 +23,11 @@ office_admin_index:
     defaults:
         _controller: OfficeBundle:Admin:index
 
+office_admin_delete_multiple:
+    path: /delete-multiple
+    defaults:
+      _controller: OfficeBundle:DeleteData:deleteUserData
+
 # ROUTING FOR SHIFT
 office_admin_shift_index:
     path: /shift
