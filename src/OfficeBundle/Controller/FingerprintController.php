@@ -136,7 +136,7 @@ class FingerprintController extends Controller
 
                 $data = new Fingerprint();
 
-                $data->setUserId($user->getId());
+                $data->setUserId($user);
                 $data->setFingerStatus(count($fid) + 1);
                 $data->setFingerData($regTemp);
                 $data->setFingerSalt($salt);
