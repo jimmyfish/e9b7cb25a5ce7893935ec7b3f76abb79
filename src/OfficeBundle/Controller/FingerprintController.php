@@ -189,7 +189,8 @@ class FingerprintController extends Controller
     public function deleteUserAction(Request $request)
     {
         $manager = $this->getDoctrine()->getManager();
-        $data = $manager->getRepository(Fingerprint::class)->find($request->get('user_id'));
+	$data = $manager->getRepository(Fingerprint::class)->findOneBy(['userId' => $request->get('user_id')]);
+       // $data = $manager->getRepository(Fingerprint::class)->find($request->get('user_id'));
 
         if ($data instanceof Fingerprint) {
             $manager->remove($data);

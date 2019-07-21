@@ -78,8 +78,8 @@ class DayOffController extends Controller
             $desireDateDiff = $dateNow->diff($dateGiven);
             $desireDateFormat = $desireDateDiff->format('%a');
 
-            if ($desireDateFormat <= 14) {
-                $this->get('session')->getFlashBag()->add('message_failure', 'Hari yang dipilih haruslah berada pada H-14, jika terdapat kepentingan mendesak harap menghubungi admin');
+            if ($desireDateFormat <= 7) {
+                $this->get('session')->getFlashBag()->add('message_failure', 'Hari yang dipilih haruslah berada pada H-7, jika terdapat kepentingan mendesak harap menghubungi admin');
 
                 return $this->redirect($request->headers->get('referer'));
             }
