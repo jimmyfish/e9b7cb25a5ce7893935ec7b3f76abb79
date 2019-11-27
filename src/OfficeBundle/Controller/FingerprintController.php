@@ -206,6 +206,9 @@ class FingerprintController extends Controller
 
         $data = $em->getRepository(Device::class)->find($id);
 
+        $logger = $this->get('logger');
+        $logger->err(serialize($data));
+
         $em->remove($data);
         $em->flush();
 
