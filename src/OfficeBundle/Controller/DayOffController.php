@@ -81,7 +81,7 @@ class DayOffController extends Controller
             if ($desireDateFormat <= 7) {
                 $this->get('session')->getFlashBag()->add('message_failure', 'Hari yang dipilih haruslah berada pada H-7, jika terdapat kepentingan mendesak harap menghubungi admin');
 
-                return $this->redirect($request->headers->get('referer'));
+                return $this->redirectToRoute('office_user_success',['proc_title' => 'Permintaan Cuti']);
             }
 
             /*

@@ -596,7 +596,7 @@ class UserController extends Controller
             $mailer = \Swift_Mailer::newInstance($transport);
             $mailer->send($message);
 
-            return $this->redirect($this->generateUrl('office_reset_password', ['token' => $token]));
+            return $this->redirect($this->generateUrl('office_reset_password', ['token' => $token,'email' => $request->get('email')]));
         }
 
         return $this->render('OfficeBundle:user:forgot-password.html.twig');
@@ -606,7 +606,7 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
 
-        $data = $em->getRepository(UserPersonal::class)->findByToken($request->get('token'));
+        $data = $em->getRepository(UserPersonal::class)->findBy(['email' => $request->get('email')]);
 
 //        return var_dump();
 
