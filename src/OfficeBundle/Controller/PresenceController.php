@@ -354,6 +354,16 @@ class PresenceController extends Controller
 
             $interval = round(abs($endStmp - $startStmp) / 3600, 2);
 
+            $nonDecimalInterval = floor($interval);
+            $decimalInterval = $interval - $nonDecimalInterval;
+            $intervalVal = "PT0H";
+
+            if ($decimalInterval > 0) {
+                $intervalVal = "PT" . (int) $nonDecimalInterval . "H" . (int) $endTime->format("i") ."M";
+            } else {
+                $intervalVal = "PT".$nonDecimalInterval."H";
+            }
+
             if (1 == $shift->getOffice()) { // Shift Kantor
                 $tmpPresence = $manager->getRepository(
                     UserPresence::class
@@ -390,7 +400,7 @@ class PresenceController extends Controller
                         ' kami terima.',
                     );
 
-                    if ($dateNow < $endTime && $dateNow > $startHour->add(new \DateInterval('PT'.$interval.'H'))) {
+                    if ($dateNow < $endTime && $dateNow > $startHour->add(new \DateInterval($intervalVal))) {
                         $flash = array(
                             'presence_info' => 'Memutuskan untuk pulang lebih awal',
                         );
@@ -437,7 +447,7 @@ class PresenceController extends Controller
                                     ' kami terima, tetapi dengan status terlambat',
                                 );
                             }
-                        } else if ($dateNow > $startHour && $dateNow < $startHour->add(new \DateInterval('PT'.$interval.'H'))) {
+                        } else if ($dateNow > $startHour && $dateNow < $startHour->add(new \DateInterval($intervalVal))) {
                             return new Response('HUBUNGI ADMIN');
                         }
                     } else {
@@ -591,7 +601,7 @@ class PresenceController extends Controller
                             }
 
                             if ($dateNow > $startHour->add(new \DateInterval('PT15M'))) {
-                                if ($dateNow < $startHour->add(new \DateInterval('PT'.$interval.'H'))) {
+                                if ($dateNow < $startHour->add(new \DateInterval($intervalVal))) {
                                     // Statement 3
                                     $presenceData->setState(-1);
                                     $presenceData->setDescription('MASUK TERLAMBAT');
