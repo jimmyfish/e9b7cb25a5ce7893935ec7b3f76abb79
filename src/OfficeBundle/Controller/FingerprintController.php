@@ -200,7 +200,7 @@ class FingerprintController extends Controller
         return $this->redirect($request->headers->get('referer'));
     }
 
-    public function deleteDeviceAction($id)
+    public function deleteDeviceAction($id,Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
 
@@ -209,7 +209,7 @@ class FingerprintController extends Controller
 //        Request::setTrustedProxies(array('127.0.0.1'));
 
         $dataArray = [
-            'ip' => $this->container->get('request_stack')->getCurrentRequest()->getClientIp(),
+            'ip' => $request->getClientIp(),
             'data_fingerprint' => serialize($data)
         ];
 

@@ -42,7 +42,6 @@ security:
                 target: /
     access_control:
        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       - { path: ^/admin/finger/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/presence/checklog/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/admin, roles: ROLE_ADMIN }
        - { path: ^/user, roles: [ ROLE_ADMIN, ROLE_USER, ROLE_VALIDATOR ] }
