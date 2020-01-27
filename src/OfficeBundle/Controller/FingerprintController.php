@@ -206,8 +206,15 @@ class FingerprintController extends Controller
 
         $data = $em->getRepository(Device::class)->find($id);
 
+//        Request::setTrustedProxies(array('127.0.0.1'));
+
+        $dataArray = [
+            'ip' => $this->container->get('request_stack')->getCurrentRequest()->getClientIp(),
+            'data_fingerprint' => serialize($data)
+        ];
+
         $logger = $this->get('logger');
-        $logger->err(serialize($data));
+        $logger->err(json_encode($dataArray));
 
         $em->remove($data);
         $em->flush();
