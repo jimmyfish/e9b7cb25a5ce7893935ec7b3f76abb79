@@ -42,9 +42,10 @@ security:
                 target: /
     access_control:
        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       - { path: ^/admin/finger/*, roles: [ ROLE_ADMIN, ROLE_VALIDATOR ]}
+       - { path: ^/admin/finger/*, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ]}
        - { path: ^/presence/checklog/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
        - { path: ^/admin, roles: ROLE_ADMIN }
+       - { path: ^/admin/new-finger/*, roles: [ROLE_ADMIN, ROLE_VALIDATOR] }
        - { path: ^/user, roles: [ ROLE_ADMIN, ROLE_USER, ROLE_VALIDATOR ] }
        - { path: ^/validator, roles: [ ROLE_VALIDATOR, ROLE_ADMIN ] }
        - { path: ^/user/cuti/*, roles: [ ROLE_ADMIN, ROLE_USER, ROLE_VALIDATOR ] }

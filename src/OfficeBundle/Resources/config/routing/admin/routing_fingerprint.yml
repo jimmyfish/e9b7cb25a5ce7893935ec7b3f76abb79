@@ -1,28 +1,3 @@
-office_admin_fingerprint_device_list:
-    path: /device
-    defaults:
-        _controller: OfficeBundle:Fingerprint:deviceList
-
-office_admin_fingerprint_device_add:
-    path: /device/add
-    defaults:
-        _controller: OfficeBundle:Fingerprint:deviceAdd
-
-office_admin_fingerprint_device_delete:
-    path: /device/delete/{id}
-    defaults:
-        _controller:  OfficeBundle:Fingerprint:deleteDevice
-
-office_admin_fingerprint_device_edit:
-    path: /device/edit/{id}
-    defaults:
-      _controller:  OfficeBundle:Fingerprint:deviceEdit
-
-office_admin_fingerprint_user_list:
-    path: /user
-    defaults:
-        _controller: OfficeBundle:Fingerprint:userList
-
 office_admin_fingerprint_dummy:
     path: /dummy
     defaults:

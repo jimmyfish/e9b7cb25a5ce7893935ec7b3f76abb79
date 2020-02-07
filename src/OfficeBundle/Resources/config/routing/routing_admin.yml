@@ -13,6 +13,10 @@ office_admin_holiday:
     resource: "@OfficeBundle/Resources/config/routing/admin/routing_holiday.yml"
     prefix: /holiday
 
+office_admin_new_fingerprint:
+    resource: "@OfficeBundle/Resources/config/routing/admin/routing_new_fingerprint.yml"
+    prefix: /new-finger
+
 # ROUTING FOR PRESENCE
 office_admin_presence:
     resource: "@OfficeBundle/Resources/config/routing/admin/routing_presence.yml"
