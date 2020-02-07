@@ -47,5 +47,5 @@ security:
        - { path: ^/user, roles: [ ROLE_ADMIN, ROLE_USER, ROLE_VALIDATOR ] }
        - { path: ^/validator, roles: [ ROLE_VALIDATOR, ROLE_ADMIN ] }
        - { path: ^/user/cuti/*, roles: [ ROLE_ADMIN, ROLE_USER, ROLE_VALIDATOR ] }
-       - { path: ^/admin/finger, roles: [ ROLE_ADMIN, ROLE_VALIDATOR ]}
+       - { path: ^/admin/finger/*, roles: [ ROLE_ADMIN, ROLE_VALIDATOR ]}
        - { path: ^/user/form/*, roles: [ ROLE_ADMIN, ROLE_VALIDATOR, ROLE_USER ]}
