@@ -3,11 +3,6 @@ office_admin_fingerprint_dummy:
     defaults:
         _controller: OfficeBundle:Fingerprint:dummy
 
-office_fingerprint_get_activation:
-    path: /get-activation
-    defaults:
-        _controller: OfficeBundle:Fingerprint:getActivationCode
-
 office_fingerprint_presence:
     path: /presence
     defaults:

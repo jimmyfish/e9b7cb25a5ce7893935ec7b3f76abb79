@@ -32,3 +32,8 @@ office_fingerprint_register_process:
   path: /register-process
   defaults:
     _controller: OfficeBundle:Fingerprint:registrationProcess
+
+office_fingerprint_get_activation:
+  path: /get-activation
+  defaults:
+    _controller: OfficeBundle:Fingerprint:getActivationCode
