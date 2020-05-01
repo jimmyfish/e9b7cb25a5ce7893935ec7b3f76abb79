@@ -3,16 +3,6 @@ office_admin_fingerprint_dummy:
     defaults:
         _controller: OfficeBundle:Fingerprint:dummy
 
-office_fingerprint_register:
-    path: /register/{id}
-    defaults:
-        _controller: OfficeBundle:Fingerprint:register
-
-office_fingerprint_register_process:
-    path: /register-process
-    defaults:
-        _controller: OfficeBundle:Fingerprint:registrationProcess
-
 office_fingerprint_get_activation:
     path: /get-activation
     defaults:
