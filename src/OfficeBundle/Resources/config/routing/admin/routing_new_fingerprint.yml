@@ -22,18 +22,3 @@ office_admin_fingerprint_user_list:
   path: /user
   defaults:
     _controller: OfficeBundle:Fingerprint:userList
-
-office_fingerprint_register:
-  path: /register/{id}
-  defaults:
-    _controller: OfficeBundle:Fingerprint:register
-
-office_fingerprint_register_process:
-  path: /register-process
-  defaults:
-    _controller: OfficeBundle:Fingerprint:registrationProcess
-
-office_fingerprint_get_activation:
-  path: /get-activation
-  defaults:
-    _controller: OfficeBundle:Fingerprint:getActivationCode

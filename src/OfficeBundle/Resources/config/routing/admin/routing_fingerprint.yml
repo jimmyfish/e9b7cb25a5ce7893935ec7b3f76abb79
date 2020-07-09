@@ -17,3 +17,18 @@ office_fingerprint_delete_user:
     path: /delete/{user_id}
     defaults:
         _controller: OfficeBundle:Fingerprint:deleteUser
+
+office_fingerprint_register:
+    path: /register/{id}
+    defaults:
+        _controller: OfficeBundle:Fingerprint:register
+
+office_fingerprint_register_process:
+    path: /register-process
+    defaults:
+        _controller: OfficeBundle:Fingerprint:registrationProcess
+
+office_fingerprint_get_activation:
+    path: /get-activation
+    defaults:
+        _controller: OfficeBundle:Fingerprint:getActivationCode
