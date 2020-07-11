@@ -112,3 +112,8 @@ office_validator_absensi_detail:
       path: /presence-validator-detail/{id}/{month}/{year}
       defaults:
         _controller: OfficeBundle:Validator:absenValidatorDetail
+
+office_admin_fingerprint_user_list:
+      path: /user
+      defaults:
+        _controller: OfficeBundle:Fingerprint:userList
