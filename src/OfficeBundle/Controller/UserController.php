@@ -670,14 +670,26 @@ class UserController extends Controller
 
     public function formAbsenAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
+
+        $managerConfig = $em->getConfiguration();
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        $data = $em->getRepository(Attachment::class)->findByUserId($user);
+        $managerConfig->addCustomDatetimeFunction('YEAR','DoctrineExtensions\Query\Mysql\Year');
+
+        $data = $em->createQueryBuilder()
+               ->select('z')
+               ->from('OfficeBundle:Attachment','z')
+               ->where('z.userId = :userId')
+               ->andWhere('YEAR(z.tglMulai) = :mulai')
+               ->setParameter('userId',$user->getId())
+               ->setParameter('mulai','2017')
+               ->getQuery()->getResult();
 
         return $this->render('OfficeBundle:user:form-absen.html.twig', [
             'data' => $data,
+            'nama' => $user->getNama()
         ]);
     }
 
