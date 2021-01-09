@@ -30,7 +30,8 @@
                                     <td>
                                         <p>Perhitungan yang bersangkutan sbb:</p>
                                         <br>
-                                        <p>Hak cuti tahun {% if cuti.tahun is defined and not null %}{{ cuti.tahun }}{% else %}-{% endif %} = {% if total_cuti is defined and not null %}{{ total_cuti }}{% else %}-{% endif %} hari</p>
+                                        {# <p>Hak cuti tahun {% if cuti.tahun is defined and not null %}{{ cuti.tahun }}{% else %}-{% endif %} = {% if total_cuti is defined and not null %}{{ total_cuti }}{% else %}-{% endif %} hari</p> #}
+                                        <p>Hak cuti tahun {{ 'now'|date('Y') }} = {% if total_cuti is defined and not null %} {{ total_cuti }} {% else %} - {% endif %} hari</p>
                                         <p>Cuti yang sudah di gunakan = {% if total is defined and not null %}{{ total }}{% else %}-{% endif %} hari</p>
                                         <p>Sisa cuti = {% if hasil is defined and not null %}{{ hasil }}{% else %}-{% endif %} hari</p>
                                     </td>

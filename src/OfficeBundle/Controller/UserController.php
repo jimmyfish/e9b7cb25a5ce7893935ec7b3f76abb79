@@ -689,9 +689,9 @@ class UserController extends Controller
 
         $cutii = $user->getJob()->getQuotas();
 
-        $cuti = $em->getRepository(Cuti::class)->findOneBy(['userId' => $user]);
+        $cuti = $em->getRepository(Cuti::class)->findOneBy(['userId' => $user,'tahun' => date('Y')]);
 
-        $cutiAll = $em->getRepository(Cuti::class)->findBy(['userId' => $user]);
+        $cutiAll = $em->getRepository(Cuti::class)->findBy(['userId' => $user,'tahun' => date('Y')]);
 
         $totalCuti = count($cutiAll);
 
