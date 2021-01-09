@@ -684,7 +684,7 @@ class UserController extends Controller
                ->where('z.userId = :userId')
                ->andWhere('YEAR(z.tglMulai) = :mulai')
                ->setParameter('userId',$user->getId())
-               ->setParameter('mulai','2017')
+               ->setParameter('mulai',date('Y'))
                ->getQuery()->getResult();
 
         return $this->render('OfficeBundle:user:form-absen.html.twig', [
