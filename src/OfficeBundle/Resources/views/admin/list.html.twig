@@ -23,6 +23,7 @@
                         <th>No</th>
                         <th>NIK</th>
                         <th>Nama</th>
+                        <th>Username</th>
                         <th>Penempatan</th>
                         <th>Validate</th>
                         <th>Active</th>
@@ -40,6 +41,7 @@
                                 <td>{{ i }}</td>
                                 <td>{% if user.nik is not null %}{{ user.nik }}{% endif %}</td>
                                 <td style="text-transform: capitalize;">{{ user.nama }}</td>
+                                <td>{{ user.username }}</td>
                                 <td>
                                     {% if user.penempatan is not null %}
                                         {{ user.penempatan.namaPerusahaan }}
